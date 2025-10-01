@@ -261,23 +261,23 @@ h2 {
 	background: linear-gradient(145deg, #f8f8f8, #e8e8e8); /* farba bunky */
 	border: 0.5px solid black;
 	cursor: pointer;
-	transition: transform 0.5s, box-shadow 0.5s; /* pre animaciu */
+	transition: transform 0.2s, box-shadow 0.2s; /* pre animaciu */
 }
 
 /* prechod mysou nad bunkou, zdvihnutie policka a pridanie shadowu */
 .cell:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 5px;
+	transform: translateY(-2px);
+	box-shadow: 0 2px;
 }
 
 .cellEmpty {
   	background: linear-gradient(145deg, #e0e0e0, #d6d6d6); /* farba prazdnej bunky */
 }
 .cellWater {
-	background: linear-gradient(145deg, #2196f3, #1e88e5); /* farba zaplnenej bunky */
+	background: linear-gradient(145deg, #4da6ff, #3399ff); /* farba zaplnenej bunky */
 }
 .cellObstacle {
-	background: linear-gradient(145deg, #ff5722, #e64a19); /* farba prekazky */
+	background: linear-gradient(145deg, #666666, #4d4d4d); /* farba prekazky */
 }
 
 /* mriezka */
