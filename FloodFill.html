@@ -221,6 +221,8 @@
 	function showAssignment(index) {
 	
 		currentAssignment = assignments[index];
+
+		assignmentIndex = index;
 		
 		//ak nemam zadanie, tak nic nerob
 		if (!currentAssignment) return;
@@ -325,6 +327,7 @@
 	nextButton.addEventListener("click", () => {
 		if (assignments.length > 1) {
 			assignmentIndex = (assignmentIndex + 1) % assignments.length;
+			cleanGrid();
 			showAssignment(assignmentIndex);
 		}
 	});
@@ -355,10 +358,13 @@
 
 		// pockam, kym su vsetky jsony precitane
 		Promise.all(promises)
-			//potom uloz nacitane subory do assignments pola a ukaz prvy assignment
+			//potom uloz nacitane subory do assignments pola
 			.then(results => {
 				assignments.push(...results); 
-				showAssignment(0);           
+				//vycisti grid, ak je na nom voda alebo prekazky a ukaz prve zadanie
+				cleanGrid();
+				showAssignment(0);
+				         
 		})
 		.catch(error => {
 			console.error("Chyba pri nacitani json suborov:", error);
@@ -455,6 +461,23 @@
 		document.getElementById("zadanieHeader").innerText = "";
 		document.getElementById("task").innerHTML = "<p> Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.</p>";
 	}
+
+	//pridanie vody do bunky [cellRow, cellCol]
+	function handleLeftClick(cell, cellRow, cellCol) {
+		//aktualizacia v internom 2D poli, "1" oznacuje vodu
+		gridArray[cellRow][cellCol] = 1;
+
+		//aktualizacia bunky v mriezke na stranke
+		cell.className = "cell cellWater";
+	}
+
+	function handleRightClick(cell, cellRow, cellCol) {
+		//aktualizacia v internom 2D poli, "2" oznacuje prekazku
+		gridArray[cellRow][cellCol] = 2;
+
+		//aktualizacia bunky v mriezke na stranke
+		cell.className = "cell cellObstacle";
+	}
 	
 	//funkcia na vytvorenie mriezky rozmerov [riadky, stlpce], sizePolicka je velkost jednej bunky/stvorceka
 	//zaklad 8x8
@@ -492,7 +515,11 @@
 			let cellRow = Math.floor(i/currentCols);
 			let cellCol = i % currentCols;
 			cell.id = `cell-${cellRow}-${cellCol}`; // id v tvare cell-row-col
-			cell.addEventListener("click", () => handleGridClick(cell, cellRow, cellCol));
+			cell.addEventListener("click", () => handleLeftClick(cell, cellRow, cellCol));
+			cell.addEventListener("contextmenu", (e) => {
+				e.preventDefault();
+				handleRightClick(cell, cellRow, cellCol);
+			});
 			grid.appendChild(cell);
 		}
 		
