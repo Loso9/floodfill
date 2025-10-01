@@ -13,7 +13,7 @@
 	<!-- Button "Informacie" -->
 	<div class="button-wrapper">
 		<button type="button" class="button" title="Informácie o stránke" id="openModal"> 
-			<img src="icons/information.png" class="icon" width="40px" height="40px"> 
+			<img src="icons/information.png" class="icon" width="50px" height="50px"> 
 		</button>
 		<span class="label" id="infoLabel"> Informácie </span>
 	</div>
@@ -68,6 +68,14 @@
 		</div> 
 		-->
 		<div class="button-wrapper">
+			<button type="button" class="button" id="freeButton"> 
+				<img src="icons/free.png" class="icon" width="50px" height="50px"> 
+			</button>
+			<!-- neviditelny input element pre filepicker -->
+			<input type="file" multiple id="fileInput" accept=".json" style="display: none;"/>
+			<span class="label" id="freeLabel"> Voľný režim </span>
+		</div>
+		<div class="button-wrapper">
 			<button type="button" class="button" id="loadButton"> 
 				<img src="icons/load.png" class="icon" width="50px" height="50px"> 
 			</button>
@@ -113,13 +121,13 @@
 <div id="hra-section">
 	<div id="task-wrapper">
 		<div id="levelCounter">
-			<p> Voľný mód </p>
+			<p> Voľný režim </p>
 		</div>
 		<h3 id="zadanieHeader"> </h3>
 		<div id="task">
 			<p> 
-			Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať prekážky a zdroje vody. 
-			Pre načítanie zadaní úloh kliknite na tlačítko "Načítaj úlohy".
+			Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. 
+			Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.
 			</p>
 		</div>
 		<div id="solution"> </div> 
@@ -129,7 +137,7 @@
 		<div id="sidebar">
 			<div id="sidebar-top">
 				<div class="button-wrapper">
-					<button type="button" class="button"> 
+					<button type="button" class="button" id="cleanButton"> 
 						<img src="icons/clean.png" class="icon" width="50px" height="50px">
 					</button>
 					<span class="label" id="cleanLabel"> Vyčisti mriežku </span>
@@ -176,20 +184,23 @@
 	
 	//pomocne pole kde si budeme ukladat zadania
 	let assignments = [];
-	//defaultne je nejake zadanie nahodene na stranke
+	//defaultne je volny rozim (ziadne zadanie)
 	let assignmentIndex = 0;
 	
 	let currentAssignment;
 	
 	let gridArray = []; // 2D pole reprezentujuce mriezku
+
+	//na zaciatku programu je volny mod, ked moze uzivatel pridavat prekazky a pridavat vodu a skusat, ako funguje algoritmus
+	let assignmentType = "free";
 	
 	// Inicializacia 2D pola na zaklade poctu riadkov a stlpcov
 	function initializeGridArray(rows, cols) {
+		// 0 znamena prazdne policko v array reprezentacii
 		gridArray = Array.from({ length: rows }, () => Array(cols).fill(0));
 		// console.log(gridArray); // Pre kontrolu vypis do konzoly
 	}
 
-	
 	function updateCounter() {
 		const counter = document.getElementById("levelCounter");
 		
@@ -231,12 +242,12 @@
 	
 	//funkcia na ukladanie aktualnej session do jsonu 
 	function getSessionData() {
-		const cells = document.querySelectorAll("#grid .cells");
+		const cells = document.querySelectorAll("#grid .cell");
 		//ulozenie stavu mriezky 
 		const gridState = Array.from(cells).map(cell => {
 			if (cell.classList.contains("cellObstacle")) return "obstacle";
 			if (cell.classList.contains("cellWater")) return "water";
-			return empty;
+			return "empty";
 		});
 		
 		//vrat objekt typu (vo formate, ako je json)
@@ -276,9 +287,16 @@
 		hraSection.classList.add("hidden");
 		tvorbaSection.classList.remove("hidden");
 	};
+
+	//po kliknuti na "Volny rezim"
+	freeButton.addEventListener("click", () => setFreeMode());
+
+	//po kliknuti na "Vycisti mriezku" sa vycisti mriezka na obrazovke, aj interne
+	cleanButton.addEventListener("click", () => cleanGrid());
 	
 	//po kliknuti na "Nacitaj ulohy" sa otvori fileinput element 
 	loadButton.addEventListener("click", () => {
+		fileInput.value = "";
 		fileInput.click();
 	});
 	
@@ -295,7 +313,8 @@
 		
 		//stiahnutie suboru UlohaN-riesenie.json
 		const link = document.createElement("a");
-		link.href = URL.createObjectURL(blob);
+		const url = URL.createObjectURL(blob);
+		link.href = url;
 		link.download = `Úloha${assignmentIndex + 1}-riešenie.json`;
 		link.click();
 
@@ -317,7 +336,6 @@
 		
 		//pri nacitani chces zresetovat 
 		assignments = []
-		
 		
 		const promises = Array.from(files).map(file => {
 			return new Promise((resolve, reject) => {
@@ -345,7 +363,6 @@
 		.catch(error => {
 			console.error("Chyba pri nacitani json suborov:", error);
 		});
-
 	});
 	
 	const openInfo = document.getElementById("openModal");
@@ -408,6 +425,36 @@
 	
 	let currentRows = 0;
 	let currentCols = 0;
+
+	//funkcia na vycistenie gridu - prenastavenie vsetkych buniek mriezky na "empty"
+	function cleanGrid() {
+		for (let i = 0; i < currentRows * currentCols; i++) {
+			//najdenie prislusnej bunky
+			let cellRow = Math.floor(i/currentCols);
+			let cellCol = i % currentCols;
+			let cellId = `cell-${cellRow}-${cellCol}`;
+			let cell = document.getElementById(cellId);
+			//vyprazdnenie nastavenim prislusnych classov
+			cell.className = "cell cellEmpty";
+		}
+		
+		//vycistenie mriezky aj interne (v 2D poli)
+		initializeGridArray(currentRows, currentCols);
+	}
+
+	function setFreeMode() {
+		//uchovaj si aktualny assignment type
+		assignmentType = "free";
+		//pri prepnuti na volny rezim sa vymazu zadania
+		assignments = [];
+		assignmentIndex = 0;
+		//vycisti grid
+		cleanGrid();
+		//prenastav divs v task-div
+		document.getElementById("levelCounter").innerHTML = "<p> Voľný režim </p>";
+		document.getElementById("zadanieHeader").innerText = "";
+		document.getElementById("task").innerHTML = "<p> Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.</p>";
+	}
 	
 	//funkcia na vytvorenie mriezky rozmerov [riadky, stlpce], sizePolicka je velkost jednej bunky/stvorceka
 	//zaklad 8x8
@@ -429,7 +476,7 @@
 		//najvacsia velkost bunky
 		if (cellSize > 80) cellSize = 80;
 
-		document.getElementById("grid").offsetHeight = cellSize * currentRows
+		document.getElementById("grid").style.height = cellSize * currentRows + " px";	
 		
 
 		// nastavenie poctu stlpcov a velkost bunky
@@ -439,9 +486,13 @@
 		grid.style.gridTemplateRows = "repeat(" + rows + ", " + cellSize + "px)";
 		
 		//vytvorenie buniek
-		for (let i = 0; i < rows * cols; i++) {
+		for (let i = 0; i < currentRows * currentCols; i++) {
 			let cell = document.createElement("div");
-			cell.classList.add("cell");
+			cell.classList.add("cell", "cellEmpty"); // defaultne je bunka prazdna, pridanie class="cellEmpty" (two-class approach)
+			let cellRow = Math.floor(i/currentCols);
+			let cellCol = i % currentCols;
+			cell.id = `cell-${cellRow}-${cellCol}`; // id v tvare cell-row-col
+			cell.addEventListener("click", () => handleGridClick(cell, cellRow, cellCol));
 			grid.appendChild(cell);
 		}
 		
@@ -456,7 +507,7 @@
 	/* defaultny grid (8x8 v hlavicke funkcie) */
 	generateGrid();
 	
-	window.addEventListener("resize", () => generateGrid());
+	//window.addEventListener("resize", () => generateGrid());
 	
 	
 </script>
