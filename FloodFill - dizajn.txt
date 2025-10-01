@@ -1,0 +1,38 @@
+29.9.
+
+- pravy horny roh - odkaz na specifikaciu projektu (<a href="https://docs.google.com/document/d/1E15GhG9FlKQsuWKBZXsRsafuvNa6_CiWNwoghx4e8BU/edit?tab=t.0"> Špecifikácia projektu </a>)
+
+- centrovane na stred - nazov projektu
+pod tym centrovane na stred autori - Marek Lošonský, Martin Hošek
+
+-pod tým (s dostatočnou medzerou od nadpisu a autorov) bude preklikavatelny rezim HRA alebo TVORBA - po prekliknuti sa zmeni rozlozenie prvkov, ktore sa zobrazia pod tymto rezimom (malo by byt dostatocne zretelne, ktory mod je zvoleny)
+
+mod HRA
+
+-pod textom REZIM HRA - TVORBA, kde rezim hra je dostatocne zretelne vyznaceny sa zobrazia pekne graficky a na stred usporiadane buttony Zobraz zadanie (default zapnute), Spusti hru (algoritmus), Zastav hru (algoritmus), Uloz riesenie (do akeho formatu(?)) a Dalsia uloha. Tieto popisky buttonov sa zobrazia, ked uzivatel prejde mysou nad button, ktory bude v skutocnosti len nejaky symbol, resp. grafika, napr. pre Spusti hru bude button vyzerat ako youtube play button. Button pre dalsiu ulohu (znazorneny napr. ikonou sipky vpravo) bude trosku dalej vpravo od ostatnych buttonov, ale vseobecne vsetky buttony budu zarovnane na stred (bude medzi Uloz riesenie a Dalsia uloha medzera).
+
+- Pod sekciou buttonov bude hracia mriezka (grid) a vedla toho zadanie ulohy. Oba tieto prvy spolu by mali byt zarovnane na stred, teda vlavo od mriezky (medzi krajom stranky a mriezkou) by mala byt medzera N pixelov a medzi zadanim ulohy a pravym rohom stranky by tiez mala byt medzera N pixelov. Medzi gridom a zadanim by mala byt primerana medzera. Pod zadanim bude v samostatnom riadku napisane "Riesenie: ...." kde sa po ukonceni algoritmu doplni Spravne!/Nespravne! podla toho ako ulohu vyriesil uzivatel.
+
+mod TVORBA
+- pod textom REZIM HRA - TVORBA, kde rezim tvorba je dostatocne zretelne vyznaceny budu najprv nejake elementy na vyber poctu riadkov, stlpcov a velkosti jednotlivych buniek mriezky, volba nahodneho rozlozenia prekazok (pripadne urcit pravdepodobnost cez kazde policko, ze sa na nom urobi prekazka), volba obrazku pre prekazku (pripadne default)
+-> dalo by sa menit ten grid v realnom case? teda vzdy ked zmenim cislo (napr. tie riadky a stlpce ako slider, teda tick slidera), tak sa ihned zmeni grid? 
+- PRAVYM CLICKOM SA PRIDA PREKAZKA, LAVYM CLICKOM NA BUNKU SA PRIDA VODA, mozno pridat nejaky element na urcenie, ci sa v ulohe bude jednat manualne pridavanie vody alebo z celeho okraja mriezky
+- urcenie typu odpovede
+- ulozenie danej hry (zadania - txt alebo json?)
+- nacitanie ineho zadania, moznost upravit ho (a znovu ulozit podla predchadzajuceho bodu)
+
+ukazky zadani su uvedene v specifikacii!
+
+30.9.
+- v tlacidle nacitaj by sa mal otvorit okno filepicker, v ktorom moze pouzivatel zvolit jednu, alebo viacero uloh, subor typu .json
+-> podla toho sa aktualizuje label levelLabel (ktory je vedla mriezky a oznacuje, ktora je to uloha) 
+	-> otazka, chceme, by zadanie mali aj vlastne mena, alebo to vsetko budu "Uloha/Zadanie"
+
+- zamysli sa nad tym, ako bude vyzerat ten json file pre zadanie, ake polozky v nom budu
+- stlacenim experimentuj by mal pouzivatel dostat len take moznosti, ake ponuka zadanie, cize ak zadanie nie je vytvaranie prekazok, tak by nemal mat moznost vytvarat prekazky
+-> treba teda niekde ukazat manual, ze co sa da robit, a ako to robi, pravdepodobne neustale ukazane
+- tlacidlo Spust ma robit len jeden krok, ale mala by tam byt aj funkcionalita Spustenia algoritmu celkoveho => nove tlacidlo? alebo ako spravit intuitivne (double click?)
+- tlacidlo na vycistenie gridu?
+- pridat Label, ze program skoncil by davalo zmysel
+- ked sa stlaci experimentuj, tak sa schova zadanie(?) - a naopak?
+- je vobec potrebny button Zadanie ked je zadanie vzdy vidiet?

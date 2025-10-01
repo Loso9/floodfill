@@ -1,0 +1,31 @@
+{
+	"type": "avoid_cells",
+	"text": "Vaším zadaním je pridať do mriežky prekážky tak, aby voda nezaplavila presne 7 políčok. Použite čo {{target}} prekážok na dosiahnutie tohto cieľa.",
+	"targetWord": "najmenej",
+	"grid": {
+		"rows": 8,
+		"cols": 8,
+		"gridState": [
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[]
+		]
+	},
+	"solution": {
+		"gridState": [
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[]
+		]
+	}
+}

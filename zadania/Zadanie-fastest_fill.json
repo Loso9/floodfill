@@ -1,0 +1,20 @@
+{
+	"type": "fastest_fill",
+	"text": "Vaším zadaním je vybrať voľné políčko mriežky odkiaľ sa začne vylievať voda tak, že sa celá mriežka zaplaví na čo {{target}} počet krokov.",
+	"targetWord": "najmenší",
+	"grid": {
+		"rows": 8,
+		"cols": 8,
+		"gridState": [
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[],
+			[]
+		]
+	},
+	"solution": "5-4"
+}

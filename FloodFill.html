@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title> Ako tečie voda </title>
+	<link rel="icon" href="icons/water.png" type="image/png">
+	<link href="style.css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- V headeri sa nachadza primarne button o informaciach o projekte -->
+<header>
+	<!-- Button "Informacie" -->
+	<div class="button-wrapper">
+		<button type="button" class="button" title="Informácie o stránke" id="openModal"> 
+			<img src="icons/information.png" class="icon" width="40px" height="40px"> 
+		</button>
+		<span class="label" id="infoLabel"> Informácie </span>
+	</div>
+	
+	<!-- Popup okno, ktore sa otvori po kliknuti na Button "Informacie" -->
+	<div class="modal" id="modal">
+			<div class="modal-inner">
+				
+				<!-- Button Zatvor Popup -->
+				<div class="button-wrapper">
+					<button type="button" class="button" title="Informácie o stránke" id="closeModal"> 
+						<img src="icons/close.png" class="icon" width="25px" height="25px"> 
+					</button>
+				</div>
+				
+				<!-- Text popupu -->
+				<h2> Projekt - Ako tečie voda </h2>
+				<p> 
+				Projekt <i>Ako tečie voda </i> je inšpirovaný algoritmom <b>FloodFill</b>. V tomto softvéri má užívateľ k dispozícií dva 
+				režijné módy - hra a tvorba. V režime "hra" má používateľ možnosť riešiť úlohy na mriežke, týkajúce sa spomínaného algoritmu.
+				Vzhľadom na zadanie môže používateľ v móde <i> Experimentuj </i> (ikona pera) pridávať prekážky; určovať, odkiaľ sa má 
+				začať liať voda; označovať štvorčeky, kam sa, podľa neho, voda nedostane; prípadne do štvorčekov vkladať čísla určujúce 
+				poradie zaplavenia vodou. 
+				</p>
+				<div id="linkSpecifikacia">
+					<a href="specs.pdf"> Špecifikácia projektu </a>
+				</div>
+			</div>
+		</div>
+</header>
+
+<!-- Nadpisy -->
+<h1> Ako tečie voda</h1>
+<h2> Marek Lošonský, Martin Hošek </h2>
+
+<!-- Div na rezimy hry -->
+<div class="mode-switch">
+	<span id="mode-hra" class="active"> HRA </span>
+	<span id="mode-tvorba"> TVORBA </span>
+</div>
+
+
+<!-- Seria Buttonov pre herny rezim -->
+<div id="hra-buttony">
+	<div class="button-bar">
+		<!-- zatial nevyuzity button Zadanie 
+		<div class="button-wrapper">
+			<button type="button" class="button" title="Zobraz zadanie"> 
+				<img src="icons/quest.png" class="icon" width="40px" height="40px"> 
+			</button>
+			<span class="label" id="zadanieLabel"> Zadanie </span>
+		</div> 
+		-->
+		<div class="button-wrapper">
+			<button type="button" class="button" id="loadButton"> 
+				<img src="icons/load.png" class="icon" width="50px" height="50px"> 
+			</button>
+			<!-- neviditelny input element pre filepicker -->
+			<input type="file" multiple id="fileInput" accept=".json" style="display: none;"/>
+			<span class="label" id="loadLabel"> Načítaj úlohy </span>
+		</div>
+		<div class="button-wrapper">
+			<button type="button" class="button"> 
+				<img src="icons/pen.png" class="icon" width="50px" height="50px">
+			</button>
+			<span class="label" id="upravLabel"> Uprav mriežku </span>
+		</div>
+		<div class="button-wrapper">
+			<button type="button" class="button" id="play-button"> 
+				<img src="icons/play-button.png" class="icon" width="50px" height="50px">
+			</button>
+			<span class="label" id="spustLabel"> Spusti program </span>
+		</div>
+		<div class="button-wrapper">
+			<button type="button" class="button" id="stop-button">
+				<img src="icons/stop.png" class="icon" width="50px" height="50px">
+			</button>
+			<span class="label" id="stopLabel"> Stopni program </span>
+		</div>
+		<div class="button-wrapper">
+			<button type="button" class="button" id="saveButton">
+				<img src="icons/save.png" class="icon" width="50px" height="50px">
+			</button>
+			<span class="label" id="ulozLabel"> Ulož riešenie </span>
+		</div>
+		<div class="button-wrapper">
+			<button type="button" class="button" id="nextButton">
+				<img src="icons/arrow.png" class="icon" width="50px" height="50px">
+			</button>
+			<span class="label" id="dalejLabel"> Ďalšia úloha </span>
+		</div>
+	</div>
+</div>
+
+
+<!-- Div v ktorom bude jednak mriezka (vlavo) a zadanie (vpravo), !!! a extra buttony podla zadania vlavo -->
+<div id="hra-section">
+	<div id="task-wrapper">
+		<div id="levelCounter">
+			<p> Voľný mód </p>
+		</div>
+		<h3 id="zadanieHeader"> </h3>
+		<div id="task">
+			<p> 
+			Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať prekážky a zdroje vody. 
+			Pre načítanie zadaní úloh kliknite na tlačítko "Načítaj úlohy".
+			</p>
+		</div>
+		<div id="solution"> </div> 
+	</div>
+	<div id="sidebar-grid">
+		<div id="grid"> </div>
+		<div id="sidebar">
+			<div id="sidebar-top">
+				<div class="button-wrapper">
+					<button type="button" class="button"> 
+						<img src="icons/clean.png" class="icon" width="50px" height="50px">
+					</button>
+					<span class="label" id="cleanLabel"> Vyčisti mriežku </span>
+				</div>
+			</div>
+			<div id="sidebar-bottom">
+				<div class="button-wrapper">
+					<button type="button" class="button"> 
+						<img src="icons/left-click.png" class="icon" width="50px" height="50px">
+					</button>
+					<span class="label" id="leftClickLabel"> Pridaj vodu </span>
+				</div>
+				<div class="button-wrapper">
+					<button type="button" class="button"> 
+						<img src="icons/right-click.png" class="icon" width="50px" height="50px">
+					</button>
+				 	<span class="label" id="rightClickLabel"> Pridaj prekážku </span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Div v ktorom bude jednak mriezka (vlavo) a zadanie (vpravo) 
+- este domysliet ze ake bude rozlozenie vsetkych potrebnych prvkov v nom -->
+<div id="tvorba-section">
+
+</div>
+
+
+<!-- Päta stranky -->
+<footer>
+	<p> Softvér pre vzdelávanie, 1mAIN, 2025/2026
+</footer>
+
+<script>
+	const modeHra = document.getElementById("mode-hra");
+	const modeTvorba = document.getElementById("mode-tvorba");
+	const hraSection = document.getElementById("hra-section");
+	const tvorbaSection = document.getElementById("tvorba-section");
+	const loadButton = document.getElementById("loadButton");
+	const fileInput = document.getElementById("fileInput");
+	const nextButton = document.getElementById("nextButton");
+	
+	//pomocne pole kde si budeme ukladat zadania
+	let assignments = [];
+	//defaultne je nejake zadanie nahodene na stranke
+	let assignmentIndex = 0;
+	
+	let currentAssignment;
+	
+	let gridArray = []; // 2D pole reprezentujuce mriezku
+	
+	// Inicializacia 2D pola na zaklade poctu riadkov a stlpcov
+	function initializeGridArray(rows, cols) {
+		gridArray = Array.from({ length: rows }, () => Array(cols).fill(0));
+		// console.log(gridArray); // Pre kontrolu vypis do konzoly
+	}
+
+	
+	function updateCounter() {
+		const counter = document.getElementById("levelCounter");
+		
+		//ak mam len jedno zadanie, tak napise do div len "Uloha"
+		if (assignments.length === 1) {
+			counter.innerText = "Úloha";
+		}
+		else if (assignments.length > 1) {
+			//updatni counter vo forme Uloha M/N, kde M je aktualne cislo ulohy a N je pocet vsetkych nacitanych uloh
+			counter.innerText = "Úloha " + (assignmentIndex + 1) + "/" + assignments.length;
+		}
+		else {
+			//nic nebolo nacitane
+			counter.innerText = "";
+		}
+	}
+	
+	function showAssignment(index) {
+	
+		currentAssignment = assignments[index];
+		
+		//ak nemam zadanie, tak nic nerob
+		if (!currentAssignment) return;
+		
+		let assignmentText = currentAssignment.text;
+		
+		//formatovanie zadania
+		assignmentText = assignmentText.replaceAll("{{target}}", `<u>${currentAssignment.targetWord}</u>`);
+		document.getElementById("task").innerHTML = assignmentText;
+		
+		//ak je assignment typu 
+		//if (currentAssignment.type === "avoid_cells")
+		
+		document.getElementById("zadanieHeader").innerText = "Zadanie";
+		//zvys counter Uloha (nad textom zadania)
+		updateCounter();
+	
+	}
+	
+	//funkcia na ukladanie aktualnej session do jsonu 
+	function getSessionData() {
+		const cells = document.querySelectorAll("#grid .cells");
+		//ulozenie stavu mriezky 
+		const gridState = Array.from(cells).map(cell => {
+			if (cell.classList.contains("cellObstacle")) return "obstacle";
+			if (cell.classList.contains("cellWater")) return "water";
+			return empty;
+		});
+		
+		//vrat objekt typu (vo formate, ako je json)
+		return {
+			type: currentAssignment.type,
+			text: currentAssignment.text,
+			targetWord: currentAssignment.targetWord,
+			rows: currentAssignment.grid.rows,
+			cols: currentAssignment.grid.cols,
+			grid: {
+				rows: currentAssignment.grid.rows,
+				cols: currentAssignment.grid.cols,
+				gridState
+			},
+			solution: []
+		}
+	}
+	
+	/*
+	function addElementsForAssignment(assignment) {
+	
+	}
+	*/
+	
+	// metody tykajucesa prepinania rezimov 
+	modeHra.onclick = () => {
+		modeHra.classList.add("active");
+		modeTvorba.classList.remove("active");
+		hraSection.classList.remove("hidden");
+		tvorbaSection.classList.add("hidden");
+	
+	};	
+	
+	modeTvorba.onclick = () => {
+		modeHra.classList.remove("active");
+		modeTvorba.classList.add("active");
+		hraSection.classList.add("hidden");
+		tvorbaSection.classList.remove("hidden");
+	};
+	
+	//po kliknuti na "Nacitaj ulohy" sa otvori fileinput element 
+	loadButton.addEventListener("click", () => {
+		fileInput.click();
+	});
+	
+	//po kliknuti na "Uloz riesenie" sa stiahne subor s nazvom UlohaN-riesenie.json, kde N je cislo ulohy
+	saveButton.addEventListener("click", () => {
+		//ziskaj udaje o aktualnej session
+		const data = getSessionData();
+
+		//preved do json formatu stringu
+		const jsonString = JSON.stringify(data, null, 2);
+		
+		//prevod na json
+		const blob = new Blob([jsonString], { type: "application/json" });
+		
+		//stiahnutie suboru UlohaN-riesenie.json
+		const link = document.createElement("a");
+		link.href = URL.createObjectURL(blob);
+		link.download = `Úloha${assignmentIndex + 1}-riešenie.json`;
+		link.click();
+
+		URL.revokeObjectURL(url);
+	});
+	
+	//po kliknuti "Dalsia uloha" sa prejde na dalsie zadanie
+	nextButton.addEventListener("click", () => {
+		if (assignments.length > 1) {
+			assignmentIndex = (assignmentIndex + 1) % assignments.length;
+			showAssignment(assignmentIndex);
+		}
+	});
+	
+	fileInput.addEventListener("change", (event) => {
+	
+		//vybrane jsonFiles
+		const files = event.target.files;
+		
+		//pri nacitani chces zresetovat 
+		assignments = []
+		
+		
+		const promises = Array.from(files).map(file => {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onload = () => {
+					try {
+						const json = JSON.parse(reader.result);
+						resolve(json);
+					} catch (error) {
+						reject(error);
+					}
+				};
+				reader.onerror = () => reject(reader.error);
+				reader.readAsText(file);
+			});
+		});
+
+		// pockam, kym su vsetky jsony precitane
+		Promise.all(promises)
+			//potom uloz nacitane subory do assignments pola a ukaz prvy assignment
+			.then(results => {
+				assignments.push(...results); 
+				showAssignment(0);           
+		})
+		.catch(error => {
+			console.error("Chyba pri nacitani json suborov:", error);
+		});
+
+	});
+	
+	const openInfo = document.getElementById("openModal");
+	const closeInfo = document.getElementById("closeModal");
+	const modal = document.getElementById("modal");
+	
+	// listenery na popup - ak sa klikne na info Button, tak sa otvori Popup
+	openInfo.addEventListener("click", () => {
+		modal.classList.add("open");
+	});
+	
+	// ak sa klikne na X button v popupe, tak sa zatvori 
+	closeInfo.addEventListener("click", () => {
+		modal.classList.remove("open");
+	});
+	
+	// QoL doplnky - ESC tlacitko zatvori popup okno
+	document.addEventListener("keydown", e => {
+		if(e.key === "Escape") modal.classList.remove("open");
+	});
+	
+	const grid = document.getElementById("grid");
+	
+	// dizajn - oble okraje gridu
+	function setRoundCorners(rows, cols) {
+		const cells = document.querySelectorAll("#grid .cell");
+
+		let topLeft = cells[0];
+		topLeft.style.borderTopLeftRadius = "10px";
+		let topRight = cells[cols - 1]; 
+		topRight.style.borderTopRightRadius = "10px";
+		let bottomLeft = cells[cells.length - cols];
+		bottomLeft.style.borderBottomLeftRadius = "10px";
+		let bottomRight = cells[cells.length - 1];
+		bottomRight.style.borderBottomRightRadius = "10px";
+	}
+	
+	function setOuterBorders(rows, cols) {
+		const cells = document.querySelectorAll("#grid .cell");
+		
+		cells.forEach((cell, index) => {
+			
+			const row = Math.floor(index / cols);
+			const col = index % cols;
+			
+			if (row === 0) {
+				cell.style.borderTopWidth = "3px";
+			}
+			if (row === rows - 1) {
+				cell.style.borderBottomWidth = "3px";
+			}
+			if (col === 0) {
+				cell.style.borderLeftWidth = "3px";
+			}
+			if (col === cols - 1) {
+				cell.style.borderRightWidth = "3px";
+			}
+		});
+	}
+	
+	let currentRows = 0;
+	let currentCols = 0;
+	
+	//funkcia na vytvorenie mriezky rozmerov [riadky, stlpce], sizePolicka je velkost jednej bunky/stvorceka
+	//zaklad 8x8
+	function generateGrid(rows = 8, cols = 8) {
+		
+		currentRows = rows;
+		currentCols = cols;
+	
+		initializeGridArray(rows, cols);
+
+		const grid = document.getElementById("grid");
+		grid.innerHTML = "";
+		
+		//velkost mriezky - aby sa to zmestilo na obrazovku bez scrollovania
+		const maxGridSize = Math.min(window.innerWidth, window.innerHeight) * 0.5;
+		
+		//dynamicky zmenit velkost bunky v zavislosti od poctu riadkov/stlpcov
+		let cellSize = Math.floor(Math.min(maxGridSize/rows, maxGridSize/cols));
+		//najvacsia velkost bunky
+		if (cellSize > 80) cellSize = 80;
+
+		document.getElementById("grid").offsetHeight = cellSize * currentRows
+		
+
+		// nastavenie poctu stlpcov a velkost bunky
+		grid.style.gridTemplateColumns = "repeat(" + cols + ", " + cellSize + "px)";
+  
+		// nastavenie poctu riadkov a velkost bunky
+		grid.style.gridTemplateRows = "repeat(" + rows + ", " + cellSize + "px)";
+		
+		//vytvorenie buniek
+		for (let i = 0; i < rows * cols; i++) {
+			let cell = document.createElement("div");
+			cell.classList.add("cell");
+			grid.appendChild(cell);
+		}
+		
+		//funkcia na oble okraje mriezky
+		setRoundCorners(rows, cols);
+		
+		//funkcia na hrubsie vonkajsie okraje mriezky
+		setOuterBorders(rows, cols);
+		
+	}
+	
+	/* defaultny grid (8x8 v hlavicke funkcie) */
+	generateGrid();
+	
+	window.addEventListener("resize", () => generateGrid());
+	
+	
+</script>
+
+</body>
+</html>
