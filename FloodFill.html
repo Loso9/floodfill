@@ -69,7 +69,7 @@
 		-->
 		<div class="button-wrapper">
 			<button type="button" class="button" id="freeButton"> 
-				<img src="icons/free.png" class="icon" width="50px" height="50px"> 
+				<img src="icons/enabled/free.png" class="icon" width="50px" height="50px"> 
 			</button>
 			<!-- neviditelny input element pre filepicker -->
 			<input type="file" multiple id="fileInput" accept=".json" style="display: none;"/>
@@ -77,7 +77,7 @@
 		</div>
 		<div class="button-wrapper">
 			<button type="button" class="button" id="loadButton"> 
-				<img src="icons/load.png" class="icon" width="50px" height="50px"> 
+				<img src="icons/enabled/load.png" class="icon" width="50px" height="50px"> 
 			</button>
 			<!-- neviditelny input element pre filepicker -->
 			<input type="file" multiple id="fileInput" accept=".json" style="display: none;"/>
@@ -85,31 +85,31 @@
 		</div>
 		<div class="button-wrapper">
 			<button type="button" class="button"> 
-				<img src="icons/pen.png" class="icon" width="50px" height="50px">
+				<img src="icons/enabled/pen.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="upravLabel"> Uprav mriežku </span>
 		</div>
 		<div class="button-wrapper">
 			<button type="button" class="button" id="playButton"> 
-				<img src="icons/play-button.png" class="icon" width="50px" height="50px">
+				<img src="icons/enabled/play-button.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="spustLabel"> Spusti program </span>
 		</div>
 		<div class="button-wrapper">
 			<button type="button" class="button" id="stopButton">
-				<img src="icons/stop.png" class="icon" width="50px" height="50px">
+				<img src="icons/enabled/stop.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="stopLabel"> Stopni program </span>
 		</div>
 		<div class="button-wrapper">
 			<button type="button" class="button" id="saveButton">
-				<img src="icons/save.png" class="icon" width="50px" height="50px">
+				<img src="icons/enabled/save.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="ulozLabel"> Ulož riešenie </span>
 		</div>
 		<div class="button-wrapper">
 			<button type="button" class="button" id="nextButton">
-				<img src="icons/arrow.png" class="icon" width="50px" height="50px">
+				<img src="icons/enabled/arrow.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="dalejLabel"> Ďalšia úloha </span>
 		</div>
@@ -138,22 +138,19 @@
 			<div id="sidebar-top">
 				<div class="button-wrapper">
 					<button type="button" class="button" id="cleanButton"> 
-						<img src="icons/clean.png" class="icon" width="50px" height="50px">
+						<img src="icons/enabled/clean.png" class="icon" width="50px" height="50px">
 					</button>
 					<span class="label" id="cleanLabel"> Vyčisti mriežku </span>
 				</div>
 			</div>
+			<!-- v spodnom sidebare nebudu buttony, ale iba ikony -->
 			<div id="sidebar-bottom">
-				<div class="button-wrapper">
-					<button type="button" class="button"> 
-						<img src="icons/left-click.png" class="icon" width="50px" height="50px">
-					</button>
+				<div class="icon-wrapper">
+					<img src="icons/left-click.png" class="icon" width="50px" height="50px">
 					<span class="label" id="leftClickLabel"> Pridaj vodu </span>
 				</div>
-				<div class="button-wrapper">
-					<button type="button" class="button"> 
-						<img src="icons/right-click.png" class="icon" width="50px" height="50px">
-					</button>
+				<div class="icon-wrapper">
+					<img src="icons/right-click.png" class="icon" width="50px" height="50px">
 				 	<span class="label" id="rightClickLabel"> Pridaj prekážku </span>
 				</div>
 			</div>
@@ -223,31 +220,50 @@
 		currentAssignment = assignments[index];
 
 		assignmentIndex = index;
+
+		//console.log("Vykonalo sa1");
 		
 		//ak nemam zadanie, tak nic nerob
 		if (!currentAssignment) return;
 		
 		let assignmentText = currentAssignment.text;
 		
+		//console.log("Vykonalo sa2");
+
 		//formatovanie zadania
 		assignmentText = assignmentText.replaceAll("{{target}}", `<u>${currentAssignment.targetWord}</u>`);
 		document.getElementById("task").innerHTML = assignmentText;
 
+		//console.log("Vykonalo sa3");
+
 		//nacitaj do interneho pola stav mriezky z JSONu
 		gridArray = currentAssignment.grid.gridState;
 
+		//console.log(gridArray);
+
 		//nacitaj do mriezky na stranke stav mriezky z JSONu
-		/*
-		for (let row = 0; gridArray.length; row++) {
-			for (let col = 0; gridArray[row].length; col++) {
-				if (gridArray[row][col] == 0) {
-					
+		for (let row = 0; row < gridArray.length; row++) {
+			for (let col = 0; col < gridArray[row].length; col++) {
+				console.log(`cell-${row}-${col}`);
+				let cellId = `cell-${row}-${col}`;
+				let cell = document.getElementById(cellId);
+				//ak je bunka prazdna
+				if (gridArray[row][col] === 0) {
+					cell.className = "cell cellEmpty";
 				}
+				//ak je v bunke voda
+				else if (gridArray[row][col] === 1) {
+					cell.className = "cell cellWater";
+				}
+				//ak je v bunke prekazka
+				else if (gridArray[row][col] === 2) {
+					cell.className = "cell cellObstacle";
+				}
+				//moznost doplnit o dalsie moznosti 
 			}
 		}
-		*/
 		
-		/// TODO nacitanie 
+		// TODO nacitanie 
 		//ak je assignment typu 
 		//if (currentAssignment.type === "avoid_cells")
 		
@@ -259,27 +275,42 @@
 	
 	//funkcia na ukladanie aktualnej session do jsonu 
 	function getSessionData() {
-		const cells = document.querySelectorAll("#grid .cell");
 		//ulozenie stavu mriezky 
-		const gridState = Array.from(cells).map(cell => {
-			if (cell.classList.contains("cellObstacle")) return "obstacle";
-			if (cell.classList.contains("cellWater")) return "water";
-			return "empty";
-		});
+		const gridState = gridArray;
 		
 		//vrat objekt typu (vo formate, ako je json)
-		return {
-			type: currentAssignment.type,
-			text: currentAssignment.text,
-			targetWord: currentAssignment.targetWord,
-			grid: {
-				rows: currentAssignment.grid.rows,
-				cols: currentAssignment.grid.cols,
-				gridState
-			},
-			solution: []
+		if (currentAssignment.type === "avoid_cells") {
+			return {
+				type: currentAssignment.type,
+				text: currentAssignment.text,
+				targetWord: currentAssignment.targetWord,
+				grid: {
+					rows: currentAssignment.grid.rows,
+					cols: currentAssignment.grid.cols,
+					gridState
+				},
+				goal: {
+					numOfEmptyCells: currentAssignment.numOfEmptyCells,
+					minNumOfObstacles: currentAssignment.minNumOfObstacles
+				} 
+			};
 		}
+		else if (currentAssignment.type === "fastest_fill") {
+			return {
+				type: currentAssignment.type,
+				text: currentAssignment.text,
+				targetWord: currentAssignment.targetWord,
+				grid: {
+					rows: currentAssignment.grid.rows,
+					cols: currentAssignment.grid.cols,
+					gridState
+				},
+				goal: currentAssignment.goal
+			};
+		}
+		//otvorene na dalsie typy zadani
 	}
+	
 	
 	/*
 	function addElementsForAssignment(assignment) {
@@ -602,7 +633,6 @@
 	}
 	
 	//window.addEventListener("resize", () => generateGrid());
-	
 	
 </script>
 
