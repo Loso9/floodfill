@@ -146,6 +146,18 @@ h2 {
 	align-items: center; /* a na stred */
 }
 
+/* css pre ikonu */
+.icon {
+	background-color: transparent;
+}
+
+/* icon wrapper - pre sidebar bottom ikony, ktore sluzia ako "manual" */
+.icon-wrapper {
+	display: inline-flex;
+	flex-direction: column; /* aby bola ikona a label pod sebou */
+	align-items: center; /* a na stred */
+}
+
 /* animacia prechodu cez button */
 .button-wrapper:hover {
 	transform: scale(1.1);
