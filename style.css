@@ -146,6 +146,61 @@ h2 {
 	align-items: center; /* a na stred */
 }
 
+/* animacia prechodu cez button */
+.button-wrapper:hover {
+	transform: scale(1.1);
+	transition: 0.3s ease;
+}
+
+/* ak je button wrapper vypnuty, tak nech nie je animacia */
+.button-wrapper.disabled:hover {
+	transform: none;
+}
+
+/* nastavenie grayscale filtra a jeho animacie pre button wrappery */
+.button-wrapper img, .button-wrapper span {
+	transition: filter 0.3s ease;
+}
+
+.button-wrapper.disabled img, .button-wrapper.disabled span {
+	filter: grayscale(100%) brightness(0.7);
+}
+
+/* sidebar button wrapper - button a prislusny label v sidebare vedla mriezky */
+.sidebar-button-wrapper {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+/* animacia pri prechode cez wrapper v sidebare */
+.sidebar-button-wrapper:hover {
+	transform: scale(1.1);
+	transition: 0.3s ease;
+}
+
+/* ak je button (wrapper) v sidebare vypnuty, nerobi sa animacia */
+.sidebar-button-wrapper.disabled:hover {
+	transform: none;
+}
+
+/* nastavenie grayscale filtra a jeho animacie pre sidebar button wrappery */
+.sidebar-button-wrapper img, .sidebar-button-wrapper span {
+	transition: filter 0.3s ease;
+}
+
+.sidebar-button-wrapper.disabled img, .sidebar-button-wrapper.disabled span {
+	filter: grayscale(100%) brightness(0.7);
+}
+
+/* sidebar icon wrapper - pomocky pre pracu s mriezkou */
+.sidebar-icon-wrapper {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+
 /* css pre ikonu */
 .icon {
 	background-color: transparent;
@@ -158,24 +213,6 @@ h2 {
 	align-items: center; /* a na stred */
 }
 
-/* animacia prechodu cez button */
-.button-wrapper:hover {
-	transform: scale(1.1);
-	transition: 0.3s ease;
-}
-
-.button-wrapper.disabled:hover {
-	transform: none;
-}
-
-.button-wrapper img, .button-wrapper span {
-	transition: filter 0.3s ease;
-}
-
-.button-wrapper.disabled img, .button-wrapper.disabled span {
-	filter: grayscale(100%) brightness(0.7);
-}
-
 /* css pre labely */
 .label {
 	font-weight: bold;
@@ -184,6 +221,7 @@ h2 {
 	text-shadow: 0.5px 0.5px black; 
 }
 
+/* farbicky labelov */
 #infoLabel {
 	color: #4294ff;
 }
@@ -228,37 +266,50 @@ h2 {
 	color: #ffc107;
 }
 
+#cleanWaterLabel {
+	color: #84dbff;
+}
+
+#cleanObstaclesLabel {
+	color: #7f7f7f;
+}
+
 #leftClickLabel {
 	color: #2e30cc;
 }
 
 #rightClickLabel {
-	color: #291f96;
+	color: #2e30cc;
 }
 
+/* sidebar grid - (grid + sidebar) div formatovanie */
 #sidebar-grid {
 	display: flex;
 	align-items: stretch;
 	margin-left: 50px;
 }
 
+/* css pre sidebar - div, ktory drzi sidebar button wrappery vedla gridu */
 #sidebar {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	align-items: center;
+	align-items: left;
 	margin-left: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
-
+/* horna cast sidebaru, nastroje pre pracu s mriezkou */
 #sidebar-top  {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-start;
+	align-items: left;
+	justify-content: center;
+	gap: 10px;
 }
 
+/* horna cast sidebaru, ikony sluziace ako "manual" na pracu s mriezkou pri danom zadani */
 #sidebar-bottom {
 	display: flex;
 	flex-direction: column;
@@ -267,13 +318,11 @@ h2 {
 	gap: 10px;
 }
 
-#sidebar .button-wrapper {
-	display: flex;
-	flex-direction: column;
-	cursor: pointer;
-	background-color: transparent;
+/* css pre id label "Nastroje" a "Pomocky" v sidebare - rovnake formatovanie */
+#helperLabel {
+	font-weight: bold;
+	font-size: 1.5em;
 }
-
 
 /* sekcia pre grid a zadanie (+riesenie) */
 #hra-section {
@@ -286,7 +335,6 @@ h2 {
 
 /* bunka v mriezke */
 .cell {
-	background: linear-gradient(145deg, #f8f8f8, #e8e8e8); /* farba bunky */
 	border: 0.5px solid black;
 	cursor: pointer;
 	transition: transform 0.2s, box-shadow 0.2s; /* pre animaciu */
@@ -298,14 +346,22 @@ h2 {
 	box-shadow: 0 2px;
 }
 
+/* css pre prazdnu bunku */
 .cellEmpty {
-  	background: linear-gradient(145deg, #e0e0e0, #d6d6d6); /* farba prazdnej bunky */
+  	background-color: #e0e0e0;  /* farba prazdnej bunky */
+	transition: background-color 0.2s ease;
 }
+
+/* css pre bunku s vodou */
 .cellWater {
-	background: linear-gradient(145deg, #4da6ff, #3399ff); /* farba zaplnenej bunky */
+	background-color: #4da6ff; /* farba zaplnenej bunky */
+	transition: background-color 0.3s ease;
 }
+
+/* css pre bunku s prekazkou */
 .cellObstacle {
-	background: linear-gradient(145deg, #666666, #4d4d4d); /* farba prekazky */
+	background-color: #4d4d4d; /* farba prekazky */
+	transition: background-color 0.1s ease;
 }
 
 /* mriezka */
