@@ -164,6 +164,18 @@ h2 {
 	transition: 0.3s ease;
 }
 
+.button-wrapper.disabled:hover {
+	transform: none;
+}
+
+.button-wrapper img, .button-wrapper span {
+	transition: filter 0.3s ease;
+}
+
+.button-wrapper.disabled img, .button-wrapper.disabled span {
+	filter: grayscale(100%) brightness(0.7);
+}
+
 /* css pre labely */
 .label {
 	font-weight: bold;
@@ -196,12 +208,16 @@ h2 {
 	color: #26a1f4;
 }
 
-#spustLabel {
-	color: #6dcd01;
+#nextStepLabel { 
+	color: #6e54e4;
 }
 
 #stopLabel {
 	color: #ed2f2f;
+}
+
+#runLabel {
+	color: #6dcd01;
 }
 
 #ulozLabel {
