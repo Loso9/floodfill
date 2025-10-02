@@ -136,21 +136,35 @@
 		<div id="grid"> </div>
 		<div id="sidebar">
 			<div id="sidebar-top">
-				<div class="button-wrapper" id="cleanButtonDiv">
+				<span class="label" id="helperLabel"> Nástroje </span>
+				<div class="sidebar-button-wrapper" id="cleanButtonDiv">
 					<button type="button" class="button" id="cleanButton"> 
-						<img src="icons/clean.png" class="icon" width="50px" height="50px">
+						<img src="icons/clean.png" class="icon" width="40px" height="40px">
 					</button>
 					<span class="label" id="cleanLabel"> Vyčisti mriežku </span>
+				</div>
+				<div class="sidebar-button-wrapper" id="cleanWaterButtonDiv">
+					<button type="button" class="button" id="cleanWaterButton"> 
+						<img src="icons/delete-water.png" class="icon" width="40px" height="40px">
+					</button>
+					<span class="label" id="cleanWaterLabel"> Odstráň vodu </span>
+				</div>
+				<div class="sidebar-button-wrapper" id="cleanObstaclesButtonDiv">
+					<button type="button" class="button" id="cleanObstaclesButton"> 
+						<img src="icons/delete-obstacles.png" class="icon" width="40px" height="40px">
+					</button>
+					<span class="label" id="cleanObstaclesLabel"> Odstráň prekážky </span>
 				</div>
 			</div>
 			<!-- v spodnom sidebare nebudu buttony, ale iba ikony -->
 			<div id="sidebar-bottom">
-				<div class="icon-wrapper">
-					<img src="icons/left-click.png" class="icon" width="50px" height="50px">
+				<span class="label" id="helperLabel"> Pomôcka </span>
+				<div class="sidebar-icon-wrapper">
+					<img src="icons/left-click.png" class="icon" width="40px" height="40px">
 					<span class="label" id="leftClickLabel"> Pridaj vodu </span>
 				</div>
-				<div class="icon-wrapper">
-					<img src="icons/right-click.png" class="icon" width="50px" height="50px">
+				<div class="sidebar-icon-wrapper">
+					<img src="icons/right-click.png" class="icon" width="40px" height="40px">
 				 	<span class="label" id="rightClickLabel"> Pridaj prekážku </span>
 				</div>
 			</div>
@@ -158,12 +172,8 @@
 	</div>
 </div>
 
-<!-- Div v ktorom bude jednak mriezka (vlavo) a zadanie (vpravo) 
-- este domysliet ze ake bude rozlozenie vsetkych potrebnych prvkov v nom -->
-<div id="tvorba-section">
-
-</div>
-
+<!-- CAST 2 - MOD TVORBA TODO -->
+<div id="tvorba-section"> </div>
 
 <!-- Päta stranky -->
 <footer>
@@ -187,6 +197,8 @@
 	let currentAssignment;
 	
 	let gridArray = []; // 2D pole reprezentujuce mriezku
+	let waterCells = []; //bunky obsahujuce vodu
+	let obstacleCells = []; //bunky obsahujuce prekazku
 
 	//na zaciatku programu je volny mod, ked moze uzivatel pridavat prekazky a pridavat vodu a skusat, ako funguje algoritmus
 	let assignmentType = "free";
@@ -220,6 +232,7 @@
 		currentAssignment = assignments[index];
 
 		assignmentIndex = index;
+		assignmentType = currentAssignment.type;
 
 		//console.log("Vykonalo sa1");
 		
@@ -244,7 +257,6 @@
 		//nacitaj do mriezky na stranke stav mriezky z JSONu
 		for (let row = 0; row < gridArray.length; row++) {
 			for (let col = 0; col < gridArray[row].length; col++) {
-				console.log(`cell-${row}-${col}`);
 				let cellId = `cell-${row}-${col}`;
 				let cell = document.getElementById(cellId);
 				//ak je bunka prazdna
@@ -278,7 +290,7 @@
 		//ulozenie stavu mriezky 
 		const gridState = gridArray;
 		
-		//vrat objekt typu (vo formate, ako je json)
+		//vrat objekt typu "avoid_cells" (vo formate, ako je json)
 		if (currentAssignment.type === "avoid_cells") {
 			return {
 				type: currentAssignment.type,
@@ -295,6 +307,7 @@
 				} 
 			};
 		}
+		//vrat objekt typu "fastest_fill"
 		else if (currentAssignment.type === "fastest_fill") {
 			return {
 				type: currentAssignment.type,
@@ -339,6 +352,12 @@
 
 	//po kliknuti na "Vycisti mriezku" sa vycisti mriezka na obrazovke, aj interne
 	cleanButton.addEventListener("click", () => cleanGrid());
+
+	//po kliknuti na "Odstran vodu" sa z mriezky odstrania vsetky bunky s vodou (nahradia s prazdnymi bunkami)
+	cleanWaterButton.addEventListener("click", () => cleanWaterGrid());
+
+	//po kliknut na "Odstran prekazky" sa z mriezky odstrania vsetky bunky s prekazkami (nahradia sa prazdnymi bunkami)
+	cleanObstaclesButton.addEventListener("click", () => cleanObstaclesGrid());
 	
 	//po kliknuti na "Nacitaj ulohy" sa otvori fileinput element 
 	loadButton.addEventListener("click", () => {
@@ -413,8 +432,7 @@
 				assignments.push(...results); 
 				//vycisti grid, ak je na nom voda alebo prekazky a ukaz prve zadanie
 				cleanGrid();
-				showAssignment(0);
-				         
+				showAssignment(0);        
 		})
 		.catch(error => {
 			console.error("Chyba pri nacitani json suborov:", error);
@@ -440,8 +458,6 @@
 		if(e.key === "Escape") modal.classList.remove("open");
 	});
 	
-	const grid = document.getElementById("grid");
-	
 	// dizajn - oble okraje gridu
 	function setRoundCorners(rows, cols) {
 		const cells = document.querySelectorAll("#grid .cell");
@@ -456,11 +472,10 @@
 		bottomRight.style.borderBottomRightRadius = "10px";
 	}
 	
+	//dizajn - hrubsi okraj gridu
 	function setOuterBorders(rows, cols) {
 		const cells = document.querySelectorAll("#grid .cell");
-		
 		cells.forEach((cell, index) => {
-			
 			const row = Math.floor(index / cols);
 			const col = index % cols;
 			
@@ -498,6 +513,45 @@
 		initializeGridArray(currentRows, currentCols);
 	}
 
+	function cleanWaterGrid() {
+
+		//zresetovanie prislusnych premennych drziacich info o vode
+		waterCells = [];
+		waterCount = 0;
+
+		for (let i = 0; i < currentRows * currentCols; i++) {
+			//najdenie prislusnej bunky
+			let cellRow = Math.floor(i/currentCols);
+			let cellCol = i % currentCols;
+			let cellId = `cell-${cellRow}-${cellCol}`;
+			let cell = document.getElementById(cellId);
+			if (cell.classList.contains("cellWater")) {
+				//vyprazdnenie nastavenim prislusnych classov
+				cell.className = "cell cellEmpty";
+				gridArray[cellRow][cellCol] = 0;
+			}
+		}
+	}
+
+	function cleanObstaclesGrid() {
+
+		//zresetovanie prislusnych premennych drziacich info o prekazkach
+		obstacleCells = [];
+		obstacleCount = 0;
+		for (let i = 0; i < currentRows * currentCols; i++) {
+			//najdenie prislusnej bunky
+			let cellRow = Math.floor(i/currentCols);
+			let cellCol = i % currentCols;
+			let cellId = `cell-${cellRow}-${cellCol}`;
+			let cell = document.getElementById(cellId);
+			if (cell.classList.contains("cellObstacle")) {
+				//vyprazdnenie nastavenim prislusnych classov
+				cell.className = "cell cellEmpty";
+				gridArray[cellRow][cellCol] = 0;
+			}
+		}
+	}
+
 	function setFreeMode() {
 		//uchovaj si aktualny assignment type
 		assignmentType = "free";
@@ -512,34 +566,66 @@
 		document.getElementById("task").innerHTML = "<p> Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.</p>";
 	}
 
+	let waterCount = 0;
+
 	//pridanie vody do bunky [cellRow, cellCol], respektive jej odstranenie, ak v nej voda uz je
 	function handleLeftClick(cell, cellRow, cellCol) {
+
+		//pri zadani typu "avoid_cells" sa nemoze pridavat voda
+		if (assignmentType === "avoid_cells") return;
+
 		//ak uz je v bunke voda, tak vyprazdni bunku
 		if (gridArray[cellRow][cellCol] === 1) {
+			waterCount = waterCount - 1;
 			gridArray[cellRow][cellCol] = 0;
 			cell.className = "cell cellEmpty";
+			// waterCells.remove(cell);
+			let index = waterCells.indexOf(cell);
+			if (index != -1) waterCells.splice(index, 1);
+			
 		}
 		//inak tam pridaj vodu
 		else {
+			//pri zadani typu "fastest_fill" je pocet policok vody obmedzeny na jedno
+			if (assignmentType === "fastest_fill" && (waterCount > 0 || cell.classList.contains("cellObstacle"))) return;
+			waterCount = waterCount + 1;
 			gridArray[cellRow][cellCol] = 1;
 			cell.className = "cell cellWater";
+			waterCells.push(cell);
 		}
 	}
 
+	let obstacleCount = 0;
+
 	//pridanie prekazky do bunky [cellRow, cellCol], respektive jej odstranenie, ak v nej prekazka uz je
 	function handleRightClick(cell, cellRow, cellCol) {
+
+		//pri zadani typu "avoid_cells" je obmedzeny pocet prekazok v mriezke na .goal.minNumofObstacles
+		if (assignmentType === "avoid_cells" && obstacleCount > currentAssignment.goal.minNumOfObstacles - 1) return;
+
+		//pri zadani typu "fastest_fill" sa do mriezky nepridavaju prekazky
+		if (assignmentType === "fastest_fill") return;
+
 		//ak uz je v bunke prekazka, tak vyprazdni bunku
 		if (gridArray[cellRow][cellCol] === 2) {
+			obstacleCount = obstacleCount - 1;
 			gridArray[cellRow][cellCol] = 0;
 			cell.className = "cell cellEmpty";
+			//obstacleCells.remove(cell);
+			let index = obstacleCells.indexOf(cell);
+			if (index != -1) obstacleCells.splice(index, 1);
 		}
 		//inak tam pridaj prekazku
 		else {
+			obstacleCount = obstacleCount + 1;
 			gridArray[cellRow][cellCol] = 2;
 			cell.className = "cell cellObstacle";
+			obstacleCells.push(cell);
 		}
 	}
 	
+	const grid = document.getElementById("grid");
+
 	//funkcia na vytvorenie mriezky rozmerov [riadky, stlpce], sizePolicka je velkost jednej bunky/stvorceka
 	//zaklad 8x8
 	function generateGrid(rows = 8, cols = 8) {
@@ -595,9 +681,14 @@
 	/* defaultny grid (8x8 v hlavicke funkcie) */
 	generateGrid();
 
+	//window.addEventListener("resize", () => generateGrid());
+
 	function nextStep() {
 		//kopia mriezky, aby nova voda neovplyvnila fill
 		let newGridArray = gridArray.map(arr => [...arr]);
+
+		//boolean trackujuci zmenu v mriezke
+		let changed = false;
 
 		// floodfill algoritmus
 		for (let row = 0; row < gridArray.length; row++) {
@@ -621,6 +712,8 @@
 						&& gridArray[nRow][nCol] === 0) {
 							//pridaj do tej bunky vodu (1)
 							newGridArray[nRow][nCol] = 1;
+							//nastala zmena v mriezke
+							changed = true;
 							//prenastav div bunky aj na stranke
 							const newWaterCell = document.getElementById(`cell-${nRow}-${nCol}`);
 							newWaterCell.classList.remove("cellEmpty");
@@ -633,17 +726,27 @@
 
 		//prekopiruj novu mriezku do globalneho pola pre mriezku
 		gridArray = newGridArray;
+
+		//ak sa nic do mriezky nepridalo, tak ukonci simulaciu
+		if (!changed) stopSimulation();
 	}
 	
 	//window.addEventListener("resize", () => generateGrid());
 
+	//nastavenie stavu buttonu (toggle = true-enabled/false-disabled)
 	function setButtonState(buttonId, toggle) {
 		const button = document.getElementById(buttonId);
-		const wrapper = button.closest(".button-wrapper");
+		//buttony mozu byt v button-wrapper alebo v sidebar-button-wrapper (column vs row rozlozenie button-label)
+		let wrapper = button.closest(".button-wrapper");
+		if (wrapper == null) {
+			wrapper = button.closest(".sidebar-button-wrapper");
+		}
 
+		//ak je toggle = true, tak enable button-label
 		if (toggle) {
 			button.disabled = false;
 			wrapper.classList.remove("disabled");
+		//inak disable
 		} else {
     		button.disabled = true;
 			wrapper.classList.add("disabled");
@@ -660,6 +763,8 @@
 		setButtonState("upravButton", false);
 		setButtonState("nextStepButton", false);
 		setButtonState("cleanButton", false);
+		setButtonState("cleanWaterButton", false);
+		setButtonState("cleanObstaclesButton", false);
 		setButtonState("saveButton", false);
 		setButtonState("nextButton", false);
 
@@ -680,6 +785,8 @@
 		setButtonState("upravButton", true);
 		setButtonState("nextStepButton", true);
 		setButtonState("cleanButton", true);
+		setButtonState("cleanWaterButton", true);
+		setButtonState("cleanObstaclesButton", true);
 		setButtonState("saveButton", true);
 		setButtonState("nextButton", true);
 
@@ -690,7 +797,6 @@
 			simulationInterval = null;
 		}
 	}
-	
 	
 </script>
 
