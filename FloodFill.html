@@ -90,13 +90,13 @@
 			<span class="label" id="upravLabel"> Uprav mriežku </span>
 		</div>
 		<div class="button-wrapper">
-			<button type="button" class="button" id="play-button"> 
+			<button type="button" class="button" id="playButton"> 
 				<img src="icons/play-button.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="spustLabel"> Spusti program </span>
 		</div>
 		<div class="button-wrapper">
-			<button type="button" class="button" id="stop-button">
+			<button type="button" class="button" id="stopButton">
 				<img src="icons/stop.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="stopLabel"> Stopni program </span>
@@ -232,7 +232,22 @@
 		//formatovanie zadania
 		assignmentText = assignmentText.replaceAll("{{target}}", `<u>${currentAssignment.targetWord}</u>`);
 		document.getElementById("task").innerHTML = assignmentText;
+
+		//nacitaj do interneho pola stav mriezky z JSONu
+		gridArray = currentAssignment.grid.gridState;
+
+		//nacitaj do mriezky na stranke stav mriezky z JSONu
+		/*
+		for (let row = 0; gridArray.length; row++) {
+			for (let col = 0; gridArray[row].length; col++) {
+				if (gridArray[row][col] == 0) {
+					
+				}
+			}
+		}
+		*/
 		
+		/// TODO nacitanie 
 		//ak je assignment typu 
 		//if (currentAssignment.type === "avoid_cells")
 		
@@ -257,8 +272,6 @@
 			type: currentAssignment.type,
 			text: currentAssignment.text,
 			targetWord: currentAssignment.targetWord,
-			rows: currentAssignment.grid.rows,
-			cols: currentAssignment.grid.cols,
 			grid: {
 				rows: currentAssignment.grid.rows,
 				cols: currentAssignment.grid.cols,
@@ -301,6 +314,9 @@
 		fileInput.value = "";
 		fileInput.click();
 	});
+
+	//po kliknuti na Spusti program sa vykona jeden krok FloodFill algoritmu
+	playButton.addEventListener("click", () => nextStep());
 	
 	//po kliknuti na "Uloz riesenie" sa stiahne subor s nazvom UlohaN-riesenie.json, kde N je cislo ulohy
 	saveButton.addEventListener("click", () => {
@@ -462,21 +478,32 @@
 		document.getElementById("task").innerHTML = "<p> Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.</p>";
 	}
 
-	//pridanie vody do bunky [cellRow, cellCol]
+	//pridanie vody do bunky [cellRow, cellCol], respektive jej odstranenie, ak v nej voda uz je
 	function handleLeftClick(cell, cellRow, cellCol) {
-		//aktualizacia v internom 2D poli, "1" oznacuje vodu
-		gridArray[cellRow][cellCol] = 1;
-
-		//aktualizacia bunky v mriezke na stranke
-		cell.className = "cell cellWater";
+		//ak uz je v bunke voda, tak vyprazdni bunku
+		if (gridArray[cellRow][cellCol] === 1) {
+			gridArray[cellRow][cellCol] = 0;
+			cell.className = "cell cellEmpty";
+		}
+		//inak tam pridaj vodu
+		else {
+			gridArray[cellRow][cellCol] = 1;
+			cell.className = "cell cellWater";
+		}
 	}
 
+	//pridanie prekazky do bunky [cellRow, cellCol], respektive jej odstranenie, ak v nej prekazka uz je
 	function handleRightClick(cell, cellRow, cellCol) {
-		//aktualizacia v internom 2D poli, "2" oznacuje prekazku
-		gridArray[cellRow][cellCol] = 2;
-
-		//aktualizacia bunky v mriezke na stranke
-		cell.className = "cell cellObstacle";
+		//ak uz je v bunke prekazka, tak vyprazdni bunku
+		if (gridArray[cellRow][cellCol] === 2) {
+			gridArray[cellRow][cellCol] = 0;
+			cell.className = "cell cellEmpty";
+		}
+		//inak tam pridaj prekazku
+		else {
+			gridArray[cellRow][cellCol] = 2;
+			cell.className = "cell cellObstacle";
+		}
 	}
 	
 	//funkcia na vytvorenie mriezky rozmerov [riadky, stlpce], sizePolicka je velkost jednej bunky/stvorceka
@@ -533,6 +560,46 @@
 	
 	/* defaultny grid (8x8 v hlavicke funkcie) */
 	generateGrid();
+
+	function nextStep() {
+		//kopia mriezky, aby nova voda neovplyvnila fill
+		let newGridArray = gridArray.map(arr => [...arr]);
+
+		// floodfill algoritmus
+		for (let row = 0; row < gridArray.length; row++) {
+			for (let col = 0; col < gridArray[row].length; col++) {
+				//ak je v bunke voda, tak sa rozsiruj do susedov, voda = 1
+				if (gridArray[row][col] === 1) {
+					//susedia bunky cell = [row][col]
+					const neighbours = [
+						[row - 1, col], //horny sused
+						[row + 1, col], //dolny sused
+						[row, col - 1], //lavy sused
+						[row, col + 1] //pravy sused
+					];
+
+					neighbours.forEach(([nRow, nCol]) => {
+						//ak je riadok suseda v rozsahu mriezky
+						if (nRow >= 0 && nRow < gridArray.length 
+						// a zaroven ak je stlpec suseda v rozsahu mriezky
+						&& nCol >= 0 && nCol < gridArray[row].length
+						//a zaroven ak je bunka [nRow][nCol] prazdna (0)
+						&& gridArray[nRow][nCol] === 0) {
+							//pridaj do tej bunky vodu (1)
+							newGridArray[nRow][nCol] = 1;
+							//prenastav div bunky aj na stranke
+							const newWaterCell = document.getElementById(`cell-${nRow}-${nCol}`);
+							newWaterCell.classList.remove("cellEmpty");
+							newWaterCell.classList.add("cellWater");
+						}
+					});
+				}
+			}
+		}
+
+		//prekopiruj novu mriezku do globalneho pola pre mriezku
+		gridArray = newGridArray;
+	}
 	
 	//window.addEventListener("resize", () => generateGrid());
 	
