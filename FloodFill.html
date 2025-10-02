@@ -67,49 +67,49 @@
 			<span class="label" id="zadanieLabel"> Zadanie </span>
 		</div> 
 		-->
-		<div class="button-wrapper">
+		<div class="button-wrapper" id="freeButtonDiv">
 			<button type="button" class="button" id="freeButton"> 
-				<img src="icons/enabled/free.png" class="icon" width="50px" height="50px"> 
+				<img src="icons/free.png" class="icon" width="50px" height="50px"> 
 			</button>
 			<!-- neviditelny input element pre filepicker -->
 			<input type="file" multiple id="fileInput" accept=".json" style="display: none;"/>
 			<span class="label" id="freeLabel"> Voľný režim </span>
 		</div>
-		<div class="button-wrapper">
+		<div class="button-wrapper" id="loadButtonDiv">
 			<button type="button" class="button" id="loadButton"> 
-				<img src="icons/enabled/load.png" class="icon" width="50px" height="50px"> 
+				<img src="icons/load.png" class="icon" width="50px" height="50px"> 
 			</button>
 			<!-- neviditelny input element pre filepicker -->
 			<input type="file" multiple id="fileInput" accept=".json" style="display: none;"/>
 			<span class="label" id="loadLabel"> Načítaj úlohy </span>
 		</div>
-		<div class="button-wrapper">
-			<button type="button" class="button"> 
-				<img src="icons/enabled/pen.png" class="icon" width="50px" height="50px">
+		<div class="button-wrapper" id="upravButtonDiv">
+			<button type="button" class="button" id="upravButton"> 
+				<img src="icons/pen.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="upravLabel"> Uprav mriežku </span>
 		</div>
-		<div class="button-wrapper">
-			<button type="button" class="button" id="playButton"> 
-				<img src="icons/enabled/play-button.png" class="icon" width="50px" height="50px">
+		<div class="button-wrapper" id="nextStepButtonDiv">
+			<button type="button" class="button" id="nextStepButton"> 
+				<img src="icons/one.png" class="icon" width="50px" height="50px">
 			</button>
-			<span class="label" id="spustLabel"> Spusti program </span>
+			<span class="label" id="nextStepLabel"> Spusti jeden krok </span>
 		</div>
-		<div class="button-wrapper">
-			<button type="button" class="button" id="stopButton">
-				<img src="icons/enabled/stop.png" class="icon" width="50px" height="50px">
+		<div class="button-wrapper" id="runButtonDiv">
+			<button type="button" class="button" id="runButton">
+				<img src="icons/play-button.png" class="icon" width="50px" height="50px">
 			</button>
-			<span class="label" id="stopLabel"> Stopni program </span>
+			<span class="label" id="runLabel"> Spusti program </span>
 		</div>
 		<div class="button-wrapper">
 			<button type="button" class="button" id="saveButton">
-				<img src="icons/enabled/save.png" class="icon" width="50px" height="50px">
+				<img src="icons/save.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="ulozLabel"> Ulož riešenie </span>
 		</div>
 		<div class="button-wrapper">
 			<button type="button" class="button" id="nextButton">
-				<img src="icons/enabled/arrow.png" class="icon" width="50px" height="50px">
+				<img src="icons/arrow.png" class="icon" width="50px" height="50px">
 			</button>
 			<span class="label" id="dalejLabel"> Ďalšia úloha </span>
 		</div>
@@ -136,9 +136,9 @@
 		<div id="grid"> </div>
 		<div id="sidebar">
 			<div id="sidebar-top">
-				<div class="button-wrapper">
+				<div class="button-wrapper" id="cleanButtonDiv">
 					<button type="button" class="button" id="cleanButton"> 
-						<img src="icons/enabled/clean.png" class="icon" width="50px" height="50px">
+						<img src="icons/clean.png" class="icon" width="50px" height="50px">
 					</button>
 					<span class="label" id="cleanLabel"> Vyčisti mriežku </span>
 				</div>
@@ -346,8 +346,11 @@
 		fileInput.click();
 	});
 
-	//po kliknuti na Spusti program sa vykona jeden krok FloodFill algoritmu
-	playButton.addEventListener("click", () => nextStep());
+	//po kliknuti na "Spusti jeden krok" sa vykona jeden krok FloodFill algoritmu
+	nextStepButton.addEventListener("click", () => nextStep());
+
+	//po kliknuti na "Spusti program" sa zacne vykonavat algoritmus FloodFill a automaticky sa zmeni na stop button
+	runButton.addEventListener("click", () => startSimulation());
 	
 	//po kliknuti na "Uloz riesenie" sa stiahne subor s nazvom UlohaN-riesenie.json, kde N je cislo ulohy
 	saveButton.addEventListener("click", () => {
@@ -633,6 +636,61 @@
 	}
 	
 	//window.addEventListener("resize", () => generateGrid());
+
+	function setButtonState(buttonId, toggle) {
+		const button = document.getElementById(buttonId);
+		const wrapper = button.closest(".button-wrapper");
+
+		if (toggle) {
+			button.disabled = false;
+			wrapper.classList.remove("disabled");
+		} else {
+    		button.disabled = true;
+			wrapper.classList.add("disabled");
+ 		}
+	}
+
+	let simulationInterval;
+
+	//funkcia na spustenie algoritmu FloodFillu
+	function startSimulation() {
+		//vypni vsetky zvysne buttony, ked prebieha algoritmus
+		setButtonState("freeButton", false);
+		setButtonState("loadButton", false);
+		setButtonState("upravButton", false);
+		setButtonState("nextStepButton", false);
+		setButtonState("cleanButton", false);
+		setButtonState("saveButton", false);
+		setButtonState("nextButton", false);
+
+		//zmen run button na stop button
+		document.getElementById("runButtonDiv").innerHTML = '<button type="button" class="button" id="stopButton" onclick="stopSimulation()"><img src="icons/stop.png" class="icon" width="50px" height="50px"></button><span class="label" id="stopLabel"> Stopni program </span>';
+
+		//kazdych 0.5sekundy sa vykona jeden krok floodfill algoritmu
+		simulationInterval = setInterval(() => {
+			nextStep();
+		}, 500);
+	}
+
+	//funkcia na zastavenie algoritmu FloodFillu
+	function stopSimulation() {
+		//znovu zapne vsetky zvysne buttony, pretoze sa stopol algoritmus 
+		setButtonState("freeButton", true);
+		setButtonState("loadButton", true);
+		setButtonState("upravButton", true);
+		setButtonState("nextStepButton", true);
+		setButtonState("cleanButton", true);
+		setButtonState("saveButton", true);
+		setButtonState("nextButton", true);
+
+		//zmen stop button na run button
+		document.getElementById("runButtonDiv").innerHTML = '<button type="button" class="button" id="runButton" onclick="startSimulation()"><img src="icons/play-button.png" class="icon" width="50px" height="50px"></button><span class="label" id="runLabel"> Spusti program </span>';
+		if (simulationInterval) {
+			clearInterval(simulationInterval);
+			simulationInterval = null;
+		}
+	}
+	
 	
 </script>
 
