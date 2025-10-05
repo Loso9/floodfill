@@ -418,3 +418,14 @@ footer {
 	text-align: left;
 	left: 10px;
 }
+
+.correct {
+	color: green;
+}
+
+.incorrect {
+	color: red;
+}
+.details {
+	color: purple;
+}
