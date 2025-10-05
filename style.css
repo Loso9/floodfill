@@ -8,6 +8,10 @@ a {
 	text-decoration: none;
 }
 
+#linkSpecifikacia {
+	margin-bottom: 10px;
+}
+
 /* body styl */
 body {
 	font-family: Candara; /* font */
@@ -234,6 +238,10 @@ h2 {
 	color: #ffcc33;
 }
 
+#loadSolutionLabel {
+	color: #cfecf9;
+}
+
 #zadanieLabel {
 	color: #ffc900;
 }
@@ -264,6 +272,10 @@ h2 {
 
 #dalejLabel {
 	color: #ffc107;
+}
+
+#resetLabel {
+	color: #24b9cc;
 }
 
 #cleanWaterLabel {
@@ -320,6 +332,8 @@ h2 {
 
 /* css pre id label "Nastroje" a "Pomocky" v sidebare - rovnake formatovanie */
 #helperLabel {
+	/* color */
+	color: #232e7a;
 	font-weight: bold;
 	font-size: 1.5em;
 }
@@ -372,8 +386,12 @@ h2 {
 /* wrapper pre zadanie */
 #task-wrapper {
 	max-width: 300px;
-	text-align: left;
+	text-align: justify;
 	/* margin-left: 50px; */
+}
+
+#zadanieHeader {
+	text-align: center;
 }
 
 /* counter pre ulohy */
@@ -385,9 +403,10 @@ h2 {
 }
 
 /* css pre riesenie */
-#solution {
+#solutionDiv {
 	margin-top: 10px;
 	font-weight: bold;
+	color: #FF0000;
 }
 
 /* pata stranky */
