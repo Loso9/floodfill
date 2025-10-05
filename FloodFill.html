@@ -354,8 +354,7 @@
 			cleanWaterButtonDiv.style.display = "none";
 			cleanObstaclesButtonDiv.style.display = "none";
 			addWaterIconDiv.style.display = "none";
-			addObstacleIconDiv.style.display = "";
-			
+			addObstacleIconDiv.style.display = "";			
 		}
 		else if (assignmentType === "fastest_fill") {
 			cleanButtonDiv.style.display = "none";
@@ -468,6 +467,23 @@
 		//ak je zadanie "avoid_cells", obnov mriezku do pociatocneho stavu zo zadania (vycistit cele))
 		if (assignmentType === 'avoid_cells') {
 			cleanGrid();
+			// Obnov mriezku do pociatocneho stavu zo zadania
+			for (let row = 0; row < currentRows; row++) {
+				for (let col = 0; col < currentCols; col++) {
+					const cell = document.getElementById(`cell-${row}-${col}`);
+					const val = initialGridSnapshot[row][col];
+					if (val === 2) {
+						gridArray[row][col] = 2;
+						cell.className = "cell cellObstacle";
+					} else if (val === 1) {
+						gridArray[row][col] = 1;
+						cell.className = "cell cellWater";
+					} else {
+						gridArray[row][col] = 0;
+						cell.className = "cell cellEmpty";
+					}
+				}
+			}
 		} 
 		//ak je zadanie "fastest_fill", obnov mriezku do pociatocneho stavu zo zadania (prekazky zachovane, voda zmazana)
 		else if (assignmentType === 'fastest_fill') {
@@ -1041,7 +1057,33 @@
 
 		//boolean trackujuci zmenu v mriezke
 		let changed = false;
-
+		console.log("assignmentType:", assignmentType);
+		// Prejdi všetkými krajnými políčkami, ktoré sú == 0
+		if (assignmentType == 'avoid_cells') {
+			for (let row = 0; row < gridArray.length; row++) {
+				for (let col = 0; col < gridArray[row].length; col++) {
+					// Skontroluj, či je políčko na kraji a zároveň prázdne (== 0)
+					if ((row === 0 || row === gridArray.length - 1 || col === 0 || col === gridArray[row].length - 1) && gridArray[row][col] === 0) {
+						// Pridaj do tej bunky vodu (1)
+						newGridArray[row][col] = 1;
+						// Nastala zmena v mriezke
+						changed = true;
+						// Prenastav div bunky aj na stránke
+						const newWaterCell = document.getElementById(`cell-${row}-${col}`);
+						newWaterCell.classList.remove("cellEmpty");
+						newWaterCell.classList.add("cellWater");
+						// Iba ak ešte nie je v zozname waterCells (ochrana proti duplikátom)
+						if (!waterCells.includes(newWaterCell)) {
+							waterCount = waterCount + 1;
+							waterCells.push(newWaterCell);
+							emptyCount = emptyCount - 1;
+							let index = emptyCells.indexOf(newWaterCell);
+							if (index != -1) emptyCells.splice(index, 1);
+						}
+					}
+				}
+			}
+		}
 		// floodfill algoritmus
 		for (let row = 0; row < gridArray.length; row++) {
 			for (let col = 0; col < gridArray[row].length; col++) {
@@ -1054,7 +1096,7 @@
 						[row, col - 1], //lavy sused
 						[row, col + 1] //pravy sused
 					];
-
+					
 					neighbours.forEach(([nRow, nCol]) => {
 						//ak je riadok suseda v rozsahu mriezky
 						if (nRow >= 0 && nRow < gridArray.length 
@@ -1189,14 +1231,14 @@
 			//ak je minObstacles definovane, tak ok je true len ak je splnena aj tato podmienka (interne pocitane prekazky su vacsie ako minimum)
 			if (typeof minObstacles === "number") ok = ok && (obstacleCount >= minObstacles);
 
-			document.getElementById("solutionDiv").innerText = ok ? "Riešenie je správne." : `Riešenie nie je správne. Suchých políčok: ${dry} (malo ich ${numEmptyCells}). Prekážok: ${obstacleCount}${typeof minObstacles==="number" ? " (malo ich byť minimálne " + minObstacles + ")" : ""}.`;
+			document.getElementById("solutionDiv").innerHTML = ok ? "<span class='correct'>Riešenie je správne.</span>" : `<span class='incorrect'>Riešenie nie je správne.</span><br><span class='details'>Suchých políčok: <strong  style='font-size: 24px;'>${dry}</strong>/${numEmptyCells}.<br>Prekážok: <strong style='font-size: 24px;'>${obstacleCount}</strong>${typeof minObstacles==="number" ? "/" + minObstacles + "" : ""}.</span>`;
 		}
 
 		if (currentAssignment.type === "fastest_fill") {
 			//v fastest_fill je riesenie spravne, ak je vsetka voda rozlita (teda v mriezke nie je ziadna prazdna bunka)
 			let ok = (waterCount + obstacleCount === currentRows * currentCols);
 			// TODO: compute and compare number of steps if the assignment specifies a target step count
-			document.getElementById("solutionDiv").innerText = ok ? "Riešenie je správne." : "Riešenie nie je správne.";
+			document.getElementById("solutionDiv").innerHTML = ok ? "<span class='correct'>Riešenie je správne.</span>" : "<span class='incorrect'>Riešenie nie je správne.</span>";
 		}
 	}
 </script>
