@@ -311,8 +311,8 @@
 		let assignmentText = currentAssignment.text;
 		
 		//formatovanie zadania
-		assignmentText = assignmentText.replaceAll("{{target}}", `<u>${currentAssignment.targetWord}</u>`);
-		document.getElementById("task").innerHTML = assignmentText;
+		//assignmentText = assignmentText.replaceAll("{{target}}", `<u>${currentAssignment.targetWord}</u>`);
+		document.getElementById("task").innerHTML = generateTextAvoidCells();
 
 		//nacitaj do interneho pola stav mriezky z JSONu (deep copy to avoid accidental mutation)
 		gridArray = currentAssignment.grid.gridState.map(row => [...row]);
@@ -980,8 +980,8 @@
 		}
 		//inak tam pridaj prekazku
 		else {
-			//pri zadani typu "avoid_cells" je obmedzeny pocet prekazok v mriezke na .goal.minNumofObstacles
-			if (assignmentType === "avoid_cells" && obstacleCount > currentAssignment.goal.minNumOfObstacles - 1) return;
+			//pri zadani typu "avoid_cells" je obmedzeny pocet prekazok v mriezke na .goal.maxNumOfObstacles
+			if (assignmentType === "avoid_cells" && obstacleCount > currentAssignment.goal.maxNumOfObstacles - 1) return;
 			obstacleCount = obstacleCount + 1;
 			gridArray[cellRow][cellCol] = 2;
 			cell.className = "cell cellObstacle";
@@ -1223,10 +1223,10 @@
 		if (!currentAssignment) return;
 		syncStatesWithGrid();
 
-		//ak je zadanie "avoid_cells" tak skontroluj, ci je pocet suchych policok numOfEmptyCells rovnaky ako v cieli a ci je pocet prekazok vacsi ako minNumOfObstacles
+		//ak je zadanie "avoid_cells" tak skontroluj, ci je pocet suchych policok numOfEmptyCells rovnaky ako v cieli a ci je pocet prekazok vacsi ako maxNumOfObstacles
 		if (currentAssignment.type === "avoid_cells") {
 			const numEmptyCells = currentAssignment.goal && currentAssignment.goal.numOfEmptyCells;
-			const minObstacles = currentAssignment.goal && currentAssignment.goal.minNumOfObstacles;
+			const maxObstacles = currentAssignment.goal && currentAssignment.goal.maxNumOfObstacles;
 			//ak pocet suchych buniek nie je dobre definovany, tak nic nerob
 			if (typeof numEmptyCells !== "number") return;
 
@@ -1237,10 +1237,10 @@
 			//ak sa rovna ciel s tym, co mame tak ok = true, inak false
 			let ok = (dry === numEmptyCells);
 
-			//ak je minObstacles definovane, tak ok je true len ak je splnena aj tato podmienka (interne pocitane prekazky su vacsie ako minimum)
-			if (typeof minObstacles === "number") ok = ok && (obstacleCount >= minObstacles);
+			//ak je maxObstacles definovane, tak ok je true len ak je splnena aj tato podmienka (interne pocitane prekazky su vacsie ako minimum)
+			if (typeof maxObstacles === "number") ok = ok && (obstacleCount >= maxObstacles);
 
-			document.getElementById("solutionDiv").innerHTML = ok ? "<span class='correct'>Riešenie je správne.</span>" : `<span class='incorrect'>Riešenie nie je správne.</span><br><span class='details'>Suchých políčok: <strong  style='font-size: 24px;'>${dry}</strong>/${numEmptyCells}.<br>Prekážok: <strong style='font-size: 24px;'>${obstacleCount}</strong>${typeof minObstacles==="number" ? "/" + minObstacles + "" : ""}.</span>`;
+			document.getElementById("solutionDiv").innerHTML = ok ? "<span class='correct'>Riešenie je správne.</span>" : `<span class='incorrect'>Riešenie nie je správne.</span><br><span class='details'>Suchých políčok: <strong  style='font-size: 24px;'>${dry}</strong>/${numEmptyCells}.<br>Prekážok: <strong style='font-size: 24px;'>${obstacleCount}</strong>${typeof maxObstacles==="number" ? "/" + maxObstacles + "" : ""}.</span>`;
 		}
 
 		if (currentAssignment.type === "fastest_fill") {
@@ -1249,6 +1249,21 @@
 			// TODO: compute and compare number of steps if the assignment specifies a target step count
 			document.getElementById("solutionDiv").innerHTML = ok ? "<span class='correct'>Riešenie je správne.</span>" : "<span class='incorrect'>Riešenie nie je správne.</span>";
 		}
+	}
+
+	function generateTextAvoidCells() {
+		if (!currentAssignment) return "";
+		let text = `Vašim cieľom je pridať prekážky do mriežky tak, aby voda nezaplavila presne <span class="details" style="font-size: 24px;">${currentAssignment.goal.numOfEmptyCells}</span> ${currentAssignment.goal.numOfEmptyCells === 1 ? 'suché políčko' : (currentAssignment.goal.numOfEmptyCells >= 2 && currentAssignment.goal.numOfEmptyCells <= 4 ? 'suché políčka' : 'suchých políčok')}. Použite maximálne <span class="details" style="font-size: 24px;">${currentAssignment.goal.maxNumOfObstacles}</span> ${currentAssignment.goal.maxNumOfObstacles === 1 ? 'prekážku' : (currentAssignment.goal.maxNumOfObstacles >= 2 && currentAssignment.goal.maxNumOfObstacles <= 4 ? 'prekážky' : 'prekážok')}.\n\n`;
+		
+		//Minimálny počet prekážok je ${currentAssignment.goal.minNumOfObstacles}.\n\n`;
+		/*text += "Pravidlá:\n";
+		text += "- Prekážky sa pridávajú pravým kliknutím na bunku.\n";
+		text += "- Počet prekážok musí byť minimálne " + currentAssignment.goal.minNumOfObstacles + ".\n";
+		text += "- Počet suchých políčok musí byť presne " + currentAssignment.goal.numOfEmptyCells + ".\n";
+		text += "- Voda sa automaticky rozleje z okrajových políčok.\n";
+		text += "- Môžete spustiť simuláciu, ktorá ukáže, ako sa voda rozleje.\n";
+		text += "- Po skončení simulácie sa zobrazí, či je riešenie správne.\n";*/
+		return text;
 	}
 </script>
 </body>
