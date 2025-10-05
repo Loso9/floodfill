@@ -1,0 +1,22 @@
+{
+	"id": "avoid-1",
+	"type": "avoid_cells",
+	"text": "Vaším zadaním je pridať do mriežky prekážky tak, aby voda nezaplavila presne 8 políčok. Použite čo {{target}} prekážok na dosiahnutie tohto cieľa.",
+	"targetWord": "najmenej",
+	"grid": {
+		"rows": 6,
+		"cols": 4,
+		"gridState": [
+			[0,0,1,0],
+			[0,0,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+			[0,0,0,2]
+		]
+	},
+	"goal": {
+		"numOfEmptyCells": 8,
+		"minNumOfObstacles": 4
+	}
+}
