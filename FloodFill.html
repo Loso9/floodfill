@@ -302,6 +302,11 @@
 		
 		//ak nemam zadanie, tak nic nerob
 		if (!currentAssignment) return;
+
+		//uprav pocitadlo currentRows a currentCols podla zadania a vygeneruj podla toho mriezku
+		currentRows = currentAssignment.grid.rows;
+		currentCols = currentAssignment.grid.cols;
+		generateGrid(currentRows, currentCols);
 		
 		let assignmentText = currentAssignment.text;
 		
@@ -311,6 +316,7 @@
 
 		//nacitaj do interneho pola stav mriezky z JSONu (deep copy to avoid accidental mutation)
 		gridArray = currentAssignment.grid.gridState.map(row => [...row]);
+
 		//zapamatuj si pociatocny stav mriezky pre reset
 		initialGridSnapshot = currentAssignment.grid.gridState.map(row => [...row]);
 
@@ -992,12 +998,12 @@
 
 	//funkcia na vytvorenie mriezky rozmerov [riadky, stlpce], sizePolicka je velkost jednej bunky/stvorceka
 	//zaklad 8x8
-	function generateGrid(rows = 8, cols = 8) {
+	function generateGrid(rows, cols) {
 		
 		currentRows = rows;
 		currentCols = cols;
 	
-		initializeGridArray(rows, cols);
+		initializeGridArray(currentRows, currentCols);
 
 		const grid = document.getElementById("grid");
 		grid.innerHTML = "";
@@ -1006,17 +1012,18 @@
 		const maxGridSize = Math.min(window.innerWidth, window.innerHeight) * 0.5;
 		
 		//dynamicky zmenit velkost bunky v zavislosti od poctu riadkov/stlpcov
-		let cellSize = Math.floor(Math.min(maxGridSize/rows, maxGridSize/cols));
+		let cellSize = Math.floor(maxGridSize/currentRows);
 		//najvacsia velkost bunky
 		if (cellSize > 80) cellSize = 80;
 		
 		// nastavenie poctu stlpcov a velkost bunky
-		grid.style.gridTemplateColumns = "repeat(" + cols + ", " + cellSize + "px)";
+		grid.style.gridTemplateColumns = "repeat(" + currentCols + ", " + cellSize + "px)";
   
 		// nastavenie poctu riadkov a velkost bunky
-		grid.style.gridTemplateRows = "repeat(" + rows + ", " + cellSize + "px)";
+		grid.style.gridTemplateRows = "repeat(" + currentRows + ", " + cellSize + "px)";
 		
-		// we'll rebuild auxiliary trackers after creating the DOM
+		console.log(currentRows);
+		console.log(currentCols);
 		//vytvorenie buniek
 		for (let i = 0; i < currentRows * currentCols; i++) {
 			let cell = document.createElement("div");
@@ -1033,10 +1040,10 @@
 		}
 		
 		//funkcia na oble okraje mriezky
-		setRoundCorners(rows, cols);
+		setRoundCorners(currentRows, currentCols);
 		
 		//funkcia na hrubsie vonkajsie okraje mriezky
-		setOuterBorders(rows, cols);
+		setOuterBorders(currentRows, currentCols);
 
 		//defaultne v volnom rezime
 		hideNonFreeButtons();
@@ -1046,8 +1053,10 @@
 		
 	}
 	
-	/* defaultny grid (8x8 v hlavicke funkcie) */
-	generateGrid();
+	//ak nie je nacitane zadanie, vykresli defaultny grid 8x8
+	if (assignmentType === "free" || assignmentType === null) generateGrid(8,8);
+	else generateGrid(currentAssignment.grid.rows, currentAssignment.grid.cols);
+
 
 	//window.addEventListener("resize", () => generateGrid());
 
