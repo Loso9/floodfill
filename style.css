@@ -429,3 +429,6 @@ footer {
 .details {
 	color: purple;
 }
+.selectedLevel {
+	background-color: #ffff99;
+}

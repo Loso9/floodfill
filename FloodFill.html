@@ -118,6 +118,23 @@
 	</div>
 </div>
 
+<div class="progressTable" id="progressTable">
+	<table>
+		<tr>
+			<td>#</td>
+		</tr>
+		<tr>
+			<td>Typ (AC/FF)</td>
+		</tr>
+		<tr>
+			<td>Počet pokusov</td>
+		</tr>
+		<tr>
+			<td>Status (krížik/fajka)
+			</td>
+		</tr>
+	</table>
+</div>
 
 <!-- Div v ktorom bude jednak mriezka (vlavo) a zadanie (vpravo), !!! a extra buttony podla zadania vlavo -->
 <div id="hra-section">
@@ -223,6 +240,7 @@
 	
 	//pomocne pole kde si budeme ukladat zadania
 	let assignments = [];
+	let assignmentsLocal = []; //ulozene zadania v local storage
 	//defaultne je volny rozim (ziadne zadanie)
 	let assignmentIndex = 0;
 	
@@ -285,7 +303,7 @@
 		}
 		else if (assignments.length > 1) {
 			//updatni counter vo forme Uloha M/N, kde M je aktualne cislo ulohy a N je pocet vsetkych nacitanych uloh
-			counter.innerText = "Úloha " + (assignmentIndex + 1) + "/" + assignments.length;
+			counter.innerHTML = "Úloha <span class='details'>" + (assignmentIndex + 1) + "</span>/" + assignments.length;
 		}
 		else {
 			//nic nebolo nacitane
@@ -293,17 +311,89 @@
 		}
 	}
 	
+	function updateProgressTable() {
+		const progressTable = document.getElementById("progressTable");
+		progressTable.innerHTML = ""; // Clear the table
+
+		const headerRow = document.createElement("tr");
+		const typeRow = document.createElement("tr");
+		const attemptsRow = document.createElement("tr");
+		const statusRow = document.createElement("tr");
+
+		// Add header column
+		const headerColumn = document.createElement("th");
+		headerColumn.textContent = "#";
+		headerRow.appendChild(headerColumn);
+
+		const typeColumn = document.createElement("th");
+		typeColumn.textContent = "Typ";
+		typeRow.appendChild(typeColumn);
+
+		const attemptsColumn = document.createElement("th");
+		attemptsColumn.textContent = "Počet pokusov";
+		attemptsRow.appendChild(attemptsColumn);
+
+		const statusColumn = document.createElement("th");
+		statusColumn.textContent = "Status";
+		statusRow.appendChild(statusColumn);
+
+		assignmentsLocal.forEach((assignment, index) => {
+			console.log("assignment", assignment);
+			const headerCell = document.createElement("td");
+			headerCell.textContent = index + 1;
+			if (index === assignmentIndex) {
+				headerCell.classList.add("selectedLevel");
+			}
+			headerRow.appendChild(headerCell);
+
+			const typeCell = document.createElement("td");
+			typeCell.textContent = assignment.type;
+			if (index === assignmentIndex) {
+				typeCell.classList.add("selectedLevel");
+			}
+			typeRow.appendChild(typeCell);
+
+			const attemptsCell = document.createElement("td");
+			console.log("assignment.pokusy:", assignment.pokusy);
+			attemptsCell.textContent = assignment.pokusy || 0;
+			if (index === assignmentIndex) {
+				attemptsCell.classList.add("selectedLevel");
+			}
+			attemptsRow.appendChild(attemptsCell);
+
+			const statusCell = document.createElement("td");
+			console.log("assignment.vyriesene:", assignment.vyriesene);
+			statusCell.textContent = assignment.vyriesene ? "✔️" : "❌";
+			if (index === assignmentIndex) {
+				statusCell.classList.add("selectedLevel");
+			}
+			statusRow.appendChild(statusCell);
+		});
+
+		progressTable.appendChild(headerRow);
+		progressTable.appendChild(typeRow);
+		progressTable.appendChild(attemptsRow);
+		progressTable.appendChild(statusRow);
+	}
+
 	function showAssignment(index) {
-	
-		currentAssignment = assignments[index];
+		console.log("assignmentsLocal:", assignmentsLocal);
+		console.log("Current assignment index:", assignmentIndex);
+		currentAssignment = assignmentsLocal[index];
+		
 
 		assignmentIndex = index;
+		
 		assignmentType = currentAssignment.type;
+
+		updateProgressTable();
 		
 		//ak nemam zadanie, tak nic nerob
 		if (!currentAssignment) return;
 
 		//uprav pocitadlo currentRows a currentCols podla zadania a vygeneruj podla toho mriezku
+
+		console.log("Current assignment:", currentAssignment);
 		currentRows = currentAssignment.grid.rows;
 		currentCols = currentAssignment.grid.cols;
 		generateGrid(currentRows, currentCols);
@@ -709,13 +799,36 @@
 	//po kliknuti "Dalsia uloha" sa prejde na dalsie zadanie
 	nextButton.addEventListener("click", () => {
 		if (assignments.length > 1) {
+			saveCurrentStateToLocalStorage(assignmentIndex);
 			assignmentIndex = (assignmentIndex + 1) % assignments.length;
+			// Vyprázdni solution grid
+			document.getElementById("solutionDiv").innerHTML = "";
 
-			cleanGrid();
+			// Skontroluj, či už bolo zadanie riešené
+			if (assignmentsLocal[assignmentIndex]) {
+				const assignment = assignmentsLocal[assignmentIndex];
+				if (assignment.vyriesene) {
+					document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Zadanie už bolo vyriešené správne.</span>";
+				} else if (assignment.pokusy > 0) {
+
+					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo vyriešené správne.</span>";
+				} else {
+					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo riešené.</span>";
+				}
+			}
+			//cleanGrid();
+			
 			showAssignment(assignmentIndex);
 		}
 	});
 	
+	function saveCurrentStateToLocalStorage(index) {
+		if (!currentAssignment) return;
+		//uloz aktualny stav mriezky do aktualneho zadania
+		assignmentsLocal[index].grid.gridState = gridArray.map(row => [...row]);
+		
+	}
+
 	fileInput.addEventListener("change", (event) => {
 	
 		//vybrane jsonFiles
@@ -749,7 +862,15 @@
 				});
 				//vycisti grid, ak je na nom voda alebo prekazky a ukaz prve zadanie
 				cleanGrid();
+				
+				assignmentsLocal = assignments;
+				assignmentsLocal.forEach(assignment => {
+					assignment.vyriesene = 0;
+					assignment.pokusy = 0;
+				});
+
 				showAssignment(0);
+				updateProgressTable();
 		})
 		.catch(error => {
 			console.error("Chyba pri nacitani json suborov:", error);
@@ -1194,6 +1315,7 @@
 		simulationInterval = setInterval(() => {
 			nextStep();
 		}, 500);
+		
 	}
 
 	//funkcia na zastavenie algoritmu FloodFillu
@@ -1216,6 +1338,10 @@
 			clearInterval(simulationInterval);
 			simulationInterval = null;
 		}
+		if (assignmentsLocal[assignmentIndex]) {
+			assignmentsLocal[assignmentIndex].pokusy = (assignmentsLocal[assignmentIndex].pokusy || 0) + 1;
+		}
+		updateProgressTable();
 	}
 
 	// kontrola riesenia po ukonceni simulacie
@@ -1241,6 +1367,10 @@
 			if (typeof maxObstacles === "number") ok = ok && (obstacleCount >= maxObstacles);
 
 			document.getElementById("solutionDiv").innerHTML = ok ? "<span class='correct'>Riešenie je správne.</span>" : `<span class='incorrect'>Riešenie nie je správne.</span><br><span class='details'>Suchých políčok: <strong  style='font-size: 24px;'>${dry}</strong>/${numEmptyCells}.<br>Prekážok: <strong style='font-size: 24px;'>${obstacleCount}</strong>${typeof maxObstacles==="number" ? "/" + maxObstacles + "" : ""}.</span>`;
+			if (ok) {
+				assignmentsLocal[assignmentIndex].vyriesene = 1;
+				updateProgressTable();
+			}
 		}
 
 		if (currentAssignment.type === "fastest_fill") {
