@@ -20,34 +20,37 @@
 	
 	<!-- Popup okno, ktore sa otvori po kliknuti na Button "Informacie" -->
 	<div class="modal" id="modal">
-			<div class="modal-inner">
-				
-				<!-- Button Zatvor Popup -->
-				<div class="button-wrapper">
-					<button type="button" class="button" title="Informácie o stránke" id="closeModal"> 
-						<img src="icons/close.png" class="icon" width="25px" height="25px"> 
-					</button>
-				</div>
-				
-				<!-- Text popupu -->
-				
-				<p> 
-				Projekt <i>Ako tečie voda </i> je inšpirovaný algoritmom <b>FloodFill</b>. V tomto softvéri má užívateľ k dispozícií dva 
-				režijné módy - hra a tvorba. V režime "hra" má používateľ možnosť riešiť úlohy na mriežke, týkajúce sa spomínaného algoritmu.
-				Vzhľadom na zadanie môže používateľ v móde <i> Experimentuj </i> (ikona pera) pridávať prekážky; určovať, odkiaľ sa má 
-				začať liať voda; označovať štvorčeky, kam sa, podľa neho, voda nedostane; prípadne do štvorčekov vkladať čísla určujúce 
-				poradie zaplavenia vodou. 
-				</p>
-				<div id="linkSpecifikacia">
-					<a href="specs.pdf"> Špecifikácia projektu </a>
-				</div>
-				<div id="linkGithub">
-					<a href=https://github.com/Loso9/floodfill> GitHub repozitár </a>
+		<div class="modal-inner">
+			
+			<!-- Button Zatvor Popup -->
+			<div class="button-wrapper">
+				<button type="button" class="button" title="Informácie o stránke" id="closeModal"> 
+					<img src="icons/close.png" class="icon" width="25px" height="25px"> 
+				</button>
+			</div>
+			
+			<!-- Text popupu -->
+			
+			<p> 
+			Projekt <i>Ako tečie voda </i> je inšpirovaný algoritmom <b>FloodFill</b>. V tomto softvéri má užívateľ k dispozícií dva 
+			režijné módy - hra a tvorba. V režime "hra" má používateľ možnosť riešiť úlohy na mriežke, týkajúce sa spomínaného algoritmu.
+			Vzhľadom na zadanie môže používateľ v móde <i> Experimentuj </i> (ikona pera) pridávať prekážky; určovať, odkiaľ sa má 
+			začať liať voda; označovať štvorčeky, kam sa, podľa neho, voda nedostane; prípadne do štvorčekov vkladať čísla určujúce 
+			poradie zaplavenia vodou. 
+			</p>
+			<div id="linkSpecifikacia">
+				<a href="specs.pdf"> Špecifikácia projektu </a>
+			</div>
+			<div id="linkGithub">
+				<a href="https://github.com/Loso9/floodfill"> GitHub repozitár </a>
 			</div>
 		</div>
+	</div>
 </header>
 
+
 <!-- Nadpisy -->
+<h1> Ako tečie voda </h1>
 <h2> Marek Lošonský, Martin Hošek </h2>
 
 <!-- Div na rezimy hry -->
@@ -121,63 +124,66 @@
 
 <!-- Div v ktorom bude jednak mriezka (vlavo) a zadanie (vpravo), !!! a extra buttony podla zadania vlavo -->
 <div id="hra-section">
-	<div id="task-wrapper">
-		<div id="levelCounter">
-			<p> Voľný režim </p>
+	<div id="center-section">
+		<div id="task-wrapper">
+			<div id="levelCounter">
+				<p> Voľný režim </p>
+			</div>
+			<h3 id="zadanieHeader"> Zadanie </h3>
+			<div id="task">
+				<p> 
+				Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. 
+				Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.
+				</p>
+			</div>
+			<div id="solutionDiv"> </div> 
 		</div>
-		<h3 id="zadanieHeader"> Zadanie </h3>
-		<div id="task">
-			<p> 
-			Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. 
-			Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.
-			</p>
-		</div>
-		<div id="solutionDiv"> </div> 
-	</div>
-	<div id="sidebar-grid">
-		<div id="grid"> </div>
-		<div id="sidebar">
-			<div id="sidebar-top">
-				<span class="label" id="helperLabel"> Nástroje </span>
-				<div class="sidebar-button-wrapper" id="cleanButtonDiv">
-					<button type="button" class="button" id="cleanButton"> 
-						<img src="icons/clean.png" class="icon" width="40px" height="40px">
-					</button>
-					<span class="label" id="cleanLabel"> Vyčisti mriežku </span>
+		<div id="sidebar-grid">
+			<div id="grid"> </div>
+			<div id="sidebar">
+				<div id="sidebar-top">
+					<span class="label" id="helperLabel"> Nástroje </span>
+					<div class="sidebar-button-wrapper" id="cleanButtonDiv">
+						<button type="button" class="button" id="cleanButton"> 
+							<img src="icons/clean.png" class="icon" width="40px" height="40px">
+						</button>
+						<span class="label" id="cleanLabel"> Vyčisti mriežku </span>
+					</div>
+					<div class="sidebar-button-wrapper" id="cleanWaterButtonDiv">
+						<button type="button" class="button" id="cleanWaterButton"> 
+							<img src="icons/delete-water.png" class="icon" width="40px" height="40px">
+						</button>
+						<span class="label" id="cleanWaterLabel"> Odstráň vodu </span>
+					</div>
+					<div class="sidebar-button-wrapper" id="cleanObstaclesButtonDiv">
+						<button type="button" class="button" id="cleanObstaclesButton"> 
+							<img src="icons/delete-obstacles.png" class="icon" width="40px" height="40px">
+						</button>
+						<span class="label" id="cleanObstaclesLabel"> Odstráň prekážky </span>
+					</div>
+					<div class="sidebar-button-wrapper" id="resetButtonDiv">
+						<button type="button" class="button" id="resetButton"> 
+							<img src="icons/undo.png" class="icon" width="40px" height="40px">
+						</button>
+						<span class="label" id="resetLabel"> Začni odznovu </span>
+					</div>
 				</div>
-				<div class="sidebar-button-wrapper" id="cleanWaterButtonDiv">
-					<button type="button" class="button" id="cleanWaterButton"> 
-						<img src="icons/delete-water.png" class="icon" width="40px" height="40px">
-					</button>
-					<span class="label" id="cleanWaterLabel"> Odstráň vodu </span>
-				</div>
-				<div class="sidebar-button-wrapper" id="cleanObstaclesButtonDiv">
-					<button type="button" class="button" id="cleanObstaclesButton"> 
-						<img src="icons/delete-obstacles.png" class="icon" width="40px" height="40px">
-					</button>
-					<span class="label" id="cleanObstaclesLabel"> Odstráň prekážky </span>
-				</div>
-				<div class="sidebar-button-wrapper" id="resetButtonDiv">
-					<button type="button" class="button" id="resetButton"> 
-						<img src="icons/undo.png" class="icon" width="40px" height="40px">
-					</button>
-					<span class="label" id="resetLabel"> Začni odznovu </span>
+				<!-- v spodnom sidebare nebudu buttony, ale iba ikony -->
+				<div id="sidebar-bottom">
+					<span class="label" id="helperLabel"> Pomôcka </span>
+					<div class="sidebar-icon-wrapper" id="addWaterIconDiv">
+						<img src="icons/left-click.png" class="icon" width="40px" height="40px">
+						<span class="label" id="leftClickLabel"> Pridaj vodu </span>
+					</div>
+					<div class="sidebar-icon-wrapper" id="addObstacleIconDiv">
+						<img src="icons/right-click.png" class="icon" width="40px" height="40px">
+						<span class="label" id="rightClickLabel"> Pridaj prekážku </span>
+					</div>
 				</div>
 			</div>
-			<!-- v spodnom sidebare nebudu buttony, ale iba ikony -->
-			<div id="sidebar-bottom">
-				<span class="label" id="helperLabel"> Pomôcka </span>
-				<div class="sidebar-icon-wrapper" id="addWaterIconDiv">
-					<img src="icons/left-click.png" class="icon" width="40px" height="40px">
-					<span class="label" id="leftClickLabel"> Pridaj vodu </span>
-				</div>
-				<div class="sidebar-icon-wrapper" id="addObstacleIconDiv">
-					<img src="icons/right-click.png" class="icon" width="40px" height="40px">
-				 	<span class="label" id="rightClickLabel"> Pridaj prekážku </span>
-				</div>
-			</div>
 		</div>
 	</div>
+	<!-- Tabulka so zadaniami, pokusmi a oznacenim, ci je vyriesenena alebo nie -->
 	<div class="progressTable" id="progressTable">
 	</div>
 </div>
@@ -237,6 +243,9 @@
 	let obstacleCells = []; //bunky obsahujuce prekazku
 	let emptyCells = []; //prazdne bunky
 
+	//zdroj vody (primarne pre fastest fill)
+	let waterSource = null;
+
 	//na zaciatku programu je volny mod, ked moze uzivatel pridavat prekazky a pridavat vodu a skusat, ako funguje algoritmus
 	let assignmentType = "free";
 	
@@ -290,7 +299,7 @@
 		}
 		else if (assignments.length > 1) {
 			//updatni counter vo forme Uloha M/N, kde M je aktualne cislo ulohy a N je pocet vsetkych nacitanych uloh
-			counter.innerHTML = "Úloha <span class='details'>" + (assignmentIndex + 1) + "</span>/" + assignments.length;
+			counter.innerHTML = "Úloha " + (assignmentIndex + 1) + "</span>/" + assignments.length;
 		}
 		else {
 			//nic nebolo nacitane
@@ -302,13 +311,13 @@
 		const progressTable = document.getElementById("progressTable");
 		progressTable.innerHTML = ""; // Clear the table
 
-		let tableHTML = "<table><tr><th>#</th><th>Pokusy</th><th>Status</th></tr>";
+		let tableHTML = "<table><tr><th>Úloha</th><th>Pokusy</th><th>Status</th></tr>";
 
 		assignmentsLocal.forEach((assignment, index) => {
 			const isSelected = index === assignmentIndex ? " class='selectedLevel'" : "";
 			tableHTML += `
 				<tr>
-					<td${isSelected}>${index + 1}</td>
+					<td${isSelected}>Úloha ${index + 1}</td>
 					<td${isSelected}>${assignment.pokusy || 0}</td>
 					<td${isSelected}>${assignment.vyriesene ? "✔️" : "❌"}</td>
 				</tr>
@@ -409,14 +418,14 @@
 	
 	//funkcia na ukladanie aktualnej session do jsonu 
 	function getSessionData() {
-		// { type: 'solution', assignmentId: '...', createdAt: 'ISO', placements: { obstacles: [[r,c],...], waterSources: [[r,c],...] }, metrics: {...} }
+		// { type: 'solution', assignmentId: '...', createdAt: 'ISO', placements: { obstacles: [[r,c],...], waterSource: [r,c] }, metrics: {...} }
 		//format JSONU riesenia (priklad):
 			//"type": "solution",
 			//"assignmentId": "assignment-1",
 			//"createdAt": "2024-10-01T12:00:00Z",
 			//"placements": {
 			//    "obstacles": [[0,1],[2,3],...],
-			//    "waterSources": [[4,5],[6,7],...]
+			//    "waterSource": [0, 2]
 			//},
 			//"metrics": {
 			//    "obstacleCount": 10,
@@ -433,21 +442,23 @@
 		}
 
 		//objekt, v ktorom si pamatame pole prekazok a zdrojov vody
-		const placements = { obstacles: [], waterSources: [] };
+		const placements = { obstacles: [], waterSource: [] };
+		console.log(waterSource);
+		placements.waterSource.push(waterSource);
 
 		//inicializujeme tento objekt prejdenim mriezky a zapisom do neho
 		for (let row = 0; row < currentRows; row++) {
 			for (let col = 0; col < currentCols; col++) {
 				const value = gridArray[row][col];
 				if (value === 2) placements.obstacles.push([row, col]);
-				else if (value === 1) placements.waterSources.push([row, col]);
+				// else if (value === 1) placements.waterSources.push([row, col]);
 			}
 		}
 
 		//dodatocne informacie o rieseni
 		const metrics = {
 			obstacleCount: placements.obstacles.length,
-			waterCount: placements.waterSources.length
+			waterCount: waterCells.length
 		};
 
 		//vrat objekt reprezentujuci riesenie
@@ -633,7 +644,7 @@
 				} 
 				else if (assignmentType === 'fastest_fill') {
 					//ak je definovane pole zdrojov vody, aplikuj ich na mriezku (v tomto pripade len jeden zdroj vody)
-					const sources = solution.placements && Array.isArray(solution.placements.waterSources) ? solution.placements.waterSources : null;
+					const sources = solution.placements && Array.isArray(solution.placements.waterSource) ? solution.placements.waterSource : null;
 					if (!Array.isArray(sources) || sources.length === 0) {
 						alert('V rieseni chyba zdroj vody.');
 						return;
@@ -748,7 +759,7 @@
 		if (assignments.length > 1) {
 			saveCurrentStateToLocalStorage(assignmentIndex);
 			assignmentIndex = (assignmentIndex + 1) % assignments.length;
-			// Vyprázdni solution grid
+			// Vyprázdni solution div
 			document.getElementById("solutionDiv").innerHTML = "";
 
 			// Skontroluj, či už bolo zadanie riešené
@@ -757,7 +768,6 @@
 				if (assignment.vyriesene) {
 					document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Zadanie už bolo vyriešené správne.</span>";
 				} else if (assignment.pokusy > 0) {
-
 					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo vyriešené správne.</span>";
 				} else {
 					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo riešené.</span>";
@@ -1023,6 +1033,7 @@
 			gridArray[cellRow][cellCol] = 1;
 			cell.className = "cell cellWater";
 			waterCells.push(cell);
+			waterSource = [cellRow, cellCol];
 			// remove from empty trackers if present
 			//emptyCount = emptyCount - 1;
 			//let index = emptyCells.indexOf(cell);
@@ -1096,8 +1107,9 @@
 		// nastavenie poctu riadkov a velkost bunky
 		grid.style.gridTemplateRows = "repeat(" + currentRows + ", " + cellSize + "px)";
 		
-		console.log(currentRows);
-		console.log(currentCols);
+		//console.log(currentRows);
+		//console.log(currentCols);
+
 		//vytvorenie buniek
 		for (let i = 0; i < currentRows * currentCols; i++) {
 			let cell = document.createElement("div");
@@ -1347,7 +1359,6 @@
 		if (currentAssignment.type === "fastest_fill") {
 			//v fastest_fill je riesenie spravne, ak je vsetka voda rozlita (teda v mriezke nie je ziadna prazdna bunka)
 			let ok = (waterCount + obstacleCount === currentRows * currentCols);
-			// TODO: compute and compare number of steps if the assignment specifies a target step count
 			//if (currentAssignment.goal && typeof currentAssignment.goal.maxSteps === "number") {
 				if (ok && stepsCounter <= currentAssignment.goal.maxSteps) {
 					document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Riešenie je správne.</span>";
@@ -1379,8 +1390,9 @@
 	function generateTextFastestFill() {
 		if (!currentAssignment) return "";
 		let allowedSources = currentAssignment.goal.allowedSources; 
+		// ZDROJE VODY ZATIAL LEN 1, TREBA VYSPEKULOVAT AKO ZMENIT NEJAKE INTERNE ZNACKY A PODMIENKY V INYCH FUNKCIACH
 		let sourceText = allowedSources === 1 ? 'zdroj vody' : (allowedSources >= 2 && allowedSources <= 4 ? 'zdroje vody' : 'zdrojov vody');
-		let text = `Vašim cieľom je pridať <span class="details">${allowedSources}</span> ${sourceText} do mriežky tak, aby sa voda rozliala do všetkých políčok čo najrýchlejšie.</span><br>`;
+		let text = `Vašim cieľom je pridať <span class="details" style="font-size: 24px;">${allowedSources}</span> ${sourceText} do mriežky tak, aby sa voda rozliala do všetkých políčok čo najrýchlejšie.</span><br>`;
 		text += `Povolený počet krokov: <span class="details" style="font-size: 24px;">${currentAssignment.goal.maxSteps}</span>.\n`;
 		/*text += "Pravidlá:\n";
 		text += "- Zdroj vody sa pridáva ľavým kliknutím na bunku.\n";
