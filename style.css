@@ -338,23 +338,19 @@ h2 {
 	font-size: 1.5em;
 }
 
-/* sekcia pre grid a zadanie (+riesenie) */
-#hra-section {
-	display: flex;
-	justify-content: center; /* zarovnane na stred */
-	align-items: center;
-	margin-bottom: 100px;
-	margin-top: 50px;
-}
-
 /* bunka v mriezke */
-.cell {
+#grid .cell {
+	display: flex;
 	border: 0.5px solid black;
 	cursor: pointer;
 	transition: transform 0.2s, box-shadow 0.2s; /* pre animaciu */
-	vertical-align: middle;
-	justify-content: center;
 	text-align: center;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	line-height: 1;
 }
 
 /* prechod mysou nad bunkou, zdvihnutie policka a pridanie shadowu */
@@ -375,6 +371,8 @@ h2 {
 	transition: background-color 0.3s ease;
 	text-align: center;
 	vertical-align: middle;
+	padding: 0;
+	margin: 0;
 }
 
 /* css pre bunku s prekazkou */
@@ -419,29 +417,77 @@ footer {
 	font-size: 12px;
 	position: fixed;
 	bottom: 0;
-	width: 100%;
+	width: 40%;
 	text-align: left;
 	left: 10px;
 }
 
 .correct {
-	color: green;
+	color: #00C853;
 }
 
 .incorrect {
-	color: red;
+	color: #FF1744;
 }
+
 .details {
-	color: purple;
+	color: #7C4DFF; 
 }
+
+#hra-section {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative; /* makes the section a positioning context */
+	margin-top: 50px;
+	margin-bottom: 100px;
+}
+
+/* task a grid + sidebar */
+#center-section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* styl na progress table */
+#progressTable {
+	position: absolute;
+	right: 5px;         
+
+}
+
+/* Header */
+#progressTable th {
+	padding: 5px 7px;
+	text-align: center;
+	font-weight: bold;
+	color: black;
+	border-bottom: 2px solid rgba(0, 0, 0, 0);
+}
+
+/* formatovanie buniek */
+#progressTable td {
+	padding: 4px 7px;
+	text-align: center;
+	border-left: 1px solid rgba(0, 0, 0, 0);
+	border-right: 1px solid rgba(0, 0, 0, 0);
+	color: black;
+}
+
+/* bunka v prvom stlpci nema lavy border */
+#progressTable td:first-child {
+	border-left: none;
+}
+
+/* bunka v poslednom stlpci nema pravy border */
+#progressTable td:last-child {
+	border-right: none;
+}
+
+/* selected row */
 .selectedLevel {
-	background-color: #ffff99;
-}
-table th, table td {
-	border: 1px solid black;
-	border-collapse: collapse;
-	padding: 2px;
-}
-table {
-	margin-left: 20px;
+	background-color: rgba(0, 123, 255, 0.18);
+	font-weight: 600;
+	border-radius: 4px;
 }
