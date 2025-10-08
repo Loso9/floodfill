@@ -30,7 +30,7 @@
 				</div>
 				
 				<!-- Text popupu -->
-				<h2> Projekt - Ako tečie voda </h2>
+				
 				<p> 
 				Projekt <i>Ako tečie voda </i> je inšpirovaný algoritmom <b>FloodFill</b>. V tomto softvéri má užívateľ k dispozícií dva 
 				režijné módy - hra a tvorba. V režime "hra" má používateľ možnosť riešiť úlohy na mriežke, týkajúce sa spomínaného algoritmu.
@@ -48,7 +48,6 @@
 </header>
 
 <!-- Nadpisy -->
-<h1> Ako tečie voda</h1>
 <h2> Marek Lošonský, Martin Hošek </h2>
 
 <!-- Div na rezimy hry -->
@@ -118,23 +117,7 @@
 	</div>
 </div>
 
-<div class="progressTable" id="progressTable">
-	<table>
-		<tr>
-			<td>#</td>
-		</tr>
-		<tr>
-			<td>Typ (AC/FF)</td>
-		</tr>
-		<tr>
-			<td>Počet pokusov</td>
-		</tr>
-		<tr>
-			<td>Status (krížik/fajka)
-			</td>
-		</tr>
-	</table>
-</div>
+
 
 <!-- Div v ktorom bude jednak mriezka (vlavo) a zadanie (vpravo), !!! a extra buttony podla zadania vlavo -->
 <div id="hra-section">
@@ -194,6 +177,8 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="progressTable" id="progressTable">
 	</div>
 </div>
 
@@ -317,65 +302,20 @@
 		const progressTable = document.getElementById("progressTable");
 		progressTable.innerHTML = ""; // Clear the table
 
-		const headerRow = document.createElement("tr");
-		const typeRow = document.createElement("tr");
-		const attemptsRow = document.createElement("tr");
-		const statusRow = document.createElement("tr");
-
-		// Add header column
-		const headerColumn = document.createElement("th");
-		headerColumn.textContent = "#";
-		headerRow.appendChild(headerColumn);
-
-		const typeColumn = document.createElement("th");
-		typeColumn.textContent = "Typ";
-		typeRow.appendChild(typeColumn);
-
-		const attemptsColumn = document.createElement("th");
-		attemptsColumn.textContent = "Počet pokusov";
-		attemptsRow.appendChild(attemptsColumn);
-
-		const statusColumn = document.createElement("th");
-		statusColumn.textContent = "Status";
-		statusRow.appendChild(statusColumn);
+		let tableHTML = "<table><tr><th>#</th><th>Pokusy</th><th>Status</th></tr>";
 
 		assignmentsLocal.forEach((assignment, index) => {
-			console.log("assignment", assignment);
-			const headerCell = document.createElement("td");
-			headerCell.textContent = index + 1;
-			if (index === assignmentIndex) {
-				headerCell.classList.add("selectedLevel");
-			}
-			headerRow.appendChild(headerCell);
-
-			const typeCell = document.createElement("td");
-			typeCell.textContent = assignment.type;
-			if (index === assignmentIndex) {
-				typeCell.classList.add("selectedLevel");
-			}
-			typeRow.appendChild(typeCell);
-
-			const attemptsCell = document.createElement("td");
-			console.log("assignment.pokusy:", assignment.pokusy);
-			attemptsCell.textContent = assignment.pokusy || 0;
-			if (index === assignmentIndex) {
-				attemptsCell.classList.add("selectedLevel");
-			}
-			attemptsRow.appendChild(attemptsCell);
-
-			const statusCell = document.createElement("td");
-			console.log("assignment.vyriesene:", assignment.vyriesene);
-			statusCell.textContent = assignment.vyriesene ? "✔️" : "❌";
-			if (index === assignmentIndex) {
-				statusCell.classList.add("selectedLevel");
-			}
-			statusRow.appendChild(statusCell);
+			const isSelected = index === assignmentIndex ? " class='selectedLevel'" : "";
+			tableHTML += `
+				<tr>
+					<td${isSelected}>${index + 1}</td>
+					<td${isSelected}>${assignment.pokusy || 0}</td>
+					<td${isSelected}>${assignment.vyriesene ? "✔️" : "❌"}</td>
+				</tr>
+			`;
 		});
 
-		progressTable.appendChild(headerRow);
-		progressTable.appendChild(typeRow);
-		progressTable.appendChild(attemptsRow);
-		progressTable.appendChild(statusRow);
+		progressTable.innerHTML = tableHTML + "</table>";
 	}
 
 	function showAssignment(index) {
@@ -592,6 +532,7 @@
 			for (let row = 0; row < currentRows; row++) {
 				for (let col = 0; col < currentCols; col++) {
 					const cell = document.getElementById(`cell-${row}-${col}`);
+					cell.textContent = ""; //odstran cisla z buniek
 					const val = initialGridSnapshot[row][col];
 					if (val === 2) {
 						gridArray[row][col] = 2;
@@ -615,6 +556,7 @@
 	loadButton.addEventListener("click", () => {
 		fileInput.value = "";
 		fileInput.click();
+		
 	});
 
 	//po kliknuti na "Nacitaj riesenie" sa otvori fileinput element
@@ -878,6 +820,7 @@
 				console.log("nnNacitane zadania:", assignments);
 				console.log("nnassignmentsLocal:", assignmentsLocal);
 				showAssignment(0);
+				document.getElementById("progressTable").hidden = false;
 				updateProgressTable();
 		})
 		.catch(error => {
@@ -954,6 +897,7 @@
 			let cell = document.getElementById(cellId);
 			//vyprazdnenie nastavenim prislusnych classov
 			cell.className = "cell cellEmpty";
+			
 		}
 		
 		//vycistenie mriezky aj interne (v 2D poli)
@@ -1016,6 +960,7 @@
 		document.getElementById("zadanieHeader").innerText = "";
 		document.getElementById("task").innerHTML = "<p> Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.</p>";
 
+		document.getElementById("progressTable").hidden = true;
 		// schovaj buttony, ktore su v tomto rezime nepotrebne
 		hideNonFreeButtons();
 		syncStatesWithGrid();
@@ -1254,6 +1199,12 @@
 							const newWaterCell = document.getElementById(`cell-${nRow}-${nCol}`);
 							newWaterCell.classList.remove("cellEmpty");
 							newWaterCell.classList.add("cellWater");
+
+							if (assignmentType === "fastest_fill") {
+								if (!newWaterCell.textContent) {
+									newWaterCell.textContent = stepsCounter + 1; // krok sa zobrazuje ako krok+1, lebo krok 0 je povodny stav
+								}
+							}
 							// iba ak este nie je v zozname waterCells (ochrana proti duplikatom)
 							if (!waterCells.includes(newWaterCell)) {
 								waterCount = waterCount + 1;

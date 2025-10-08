@@ -352,6 +352,9 @@ h2 {
 	border: 0.5px solid black;
 	cursor: pointer;
 	transition: transform 0.2s, box-shadow 0.2s; /* pre animaciu */
+	vertical-align: middle;
+	justify-content: center;
+	text-align: center;
 }
 
 /* prechod mysou nad bunkou, zdvihnutie policka a pridanie shadowu */
@@ -370,6 +373,8 @@ h2 {
 .cellWater {
 	background-color: #4da6ff; /* farba zaplnenej bunky */
 	transition: background-color 0.3s ease;
+	text-align: center;
+	vertical-align: middle;
 }
 
 /* css pre bunku s prekazkou */
@@ -431,4 +436,12 @@ footer {
 }
 .selectedLevel {
 	background-color: #ffff99;
+}
+table th, table td {
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding: 2px;
+}
+table {
+	margin-left: 20px;
 }
