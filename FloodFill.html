@@ -317,7 +317,7 @@
 			const isSelected = index === assignmentIndex ? " class='selectedLevel'" : "";
 			tableHTML += `
 				<tr>
-					<td${isSelected}>Úloha ${index + 1}</td>
+					<td${isSelected} onclick="showAssignment(${index})" onmouseover="this.style.backgroundColor='#f0f0f0';" onmouseout="this.style.backgroundColor='';" style="cursor: pointer;">Úloha ${index + 1}</td>
 					<td${isSelected}>${assignment.pokusy || 0}</td>
 					<td${isSelected}>${assignment.vyriesene ? "✔️" : "❌"}</td>
 				</tr>
@@ -539,6 +539,7 @@
 			}
 		} 
 		else if (assignmentType === 'fastest_fill') {
+			stepsCounter = 0;
 			// odstran iba vodu, ktora bola pridana uzivatelom, prekazky nechaj
 			for (let row = 0; row < currentRows; row++) {
 				for (let col = 0; col < currentCols; col++) {
@@ -776,9 +777,43 @@
 			//cleanGrid();
 			
 			showAssignment(assignmentIndex);
+			deleteAllDivs();
 		}
 	});
 	
+	function switchToLevelById(levelId) {
+		if (assignments.length > 1) {
+			saveCurrentStateToLocalStorage(assignmentIndex);
+			assignmentIndex = assignments.findIndex(assignment => assignment.id === levelId);
+			if (assignmentIndex === -1) return; // Ak sa nenašlo zadanie s daným ID, ukonči funkciu
+
+			// Vyprázdni solution div
+			document.getElementById("solutionDiv").innerHTML = "";
+
+			// Skontroluj, či už bolo zadanie riešené
+			if (assignmentsLocal[assignmentIndex]) {
+				const assignment = assignmentsLocal[assignmentIndex];
+				if (assignment.vyriesene) {
+					document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Zadanie už bolo vyriešené správne.</span>";
+				} else if (assignment.pokusy > 0) {
+					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo vyriešené správne.</span>";
+				} else {
+					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo riešené.</span>";
+				}
+			}
+
+			showAssignment(assignmentIndex);
+			deleteAllDivs();
+		}
+	}
+
+	function deleteAllDivs() {
+		const cells = document.querySelectorAll("#grid .cell");
+		cells.forEach(cell => {
+			cell.textContent = "";
+		});
+	}
+
 	function saveCurrentStateToLocalStorage(index) {
 		if (!currentAssignment) return;
 		//uloz aktualny stav mriezky do aktualneho zadania
@@ -974,6 +1009,7 @@
 		// schovaj buttony, ktore su v tomto rezime nepotrebne
 		hideNonFreeButtons();
 		syncStatesWithGrid();
+		deleteAllDivs();
 	}
 
 	function hideNonFreeButtons() {
@@ -1028,7 +1064,7 @@
 		//inak tam pridaj vodu
 		else {
 			//pri zadani typu "fastest_fill" je pocet policok vody obmedzeny na jedno
-			if (assignmentType === "fastest_fill" && (waterCount > 0 || cell.classList.contains("cellObstacle"))) return;
+			if (assignmentType === "fastest_fill" && (waterCount >= currentAssignment.goal.allowedSources || cell.classList.contains("cellObstacle"))) return;
 			waterCount = waterCount + 1;
 			gridArray[cellRow][cellCol] = 1;
 			cell.className = "cell cellWater";
@@ -1149,7 +1185,7 @@
 
 	function nextStep() {
 		//kopia mriezky, aby nova voda neovplyvnila fill
-		stepsCounter++;
+		
 		let newGridArray = gridArray.map(arr => [...arr]);
 
 		//boolean trackujuci zmenu v mriezke
@@ -1239,7 +1275,7 @@
 			stopSimulation();
 			// verifikuj vysledok 
 			verifyAfterSimulation();
-		}
+		} else stepsCounter++;
 	}
 	
 	//window.addEventListener("resize", () => generateGrid());
@@ -1266,20 +1302,20 @@
 	}
 
 	let simulationInterval;
-	let stepsCounter = -1;
+	let stepsCounter = 0;
 
 	//funkcia na spustenie algoritmu FloodFillu
 	function startSimulation() {
 
 		if (assignmentType === "fastest_fill") {
 			const allowedSources = currentAssignment.goal.allowedSources;
-			if (waterCount > allowedSources) {
-				alert(`Počet vodných zdrojov (${waterCount}) prekročil povolený limit (${allowedSources}).\nStlačte tlačidlo začni odznova.`);
+			if (waterSource.length > allowedSources) {
+				alert(`Počet vodných zdrojov (${waterSource.length}) prekročil povolený limit (${allowedSources}).\nStlačte tlačidlo začni odznova.`);
 				return;
 			}
-		}
+		} else stepsCounter = 0;
 		//vypni vsetky zvysne buttony, ked prebieha algoritmus
-		stepsCounter = -1;
+		
 		setButtonState("freeButton", false);
 		setButtonState("loadButton", false);
 		setButtonState("loadSolutionButton", false);

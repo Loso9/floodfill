@@ -1,5 +1,5 @@
 {
-	"id": "fastest-4",
+	"id": "fastest-1",
 	"type": "fastest_fill",
 	"text": "Vaším zadaním je vybrať jedno voľné políčko mriežky odkiaľ sa začne vylievať voda tak, že sa celá mriežka zaplaví na čo {{target}} počet krokov.",
 	"targetWord": "najmenší",
@@ -7,18 +7,18 @@
 		"rows": 8,
 		"cols": 8,
 		"gridState": [
-			[0,2,0,0,2,0,0,2],
-			[2,0,0,2,0,2,0,0],
-			[0,2,2,0,0,0,2,0],
-			[0,0,2,2,0,2,0,0],
-			[2,0,0,0,2,0,2,0],
-			[0,2,0,2,2,0,0,2],
-			[0,0,2,0,0,2,2,0],
+			[0,0,0,0,0,0,0,0],
+			[2,2,2,2,2,2,2,0],
+			[0,0,0,0,0,0,0,0],
+			[0,2,2,2,2,2,2,0],
+			[2,0,0,0,0,0,2,0],
+			[0,0,0,2,2,0,0,0],
+			[0,0,2,0,0,2,0,0],
 			[2,0,0,2,0,0,0,2]
 		]
 	},
 	"goal": {
-		"maxSteps": 6,
-		"allowedSources": 1
+		"maxSteps": 10,
+		"allowedSources": 2
 	}
 }

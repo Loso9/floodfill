@@ -1,0 +1,20 @@
+{
+	"id": "avoid-1",
+	"type": "avoid_cells",
+	"grid": {
+		"rows": 6,
+		"cols": 4,
+		"gridState": [
+			[0,0,1,0],
+			[0,0,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+			[0,0,0,0],
+			[0,0,0,2]
+		]
+	},
+	"goal": {
+		"numOfEmptyCells": 4,
+		"maxNumOfObstacles": 8
+	}
+}
