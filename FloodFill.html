@@ -246,6 +246,8 @@
 	//zdroj vody (primarne pre fastest fill)
 	let waterSource = null;
 
+	let fillSteps = {};
+
 	//na zaciatku programu je volny mod, ked moze uzivatel pridavat prekazky a pridavat vodu a skusat, ako funguje algoritmus
 	let assignmentType = "free";
 	
@@ -317,7 +319,7 @@
 			const isSelected = index === assignmentIndex ? " class='selectedLevel'" : "";
 			tableHTML += `
 				<tr>
-					<td${isSelected} onclick="showAssignment(${index})" onmouseover="this.style.backgroundColor='#f0f0f0';" onmouseout="this.style.backgroundColor='';" style="cursor: pointer;">Úloha ${index + 1}</td>
+					<td${isSelected} onclick="switchToLevelById(${index})" onmouseover="this.style.backgroundColor='#f0f0f0';" onmouseout="this.style.backgroundColor='';" style="cursor: pointer;">Úloha ${index + 1}</td>
 					<td${isSelected}>${assignment.pokusy || 0}</td>
 					<td${isSelected}>${assignment.vyriesene ? "✔️" : "❌"}</td>
 				</tr>
@@ -442,9 +444,11 @@
 		}
 
 		//objekt, v ktorom si pamatame pole prekazok a zdrojov vody
-		const placements = { obstacles: [], waterSource: [] };
+		const placements = { obstacles: [], waterSource: [], fillsteps: {} };
 		console.log(waterSource);
 		placements.waterSource.push(waterSource);
+		//do placements pridaj aj kroky, ako bola zaplnena voda v bunkach
+		placements.fillSteps = fillSteps;
 
 		//inicializujeme tento objekt prejdenim mriezky a zapisom do neho
 		for (let row = 0; row < currentRows; row++) {
@@ -539,7 +543,7 @@
 			}
 		} 
 		else if (assignmentType === 'fastest_fill') {
-			stepsCounter = 0;
+			stepsCounter[assignmentIndex] = 0;
 			// odstran iba vodu, ktora bola pridana uzivatelom, prekazky nechaj
 			for (let row = 0; row < currentRows; row++) {
 				for (let col = 0; col < currentCols; col++) {
@@ -558,6 +562,12 @@
 			}
 			syncStatesWithGrid();
 		}
+
+		if (assignmentsLocal[assignmentIndex] && assignmentsLocal[assignmentIndex].vyriesene === 0) {
+			assignmentsLocal[assignmentIndex].pokusy = (assignmentsLocal[assignmentIndex].pokusy || 0) + 1;
+		}
+
+		updateProgressTable();
 
 		solutionDiv.innerText = "";
 		//otvorene na dalsie typy zadani
@@ -775,18 +785,19 @@
 				}
 			}
 			//cleanGrid();
+
+			//deleteAllDivs();
 			
 			showAssignment(assignmentIndex);
-			deleteAllDivs();
 		}
 	});
-	
+
 	function switchToLevelById(levelId) {
+		if (assignmentIndex === -1) return; // Ak sa nenašlo zadanie s daným ID, ukonči funkciu
 		if (assignments.length > 1) {
 			saveCurrentStateToLocalStorage(assignmentIndex);
-			assignmentIndex = assignments.findIndex(assignment => assignment.id === levelId);
-			if (assignmentIndex === -1) return; // Ak sa nenašlo zadanie s daným ID, ukonči funkciu
-
+			//assignmentIndex = assignments.findIndex(assignment => assignment.id === levelId);
+			assignmentIndex = levelId;
 			// Vyprázdni solution div
 			document.getElementById("solutionDiv").innerHTML = "";
 
@@ -803,7 +814,7 @@
 			}
 
 			showAssignment(assignmentIndex);
-			deleteAllDivs();
+			//deleteAllDivs();
 		}
 	}
 
@@ -813,7 +824,7 @@
 			cell.textContent = "";
 		});
 	}
-
+	
 	function saveCurrentStateToLocalStorage(index) {
 		if (!currentAssignment) return;
 		//uloz aktualny stav mriezky do aktualneho zadania
@@ -867,6 +878,10 @@
 				showAssignment(0);
 				document.getElementById("progressTable").hidden = false;
 				updateProgressTable();
+				for(i=0; i<assignmentsLocal.length; i++) {
+					stepsCounter[i]=0;
+					pokusyCounter[i]=0;
+				}
 		})
 		.catch(error => {
 			console.error("Chyba pri nacitani json suborov:", error);
@@ -1069,7 +1084,7 @@
 			gridArray[cellRow][cellCol] = 1;
 			cell.className = "cell cellWater";
 			waterCells.push(cell);
-			waterSource = [cellRow, cellCol];
+			waterSource = [[cellRow, cellCol]];
 			// remove from empty trackers if present
 			//emptyCount = emptyCount - 1;
 			//let index = emptyCells.indexOf(cell);
@@ -1185,7 +1200,6 @@
 
 	function nextStep() {
 		//kopia mriezky, aby nova voda neovplyvnila fill
-		
 		let newGridArray = gridArray.map(arr => [...arr]);
 
 		//boolean trackujuci zmenu v mriezke
@@ -1250,7 +1264,8 @@
 
 							if (assignmentType === "fastest_fill") {
 								if (!newWaterCell.textContent) {
-									newWaterCell.textContent = stepsCounter + 1; // krok sa zobrazuje ako krok+1, lebo krok 0 je povodny stav
+									newWaterCell.textContent = stepsCounter[assignmentIndex] + 1; // krok sa zobrazuje ako krok+1, lebo krok 0 je povodny stav
+									fillSteps[`${nRow},${nCol}`] = stepsCounter[assignmentIndex];
 								}
 							}
 							// iba ak este nie je v zozname waterCells (ochrana proti duplikatom)
@@ -1275,7 +1290,8 @@
 			stopSimulation();
 			// verifikuj vysledok 
 			verifyAfterSimulation();
-		} else stepsCounter++;
+		}
+		else stepsCounter[assignmentIndex]++;
 	}
 	
 	//window.addEventListener("resize", () => generateGrid());
@@ -1302,7 +1318,8 @@
 	}
 
 	let simulationInterval;
-	let stepsCounter = 0;
+	let stepsCounter = [];
+	let pokusyCounter = [];
 
 	//funkcia na spustenie algoritmu FloodFillu
 	function startSimulation() {
@@ -1310,12 +1327,11 @@
 		if (assignmentType === "fastest_fill") {
 			const allowedSources = currentAssignment.goal.allowedSources;
 			if (waterSource.length > allowedSources) {
-				alert(`Počet vodných zdrojov (${waterSource.length}) prekročil povolený limit (${allowedSources}).\nStlačte tlačidlo začni odznova.`);
+				alert(`Počet vodných zdrojov (${waterCount}) prekročil povolený limit (${allowedSources}).\nStlačte tlačidlo začni odznova.`);
 				return;
 			}
-		} else stepsCounter = 0;
+		}
 		//vypni vsetky zvysne buttony, ked prebieha algoritmus
-		
 		setButtonState("freeButton", false);
 		setButtonState("loadButton", false);
 		setButtonState("loadSolutionButton", false);
@@ -1357,9 +1373,11 @@
 			clearInterval(simulationInterval);
 			simulationInterval = null;
 		}
+		/*
 		if (assignmentsLocal[assignmentIndex] && assignmentsLocal[assignmentIndex].vyriesene === 0) {
 			assignmentsLocal[assignmentIndex].pokusy = (assignmentsLocal[assignmentIndex].pokusy || 0) + 1;
 		}
+		*/
 		updateProgressTable();
 	}
 
@@ -1396,12 +1414,12 @@
 			//v fastest_fill je riesenie spravne, ak je vsetka voda rozlita (teda v mriezke nie je ziadna prazdna bunka)
 			let ok = (waterCount + obstacleCount === currentRows * currentCols);
 			//if (currentAssignment.goal && typeof currentAssignment.goal.maxSteps === "number") {
-				if (ok && stepsCounter <= currentAssignment.goal.maxSteps) {
+				if (ok && stepsCounter[assignmentIndex] <= currentAssignment.goal.maxSteps) {
 					document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Riešenie je správne.</span>";
 					assignmentsLocal[assignmentIndex].vyriesene = 1;
 					updateProgressTable();
-				} else if (ok && stepsCounter > currentAssignment.goal.maxSteps) {
-					document.getElementById("solutionDiv").innerHTML = `<span class='incorrect'>Riešenie je správne, ale počet krokov bol prekročený.</span><br><span class='details'>Počet krokov: <strong style='font-size: 24px;'>${stepsCounter}</strong>/${currentAssignment.goal.maxSteps}.</span>`;
+				} else if (ok && stepsCounter[assignmentIndex] > currentAssignment.goal.maxSteps) {
+					document.getElementById("solutionDiv").innerHTML = `<span class='incorrect'>Riešenie je správne, ale počet krokov bol prekročený.</span><br><span class='details'>Počet krokov: <strong style='font-size: 24px;'>${stepsCounter[assignmentIndex]}</strong>/${currentAssignment.goal.maxSteps}.</span>`;
 				} else {
 					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Riešenie nie je správne.</span>";
 				}
