@@ -1,6 +1,6 @@
 /* nastavenie, ze cela stranka zabera 100% toho, co pouzivatel vidi na monitore/v browseri */
 html, body {
-	height: 100vh;
+	height: 100dvh;
 }
 
 /* odstran underline z linku */
@@ -89,14 +89,14 @@ header .button-wrapper {
 
 /* nadpisy */
 h1 {
-	font-size: 4em;
+	font-size: 2.5em;
 	margin: 0px;
 	
 }
 
 h2 {
 	margin-top: 0;
-	font-size: 1em;
+	font-size: 0.8em;
 }
 
 /* css pre rezijne mody */
@@ -179,7 +179,7 @@ h2 {
 
 /* animacia pri prechode cez wrapper v sidebare */
 .sidebar-button-wrapper:hover {
-	transform: scale(1.1);
+	transform: scale(1.05);
 	transition: 0.3s ease;
 }
 
@@ -197,12 +197,52 @@ h2 {
 	filter: grayscale(100%) brightness(0.7);
 }
 
+/* styly pre button wrapper "double" pre dva buttony a prislusne labely a podobne ako vyssie nastavenie grayscale filtra pri vypnuti a hover animacia */
+.sidebar-button-wrapper-double {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.sidebar-button-wrapper-double img, .sidebar-button-wrapper-double span {
+	transition: filter 0.3s ease;
+}
+
+.sidebar-button-wrapper-double.disabled img, .sidebar-button-wrapper-double.disabled span {
+	filter: grayscale(100%) brightness(0.7);
+}
+
+.sidebar-button-wrapper-double button:hover {
+	transform: scale(1.1);
+	transition: 0.3s ease;
+}
+
+.sidebar-button-wrapper-double button.disabled:hover {
+	transform: none;
+}
+
+.sidebar-button-wrapper-double .label span {
+  	display: inline-block;
+  	transition: transform 0.3s ease !important; 
+}
+
+.sidebar-button-wrapper-double #addRowsButton:hover ~ .label .label-add,
+.sidebar-button-wrapper-double #addColumnsButton:hover ~ .label .label-add {
+  	transform: scale(1.1);
+}
+
+.sidebar-button-wrapper-double #removeRowsButton:hover ~ .label .label-remove,
+.sidebar-button-wrapper-double #removeColumnsButton:hover ~ .label .label-remove {
+  	transform: scale(1.1);
+}
+
 /* sidebar icon wrapper - pomocky pre pracu s mriezkou */
 .sidebar-icon-wrapper {
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
 }
+
 
 
 /* css pre ikonu */
@@ -223,6 +263,8 @@ h2 {
 	font-size: 0.8em;
 	margin-top: 4px;
 	text-shadow: 0.5px 0.5px black; 
+	display: inline-block;
+  	transition: transform 0.3s ease;
 }
 
 /* farbicky labelov */
@@ -286,6 +328,14 @@ h2 {
 	color: #7f7f7f;
 }
 
+#adjustRowsLabel {
+	color: #2196f3;
+}
+
+#adjustColumnsLabel {
+	color: #2196f3;
+}
+
 #leftClickLabel {
 	color: #2e30cc;
 }
@@ -294,11 +344,15 @@ h2 {
 	color: #2e30cc;
 }
 
+
 /* sidebar grid - (grid + sidebar) div formatovanie */
 #sidebar-grid {
 	display: flex;
-	align-items: stretch;
-	margin-left: 50px;
+	align-items: center;      
+	justify-content: center;  
+	gap: 15px;               
+	flex: 1;
+	margin-left: 30px;
 }
 
 /* css pre sidebar - div, ktory drzi sidebar button wrappery vedla gridu */
@@ -306,10 +360,9 @@ h2 {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	align-items: left;
-	margin-left: 10px;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-left: 15px;
+	margin-bottom: 19px; /* vyska grindInfo */
+	align-self: stretch;
 }
 
 /* horna cast sidebaru, nastroje pre pracu s mriezkou */
@@ -318,7 +371,12 @@ h2 {
 	flex-direction: column;
 	align-items: left;
 	justify-content: center;
-	gap: 10px;
+	gap: 7px;
+}
+
+/* extra margin medzi nadpisom v sidebare top a prvou "funkcionalitou */
+#sidebar-top > :nth-child(2) {
+	margin-top: 3px; 
 }
 
 /* horna cast sidebaru, ikony sluziace ako "manual" na pracu s mriezkou pri danom zadani */
@@ -327,7 +385,12 @@ h2 {
 	flex-direction: column;
 	align-items: left;
 	justify-content: center;
-	gap: 10px;
+	gap: 7px;
+}
+
+/* extra margin medzi nadpisom v sidebare bottom a prvou "funkcionalitou */
+#sidebar-bottom > :nth-child(2) {
+	margin-top: 3px; 
 }
 
 /* css pre id label "Nastroje" a "Pomocky" v sidebare - rovnake formatovanie */
@@ -336,6 +399,7 @@ h2 {
 	color: #232e7a;
 	font-weight: bold;
 	font-size: 1.5em;
+	margin-top: 0px;
 }
 
 /* bunka v mriezke */
@@ -351,6 +415,9 @@ h2 {
 	padding: 0;
 	margin: 0;
 	line-height: 1;
+	font-weight: bold;
+	user-select: none;
+	font-size: clamp(10px, 0.45em, 0.5vw, 20px);
 }
 
 /* prechod mysou nad bunkou, zdvihnutie policka a pridanie shadowu */
@@ -367,7 +434,7 @@ h2 {
 
 /* css pre bunku s vodou */
 .cellWater {
-	background-color: #4da6ff; /* farba zaplnenej bunky */
+	background-color: #1f74ca; /* farba zaplnenej bunky */
 	transition: background-color 0.3s ease;
 	text-align: center;
 	vertical-align: middle;
@@ -379,6 +446,22 @@ h2 {
 .cellObstacle {
 	background-color: #4d4d4d; /* farba prekazky */
 	transition: background-color 0.1s ease;
+}
+
+/* grid wrapper - grid a gridInfo s informaciou o pocte riadkov a stlpcov */
+#grid-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+#gridInfo {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	color: black;
+	text-shadow: 0.5px 0.5px black;
 }
 
 /* mriezka */
@@ -424,14 +507,17 @@ footer {
 
 .correct {
 	color: #00C853;
+	text-shadow: 0.5px 0.5px black;
 }
 
 .incorrect {
 	color: #FF1744;
+	text-shadow: 0.5px 0.5px black;
 }
 
 .details {
 	color: #7C4DFF; 
+	text-shadow: 0.5px 0.5px black;
 }
 
 #hra-section {
