@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sk">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> Ako tečie voda </title>
 	<link rel="icon" href="icons/water.png" type="image/png">
 	<link href="style.css" rel="stylesheet" />
@@ -24,7 +25,7 @@
 			
 			<!-- Button Zatvor Popup -->
 			<div class="button-wrapper">
-				<button type="button" class="button" title="Informácie o stránke" id="closeModal"> 
+				<button type="button" class="button" title="Zavrieť okno" id="closeModal"> 
 					<img src="icons/close.png" class="icon" width="25px" height="25px"> 
 				</button>
 			</div>
@@ -32,17 +33,16 @@
 			<!-- Text popupu -->
 			
 			<p> 
-			Projekt <i>Ako tečie voda </i> je inšpirovaný algoritmom <b>FloodFill</b>. V tomto softvéri má užívateľ k dispozícií dva 
-			režijné módy - hra a tvorba. V režime "hra" má používateľ možnosť riešiť úlohy na mriežke, týkajúce sa spomínaného algoritmu.
-			Vzhľadom na zadanie môže používateľ v móde <i> Experimentuj </i> (ikona pera) pridávať prekážky; určovať, odkiaľ sa má 
-			začať liať voda; označovať štvorčeky, kam sa, podľa neho, voda nedostane; prípadne do štvorčekov vkladať čísla určujúce 
-			poradie zaplavenia vodou. 
+			Projekt <i>Ako tečie voda </i> je inšpirovaný algoritmom <b>FloodFill</b>. V tomto softvéri má používateľ k dispozícií dva 
+			režijné módy - Hra a Tvorba. V režime Hra má používateľ možnosť riešiť úlohy na mriežke, týkajúce sa spomínaného algoritmu.
+			Vzhľadom na zadanie bude používateľ v móde Hra pridávať prekážky alebo určovať, odkiaľ sa má 
+			začať liať voda. Projekt je písaný vo forme, v ktorej sa dá jednoducho implementovať ďalšie typy zadaní. 
 			</p>
 			<div id="linkSpecifikacia">
-				<a href="specs.pdf"> Špecifikácia projektu </a>
+				<a href="specs.pdf" target="_blank"> Špecifikácia projektu </a>
 			</div>
 			<div id="linkGithub">
-				<a href="https://github.com/Loso9/floodfill"> GitHub repozitár </a>
+				<a href="https://github.com/Loso9/floodfill" target="_blank"> GitHub repozitár </a>
 			</div>
 		</div>
 	</div>
@@ -139,31 +139,59 @@
 			<div id="solutionDiv"> </div> 
 		</div>
 		<div id="sidebar-grid">
-			<div id="grid"> </div>
+			<div id="grid-wrapper">
+				<div id="grid"> </div>
+				<div id="gridInfo">
+					<span id="rowCountLabel"> </span>
+					<span id="colCountLabel"> </span>
+				</div>
+			</div>
 			<div id="sidebar">
 				<div id="sidebar-top">
 					<span class="label" id="helperLabel"> Nástroje </span>
 					<div class="sidebar-button-wrapper" id="cleanButtonDiv">
 						<button type="button" class="button" id="cleanButton"> 
-							<img src="icons/clean.png" class="icon" width="40px" height="40px">
+							<img src="icons/clean.png" class="icon" width="30px" height="30px">
 						</button>
 						<span class="label" id="cleanLabel"> Vyčisti mriežku </span>
 					</div>
 					<div class="sidebar-button-wrapper" id="cleanWaterButtonDiv">
 						<button type="button" class="button" id="cleanWaterButton"> 
-							<img src="icons/delete-water.png" class="icon" width="40px" height="40px">
+							<img src="icons/delete-water.png" class="icon" width="30px" height="30px">
 						</button>
 						<span class="label" id="cleanWaterLabel"> Odstráň vodu </span>
 					</div>
 					<div class="sidebar-button-wrapper" id="cleanObstaclesButtonDiv">
 						<button type="button" class="button" id="cleanObstaclesButton"> 
-							<img src="icons/delete-obstacles.png" class="icon" width="40px" height="40px">
+							<img src="icons/delete-obstacles.png" class="icon" width="30px" height="30px">
 						</button>
 						<span class="label" id="cleanObstaclesLabel"> Odstráň prekážky </span>
 					</div>
+					<div class="sidebar-button-wrapper-double" id="adjustRowsButtonsDiv">
+						<button type="button" class="button" id="addRowsButton"> 
+							<img src="icons/plus.png" class="icon" width="30px" height="30px">
+						</button>
+						<button type="button" class="button" id="removeRowsButton"> 
+							<img src="icons/minus.png" class="icon" width="30px" height="30px">
+						</button>
+						<span class="label" id="adjustRowsLabel">
+    						<span class="label-add">&nbsp Pridaj riadok </span>&nbsp&nbsp | &nbsp&nbsp<span class="label-remove">Odstráň riadok</span>
+  						</span>
+					</div>
+					<div class="sidebar-button-wrapper-double" id="adjustColumnsButtonsDiv">
+						<button type="button" class="button" id="addColumnsButton"> 
+							<img src="icons/plus.png" class="icon" width="30px" height="30px">
+						</button>
+						<button type="button" class="button" id="removeColumnsButton"> 
+							<img src="icons/minus.png" class="icon" width="30px" height="30px">
+						</button>
+						<span class="label" id="adjustColumnsLabel">
+    						<span class="label-add">&nbsp Pridaj stĺpec </span>&nbsp&nbsp | &nbsp &nbsp<span class="label-remove">Odstráň stĺpec</span>
+  						</span>
+					</div>
 					<div class="sidebar-button-wrapper" id="resetButtonDiv">
 						<button type="button" class="button" id="resetButton"> 
-							<img src="icons/undo.png" class="icon" width="40px" height="40px">
+							<img src="icons/undo.png" class="icon" width="30px" height="30px">
 						</button>
 						<span class="label" id="resetLabel"> Začni odznovu </span>
 					</div>
@@ -172,11 +200,11 @@
 				<div id="sidebar-bottom">
 					<span class="label" id="helperLabel"> Pomôcka </span>
 					<div class="sidebar-icon-wrapper" id="addWaterIconDiv">
-						<img src="icons/left-click.png" class="icon" width="40px" height="40px">
+						<img src="icons/left-click.png" class="icon" width="30px" height="30px">
 						<span class="label" id="leftClickLabel"> Pridaj vodu </span>
 					</div>
 					<div class="sidebar-icon-wrapper" id="addObstacleIconDiv">
-						<img src="icons/right-click.png" class="icon" width="40px" height="40px">
+						<img src="icons/right-click.png" class="icon" width="30px" height="30px">
 						<span class="label" id="rightClickLabel"> Pridaj prekážku </span>
 					</div>
 				</div>
@@ -193,7 +221,7 @@
 
 <!-- Päta stranky -->
 <footer>
-	<p> Softvér pre vzdelávanie, 1mAIN, 2025/2026
+	<p> Softvér pre vzdelávanie, 1mAIN, 2025/2026 </p>
 </footer>
 
 <script>
@@ -216,6 +244,12 @@
 	const cleanButtonDiv = document.getElementById("cleanButtonDiv");
 	const cleanWaterButtonDiv = document.getElementById("cleanWaterButtonDiv");
 	const cleanObstaclesButtonDiv = document.getElementById("cleanObstaclesButtonDiv");
+	const adjustRowsButtonsDiv = document.getElementById("adjustRowsButtonsDiv");
+	const addRowsButton = document.getElementById("addRowsButton");
+	const addColumnsButton = document.getElementById("addColumnsButton");
+	const removeRowsButton = document.getElementById("removeRowsButton");
+	const removeColumnsButton = document.getElementById("removeColumnsButton");
+	const adjustColumnsButtonsDiv = document.getElementById("adjustColumnsButtonsDiv");
 	const loadButtonDiv = document.getElementById("loadButtonDiv");
 	const freeButtonDiv = document.getElementById("freeButtonDiv");
 	const nextStepButtonDiv = document.getElementById("nextStepButtonDiv");
@@ -235,21 +269,29 @@
 	//defaultne je volny rozim (ziadne zadanie)
 	let assignmentIndex = 0;
 	
-	let currentAssignment;
-	let initialGridSnapshot = null; // snapshot mriezky ako bola nacitana zo zadania pre reset
+	let currentAssignment; //aktualny assignment
+	let initialGridSnapshot = []; // snapshot mriezky ako bola nacitana zo zadania pre reset
+	let cellSize; //velkost bunky v mriezke
 	
 	let gridArray = []; // 2D pole reprezentujuce mriezku
 	let waterCells = []; //bunky obsahujuce vodu
 	let obstacleCells = []; //bunky obsahujuce prekazku
 	let emptyCells = []; //prazdne bunky
 
-	//zdroj vody (primarne pre fastest fill)
-	let waterSource = null;
+	//zdroj vody (primarne pre fastest fill) - forma [[row, col], [row2, col2], ...]
+	let waterSource = [];
 
-	let fillSteps = {};
+	//pole fixnych prekazok (zo zadania) - forma [[row, col], [row2, col2], ...]
+	let fixedObstacles = [];
+
+	//pole krokov, ako sa zaplna mriezka (pre fastest_fill) - forma [{row, col: 2, row2, col2: 5, ...}, {row, col: 3, row2, col2: 7}, ...] - na kazdom indexe i je mapa krokov [policko] - krok zaplnenia (index i je index zadania)
+	let fillSteps = [];
 
 	//na zaciatku programu je volny mod, ked moze uzivatel pridavat prekazky a pridavat vodu a skusat, ako funguje algoritmus
 	let assignmentType = "free";
+
+	//pole, v ktorom si na indexe i pamatame, ci zadanie s indexom i uz skoncilo simulaciu
+	let simulationFinished = [];
 	
 	// Inicializacia 2D pola na zaklade poctu riadkov a stlpcov
 	function initializeGridArray(rows, cols) {
@@ -260,13 +302,15 @@
 	// preved stav mriezky do internych poli
 	function syncStatesWithGrid() {
 
-		console.log("syncStatesWithGrid - gridArray:", gridArray);
+		//console.log("syncStatesWithGrid - gridArray:", gridArray);
 		waterCount = 0;
 		waterCells = [];
 		obstacleCount = 0;
 		obstacleCells = [];
 		emptyCount = 0;
 		emptyCells = [];
+		//waterSource[assignmentIndex] = [];
+		//fillSteps[assignmentIndex] = {};
 		
 		for (let row = 0; row < currentRows; row++) {
 			for (let col = 0; col < currentCols; col++) {
@@ -301,7 +345,7 @@
 		}
 		else if (assignments.length > 1) {
 			//updatni counter vo forme Uloha M/N, kde M je aktualne cislo ulohy a N je pocet vsetkych nacitanych uloh
-			counter.innerHTML = "Úloha " + (assignmentIndex + 1) + "</span>/" + assignments.length;
+			counter.innerHTML = "Úloha " + (assignmentIndex + 1) + "/" + assignments.length;
 		}
 		else {
 			//nic nebolo nacitane
@@ -330,8 +374,8 @@
 	}
 
 	function showAssignment(index) {
-		console.log("assignmentsLocal:", assignmentsLocal);
-		console.log("Current assignment index:", assignmentIndex);
+		//console.log("assignmentsLocal:", assignmentsLocal);
+		//console.log("Current assignment index:", assignmentIndex);
 		currentAssignment = assignmentsLocal[index];
 		
 
@@ -346,7 +390,7 @@
 
 		//uprav pocitadlo currentRows a currentCols podla zadania a vygeneruj podla toho mriezku
 
-		console.log("Current assignment:", currentAssignment);
+		//console.log("Current assignment:", currentAssignment);
 		currentRows = currentAssignment.grid.rows;
 		currentCols = currentAssignment.grid.cols;
 		generateGrid(currentRows, currentCols);
@@ -363,15 +407,29 @@
 
 		//nacitaj do interneho pola stav mriezky z JSONu (deep copy to avoid accidental mutation)
 		gridArray = currentAssignment.grid.gridState.map(row => [...row]);
-
+	
+		
+		if (initialGridSnapshot[assignmentIndex] !== null) {
+			// uz mame zapamatany snapshot mriezky zadania, nerob nic
+		}
 		//zapamatuj si pociatocny stav mriezky pre reset
-		initialGridSnapshot = currentAssignment.grid.gridState.map(row => [...row]);
+		else initialGridSnapshot[assignmentIndex] = currentAssignment.grid.gridState.map(row => [...row]);
+		
+
+		for (let row = 0; row < currentRows; row++) {
+			for (let col = 0; col < currentCols; col++) {
+				if (initialGridSnapshot[assignmentIndex][row][col] === 2) {
+					fixedObstacles[assignmentIndex].push([row, col]);
+				}
+			}
+		}
 
 		//nacitaj do mriezky na stranke stav mriezky z JSONu
 		for (let row = 0; row < gridArray.length; row++) {
 			for (let col = 0; col < gridArray[row].length; col++) {
 				let cellId = `cell-${row}-${col}`;
 				let cell = document.getElementById(cellId);
+				let iconSize = 0;
 				//ak je bunka prazdna
 				if (gridArray[row][col] === 0) {
 					cell.className = "cell cellEmpty";
@@ -379,13 +437,38 @@
 				//ak je v bunke voda
 				else if (gridArray[row][col] === 1) {
 					cell.className = "cell cellWater";
+					iconSize = cellSize * 0.7;
+					if (waterSource[assignmentIndex] && waterSource[assignmentIndex].some(([r, c]) => r === row && c === col)) {
+						cell.innerHTML = `<img src="icons/waterCell.png" class="icon" width="${iconSize}" height="${iconSize}">`;
+					}
 				}
 				//ak je v bunke prekazka
 				else if (gridArray[row][col] === 2) {
 					cell.className = "cell cellObstacle";
+					if (!fixedObstacles[assignmentIndex].some(([r, c]) => r === row && c === col)) {
+						iconSize = cellSize;
+						cell.innerHTML = `<img src="icons/big.png" class="icon" width="${iconSize}" height="${iconSize}">`;
+					}
+					else {
+						iconSize = cellSize * 0.8;
+						cell.innerHTML = `<img src="icons/mountain.png" class="icon" width="${iconSize}" height="${iconSize}">`;
+					}
 				}
 			}
 		}
+
+		//vloz do mriezky kroky 
+		if (assignmentType === "fastest_fill" && fillSteps[assignmentIndex]) {
+			for (const key in fillSteps[assignmentIndex]) {
+				const [row, col] = key.split(",").map(Number);
+				const cell = document.getElementById(`cell-${row}-${col}`);
+    			if (cell && gridArray[row][col] === 1) {
+      				cell.textContent = fillSteps[assignmentIndex][key] + 1;
+    			}
+			}
+		}
+
+		//zvys cislo uloha nad zadanim
 		updateCounter();
 
 		//ked je nacitane zadanie, tak ukaz vsetky buttony v top bare
@@ -406,6 +489,8 @@
 			cleanButtonDiv.style.display = "none";
 			cleanWaterButtonDiv.style.display = "none";
 			cleanObstaclesButtonDiv.style.display = "none";
+			adjustRowsButtonsDiv.style.display = "none";
+			adjustColumnsButtonsDiv.style.display = "none";
 			addWaterIconDiv.style.display = "none";
 			addObstacleIconDiv.style.display = "";			
 		}
@@ -413,27 +498,18 @@
 			cleanButtonDiv.style.display = "none";
 			cleanWaterButtonDiv.style.display = "none";	
 			cleanObstaclesButtonDiv.style.display = "none";
+			adjustRowsButtonsDiv.style.display = "none";
+			adjustColumnsButtonsDiv.style.display = "none";
 			addWaterIconDiv.style.display = "";
 			addObstacleIconDiv.style.display = "none";
 		}
+
+		//uprav text riesenia
+		updateSolutionDiv();
 	}
 	
 	//funkcia na ukladanie aktualnej session do jsonu 
 	function getSessionData() {
-		// { type: 'solution', assignmentId: '...', createdAt: 'ISO', placements: { obstacles: [[r,c],...], waterSource: [r,c] }, metrics: {...} }
-		//format JSONU riesenia (priklad):
-			//"type": "solution",
-			//"assignmentId": "assignment-1",
-			//"createdAt": "2024-10-01T12:00:00Z",
-			//"placements": {
-			//    "obstacles": [[0,1],[2,3],...],
-			//    "waterSource": [0, 2]
-			//},
-			//"metrics": {
-			//    "obstacleCount": 10,
-			//    "waterCount": 3
-			//}
-
 		//ak nie je zadanie, tak neuloz nic
 		if (!currentAssignment) return null;
 
@@ -443,36 +519,55 @@
 			currentAssignment.id = generateAssignmentId();
 		}
 
-		//objekt, v ktorom si pamatame pole prekazok a zdrojov vody
-		const placements = { obstacles: [], waterSource: [], fillsteps: {} };
-		console.log(waterSource);
-		placements.waterSource.push(waterSource);
-		//do placements pridaj aj kroky, ako bola zaplnena voda v bunkach
-		placements.fillSteps = fillSteps;
+		const type = currentAssignment.type || assignmentType;
 
-		//inicializujeme tento objekt prejdenim mriezky a zapisom do neho
-		for (let row = 0; row < currentRows; row++) {
-			for (let col = 0; col < currentCols; col++) {
-				const value = gridArray[row][col];
-				if (value === 2) placements.obstacles.push([row, col]);
-				// else if (value === 1) placements.waterSources.push([row, col]);
+		//objekt, v ktorom si pamatame pole prekazok a zdrojov vody
+		const placements = { obstacles: [], waterSource: [...waterSource[assignmentIndex]] };
+
+		//ak je zadanie typu avoid_cells, tak json bude vyzerat takto
+		if (type === "avoid_cells") {
+			const fixed = fixedObstacles[assignmentIndex] || [];
+
+			for (let row = 0; row < currentRows; row++) {
+				for (let col = 0; col < currentCols; col++) {
+					const value = gridArray[row][col];
+					if (value === 2 && !fixed.some(([r, c]) => r === row && c === col)) placements.obstacles.push([row, col]);
+					// else if (value === 1) placements.waterSource.push([row, col]);
+				}
 			}
+
+			const metrics = {
+				obstacleCount: placements.obstacles.length,
+				dryCells: (currentRows * currentCols) - waterCount - obstacleCount 
+			}
+
+			return {
+				type: "solution",
+				assignmentId: currentAssignment.id,
+				createdAt: new Date().toISOString(),
+				placements,
+				metrics
+        	};
+
 		}
 
-		//dodatocne informacie o rieseni
-		const metrics = {
-			obstacleCount: placements.obstacles.length,
-			waterCount: waterCells.length
-		};
+		//ak je zadanie typu fastest_fill, tak riesenie bude vyzerat takto
+		else if (type === "fastest_fill") {
+			placements.waterSource = Array.isArray(waterSource[assignmentIndex]) ? [...waterSource[assignmentIndex]] : [];
 
-		//vrat objekt reprezentujuci riesenie
-		return {
-			type: 'solution',
-			assignmentId: currentAssignment.id,
-			createdAt: new Date().toISOString(),
-			placements,
-			metrics
-		};
+			const metrics = {
+				waterCount: placements.waterSource.length,
+				steps: stepsCounter[assignmentIndex] ?? 0
+			};
+
+			return {
+				type: "solution",
+				assignmentId: currentAssignment.id,
+				createdAt: new Date().toISOString(),
+				placements,
+				metrics
+			};
+		}
 	}
 
 
@@ -513,9 +608,21 @@
 	//po kliknut na "Odstran prekazky" sa z mriezky odstrania vsetky bunky s prekazkami (nahradia sa prazdnymi bunkami)
 	cleanObstaclesButton.addEventListener("click", () => cleanObstaclesGrid());
 
+	//po kliknuti na "Pridaj riadok" sa v mriezke prida riadok na koniec
+	addRowsButton.addEventListener("click", () => addRow());
+
+	//po kliknuti na "Pridaj stlpec" sa v mriezke prida stlpec na koniec 
+	addColumnsButton.addEventListener("click", () => addColumn());
+
+	//po kliknut na "Odstran riadok" sa v mriezke odstrani posledny riadok
+	removeRowsButton.addEventListener("click", () => removeRow());
+
+	//po kliknut na "Odstran riadok" sa v mriezke odstrani pesledny stlpec
+	removeColumnsButton.addEventListener("click", () => removeColumn());
+
 	//po kliknuti na "Zacni odznovu" sa z mriezky odstrania vsetky bunky v zavislosti od zadania
 	resetButton.addEventListener('click', () => {
-		if (!currentAssignment || !initialGridSnapshot) {
+		if (!currentAssignment || !initialGridSnapshot[assignmentIndex]) {
 			//nebolo nacitane zadanie, tak len vycisti mriezku
 			cleanGrid();
 			return;
@@ -528,10 +635,13 @@
 			for (let row = 0; row < currentRows; row++) {
 				for (let col = 0; col < currentCols; col++) {
 					const cell = document.getElementById(`cell-${row}-${col}`);
-					const val = initialGridSnapshot[row][col];
+					cell.innerText = "";
+					const val = initialGridSnapshot[assignmentIndex][row][col];
 					if (val === 2) {
 						gridArray[row][col] = 2;
 						cell.className = "cell cellObstacle";
+						iconSize = cellSize * 0.8;
+						cell.innerHTML = `<img src="icons/mountain.png" class="icon" width="${iconSize}" height="${iconSize}">`;
 					} else if (val === 1) {
 						gridArray[row][col] = 1;
 						cell.className = "cell cellWater";
@@ -541,35 +651,40 @@
 					}
 				}
 			}
+			syncStatesWithGrid();
 		} 
 		else if (assignmentType === 'fastest_fill') {
 			stepsCounter[assignmentIndex] = 0;
 			// odstran iba vodu, ktora bola pridana uzivatelom, prekazky nechaj
+			cleanGrid();
 			for (let row = 0; row < currentRows; row++) {
 				for (let col = 0; col < currentCols; col++) {
 					const cell = document.getElementById(`cell-${row}-${col}`);
-					cell.textContent = ""; //odstran cisla z buniek
-					const val = initialGridSnapshot[row][col];
+					cell.innerText = "";
+					const val = initialGridSnapshot[assignmentIndex][row][col];
 					if (val === 2) {
 						gridArray[row][col] = 2;
 						cell.className = "cell cellObstacle";
-						
+						iconSize = cellSize * 0.8;
+						cell.innerHTML = `<img src="icons/mountain.png" class="icon" width="${iconSize}" height="${iconSize}">`;
+					} else if (val === 1) {
+						gridArray[row][col] = 1;
+						cell.className = "cell cellWater";
 					} else {
 						gridArray[row][col] = 0;
 						cell.className = "cell cellEmpty";
 					}
 				}
 			}
+			//odstran zdroje vody
+			waterSource[assignmentIndex] = [];
 			syncStatesWithGrid();
 		}
 
-		if (assignmentsLocal[assignmentIndex] && assignmentsLocal[assignmentIndex].vyriesene === 0) {
-			assignmentsLocal[assignmentIndex].pokusy = (assignmentsLocal[assignmentIndex].pokusy || 0) + 1;
-		}
-
-		updateProgressTable();
-
-		solutionDiv.innerText = "";
+		//po resetovani samozrejme ze zaciname odznovu a teda simulacia nie je ukoncena
+		simulationFinished[assignmentIndex] = false;
+		updateSolutionDiv();
+		//solutionDiv.innerText = "";
 		//otvorene na dalsie typy zadani
 	});
 
@@ -594,81 +709,64 @@
 		//ak nie je subor, tak nic nerob
 		if (!file) return;
 		const reader = new FileReader();
-		reader.onload = () => {
+		reader.onload = async (e) => {
 			try {
-				const solution = JSON.parse(reader.result);
+				const solution = JSON.parse(e.target.result);
 
 				//podmienky - riesenie ma byt typu "solution" a zadania a solution sa maju zhodovat na assignmentId
 				if (solution.type && solution.type !== "solution") {
 					alert('Nacitany subor je typu "' + solution.type + '" (ma byt "solution").');
 					return;
 				}
-				const solutionId = solution.assignmentId;
-				if (solutionId && currentAssignment.id && solutionId !== currentAssignment.id) {
-					alert('ID zadania v rieseni neodpoveda ID aktualneho zadania.');
-					return;
+
+				if (!solution.assignmentId) {
+					alert("Chyba ID zadania v rieseni.");
 				}
-
-				// ak je zadanie "fastest_fill", skontroluj, ci sa prekazky v rieseni zhoduju s prekazkami v aktualnom zadani
-				if (assignmentType === 'fastest_fill') {
-					const solutionObstacles = (solution.placements && Array.isArray(solution.placements.obstacles)) ? solution.placements.obstacles : null;
-					// compute assignment obstacles
-					const assignmentObstacles = [];
-					//kontrola, ci je definovany aktualny assignment a ci ma mriezku
-					if (currentAssignment && currentAssignment.grid && Array.isArray(currentAssignment.grid.gridState)) {
-						for (let row = 0; row < currentAssignment.grid.gridState.length; row++) {
-							for (let col = 0; col < currentAssignment.grid.gridState[row].length; col++) {
-								if (currentAssignment.grid.gridState[row][col] === 2) assignmentObstacles.push([row, col]);
-							}
-						}
-					}
-
-					//porovnanie dvoch poli suradnic prekazok (ignoruj poradie) :)
-					function coordKey(a){ return `${a[0]}_${a[1]}` }
-					const assignmentSet = new Set(assignmentObstacles.map(coordKey));
-					let match = true;
-					if (!solutionObstacles) match = false;
+				
+				if (!currentAssignment || currentAssignment.id !== solution.assignmentId) {
+					const matching = assignmentsLocal.find(a => a.id === solution.assignmentId);
+					if (matching) {
+						currentAssignment = matching;
+						assignmentIndex = assignmentsLocal.indexOf(matching);
+						await showAssignment(assignmentIndex);
+					} 
 					else {
-						const solutionSet = new Set(solutionObstacles.map(coordKey));
-						if (solutionSet.size !== assignmentSet.size) match = false;
-						else {
-							for (const k of assignmentSet) if (!solutionSet.has(k)) { match = false; break; }
-						}
-					}
-					if (!match) {
-						alert("Nemozem nacitat riesenie: prekazky v rieseni sa nezhoduju s prekazkami v aktualnom zadani.");
+						alert("Riesenie nepatri k ziadnemu nacitanemu zadaniu.");
 						return;
 					}
-				}
-				//aplikuj riesenie na mriezku
+            	}
+
 				if (assignmentType === 'avoid_cells') {
-					//ak je definovane pole prekazok, aplikuj ich na mriezku
-					const obstacles = solution.placements && Array.isArray(solution.placements.obstacles) ? solution.placements.obstacles : null;
+					const obstacles = solution.placements?.obstacles || [];
 					if (!Array.isArray(obstacles)) {
-						alert('V rieseni chybaju prekazky.');
+						alert("V rieseni chybaju prekazky.");
 						return;
 					}
-					//aplikuj na mriezku prekazky z riesenia
+					//cleanObstaclesGrid();
 					applyObstaclesFromSolution(obstacles);
-					alert('Prekazky boli vlozene do mriezky podla riesenia.');
-					syncStatesWithGrid();
-				} 
+					updateSolutionDiv();
+					alert('Prekazky boli nacitane podla riesenia.');
+				}
 				else if (assignmentType === 'fastest_fill') {
-					//ak je definovane pole zdrojov vody, aplikuj ich na mriezku (v tomto pripade len jeden zdroj vody)
-					const sources = solution.placements && Array.isArray(solution.placements.waterSource) ? solution.placements.waterSource : null;
+					const sources = solution.placements?.waterSource || [];
 					if (!Array.isArray(sources) || sources.length === 0) {
-						alert('V rieseni chyba zdroj vody.');
+						alert("V rieseni chyba zdroj vody.");
 						return;
 					}
-					//v fastest_fill je povoleny len jeden zdroj vody
-					const [row, col] = sources[0];
-					applyWaterSourceFromSolution(row, col);
-					syncStatesWithGrid();
-					alert('Zdroj vody bol vlozeny do mriezky podla riesenia.');
+
+					console.log(sources);
+					cleanWaterGrid();
+					sources.forEach(([r, c]) => applyWaterSourceFromSolution(r, c));
+					updateSolutionDiv();
+					alert("Zdroj vody bol nacitany podla riesenia.");
 				}
+
+				syncStatesWithGrid();
+            	simulationFinished[assignmentIndex] = false;
+
 			} catch (error) {
 				console.error(error);
-				alert('Chyba pri nacitani riesenia: ' + error.message);
+				alert("Chyba pri nacitani riesenia: " + error.message);
 			}
 		};
 		reader.readAsText(file);
@@ -677,28 +775,19 @@
 
 	//funkcia, ktora do mriezky prida prekazky na suradniciach z pola obstacles = [[r1,c1],[r2,c2],...]
 	function applyObstaclesFromSolution(obstacles) {
-		//odstran vsetky predosle prekazky
-		for (let row = 0; row < currentRows; row++) {
-			for (let col = 0; col < currentCols; col++) {
-				if (gridArray[row][col] === 2) {
-					gridArray[row][col] = 0;
-					const cell = document.getElementById(`cell-${row}-${col}`);
-					if (cell) cell.className = 'cell cellEmpty';
-				}
-			}
-		}
+		if (!Array.isArray(fixedObstacles[assignmentIndex])) {
+        	fixedObstacles[assignmentIndex] = [];
+    	}
 
-		//aplikuj nove prekazky z argumentu
-		for (let i = 0; i < obstacles.length; i++) {
-			const coord = obstacles[i];
-			const [row, col] = coord;
-			//skontroluj, ci su suradnice v rozsahu mriezky
-			if (row < 0 || row >= currentRows || col < 0 || col >= currentCols) continue;
-			//pridaj
+		obstacles.forEach(([row, col]) => {
+			if (row < 0 || row >= currentRows || col < 0 || col >= currentCols) return;
 			gridArray[row][col] = 2;
 			const cell = document.getElementById(`cell-${row}-${col}`);
-			if (cell) cell.className = 'cell cellObstacle';
-		}
+			if (cell) {
+				cell.className = "cell cellObstacle";
+				cell.innerHTML = `<img src="icons/big.png" width="${cellSize}" height="${cellSize}">`;
+			}
+    	});
 
 		//synchronizuj pomocne polia s aktualnym stavom mriezky
 		syncStatesWithGrid();
@@ -706,25 +795,19 @@
 
 	//funkcia, ktora do mriezky prida jeden zroj vody na suradniciach [cellRow, cellCol]
 	function applyWaterSourceFromSolution(cellRow, cellCol) {
-		//odstran vsetku predoslu vodu
-		for (let i = 0; i < currentRows * currentCols; i++) {
-			let row = Math.floor(i/currentCols);
-			let col = i % currentCols;
-			if (gridArray[row][col] === 1) {
-				gridArray[row][col] = 0;
-				const cell = document.getElementById(`cell-${row}-${col}`);
-				if (cell) cell.className = 'cell cellEmpty';
+		if (!Array.isArray(waterSource[assignmentIndex])) {
+        	waterSource[assignmentIndex] = [];
+    	}
+		
+		if (cellRow >= 0 && cellRow < currentRows && cellCol >= 0 && cellCol < currentCols) {
+			gridArray[cellRow][cellCol] = 1;
+			const cell = document.getElementById(`cell-${cellRow}-${cellCol}`);
+			if (cell) {
+				cell.className = "cell cellWater";
+				cell.innerHTML = `<img src="icons/waterCell.png" width="${cellSize*0.7}" height="${cellSize*0.7}">`;
 			}
-		}
-
-
-		//skontroluj, ci su suradnice v rozsahu mriezky
-		if (cellRow < 0 || cellRow >= currentRows || cellCol < 0 || cellCol >= currentCols) return;
-		//pridaj vodu
-		gridArray[cellRow][cellCol] = 1;
-		const cell = document.getElementById(`cell-${cellRow}-${cellCol}`);
-		if (cell) cell.className = 'cell cellWater';
-
+			waterSource[assignmentIndex].push([cellRow, cellCol]);
+    	}
 		//synchronizuj interne polia
 		syncStatesWithGrid();
 	}
@@ -769,26 +852,29 @@
 	nextButton.addEventListener("click", () => {
 		if (assignments.length > 1) {
 			saveCurrentStateToLocalStorage(assignmentIndex);
+			saveSolution(assignmentIndex);
 			assignmentIndex = (assignmentIndex + 1) % assignments.length;
-			// Vyprázdni solution div
-			document.getElementById("solutionDiv").innerHTML = "";
+			showAssignment(assignmentIndex);
+			restoreSolutionFromDiv(assignmentIndex);
 
-			// Skontroluj, či už bolo zadanie riešené
-			if (assignmentsLocal[assignmentIndex]) {
-				const assignment = assignmentsLocal[assignmentIndex];
-				if (assignment.vyriesene) {
-					document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Zadanie už bolo vyriešené správne.</span>";
-				} else if (assignment.pokusy > 0) {
-					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo vyriešené správne.</span>";
-				} else {
-					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo riešené.</span>";
+			const solutionDiv = document.getElementById("solutionDiv");
+			if (!assignmentsLocal[assignmentIndex]?.solutionHTML) {
+				// Skontroluj, či už bolo zadanie riešené
+				if (assignmentsLocal[assignmentIndex]) {
+					const assignment = assignmentsLocal[assignmentIndex];
+					if (assignment.vyriesene) {
+						document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Zadanie už bolo vyriešené správne.</span>";
+					} else if (assignment.pokusy > 0) {
+						document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo vyriešené správne.</span>";
+					} else {
+						document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo riešené.</span>";
+					}
 				}
 			}
 			//cleanGrid();
 
 			//deleteAllDivs();
-			
-			showAssignment(assignmentIndex);
+			//simulationFinished[assignmentIndex] = false;
 		}
 	});
 
@@ -797,27 +883,32 @@
 		if (assignments.length > 1) {
 			saveCurrentStateToLocalStorage(assignmentIndex);
 			//assignmentIndex = assignments.findIndex(assignment => assignment.id === levelId);
-			assignmentIndex = levelId;
-			// Vyprázdni solution div
-			document.getElementById("solutionDiv").innerHTML = "";
+			saveSolution(assignmentIndex);
 
-			// Skontroluj, či už bolo zadanie riešené
-			if (assignmentsLocal[assignmentIndex]) {
-				const assignment = assignmentsLocal[assignmentIndex];
-				if (assignment.vyriesene) {
-					document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Zadanie už bolo vyriešené správne.</span>";
-				} else if (assignment.pokusy > 0) {
-					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo vyriešené správne.</span>";
-				} else {
-					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo riešené.</span>";
+			assignmentIndex = levelId;
+
+			showAssignment(assignmentIndex);
+			
+			restoreSolutionFromDiv(assignmentIndex);
+
+			const solutionDiv = document.getElementById("solutionDiv");
+			if (!assignmentsLocal[assignmentIndex]?.solutionHTML) {
+				// Skontroluj, či už bolo zadanie riešené
+				if (assignmentsLocal[assignmentIndex]) {
+					const assignment = assignmentsLocal[assignmentIndex];
+					if (assignment.vyriesene) {
+						document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Zadanie už bolo vyriešené správne.</span>";
+					} else if (assignment.pokusy > 0) {
+						document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Zadanie ešte nebolo vyriešené správne.</span>";
+					}
 				}
 			}
 
-			showAssignment(assignmentIndex);
 			//deleteAllDivs();
 		}
 	}
 
+	//funkcia, ktora vyprazdni obsah vsetkych buniek v mriezke
 	function deleteAllDivs() {
 		const cells = document.querySelectorAll("#grid .cell");
 		cells.forEach(cell => {
@@ -862,7 +953,7 @@
 				results.forEach(({ json, fileName }) => {
 					if (!json.id) json.id = generateAssignmentId();
 					assignments.push(json);
-					console.log(`Nacitany subor ${fileName}:`, json);
+					//console.log(`Nacitany subor ${fileName}:`, json);
 				});
 				//vycisti grid, ak je na nom voda alebo prekazky a ukaz prve zadanie
 				cleanGrid();
@@ -873,14 +964,23 @@
 					assignment.pokusy = 0;
 				});
 
-				console.log("nnNacitane zadania:", assignments);
-				console.log("nnassignmentsLocal:", assignmentsLocal);
+				//inicializacia potrebnych premennych na prazdne/false
+				for (let i = 0; i < assignmentsLocal.length; i++) {
+  					fillSteps[i] = {};
+					waterSource[i] = [];
+					initialGridSnapshot[i] = null;
+					fixedObstacles[i] = [];
+					simulationFinished[i] = false;
+				}
+
+				//console.log("nnNacitane zadania:", assignments);
+				//console.log("nnassignmentsLocal:", assignmentsLocal);
 				showAssignment(0);
 				document.getElementById("progressTable").hidden = false;
 				updateProgressTable();
-				for(i=0; i<assignmentsLocal.length; i++) {
-					stepsCounter[i]=0;
-					pokusyCounter[i]=0;
+				for(let i = 0; i < assignmentsLocal.length; i++) {
+					stepsCounter[i] = 0;
+					pokusyCounter[i] = 0;
 				}
 		})
 		.catch(error => {
@@ -957,9 +1057,11 @@
 			let cell = document.getElementById(cellId);
 			//vyprazdnenie nastavenim prislusnych classov
 			cell.className = "cell cellEmpty";
+			cell.innerHTML = "";
 			
 		}
-		
+		fillSteps[assignmentIndex] = {};
+		waterSource[assignmentIndex] = [];
 		//vycistenie mriezky aj interne (v 2D poli)
 		initializeGridArray(currentRows, currentCols);
 		//synchronizacia pomocnych poli s aktualnym stavom mriezky
@@ -971,6 +1073,7 @@
 		//zresetovanie prislusnych premennych drziacich info o vode
 		waterCells = [];
 		waterCount = 0;
+		waterSource[assignmentIndex] = [];
 
 		for (let i = 0; i < currentRows * currentCols; i++) {
 			let cellRow = Math.floor(i/currentCols);
@@ -980,6 +1083,7 @@
 			if (cell.classList.contains("cellWater")) {
 				//vyprazdnenie nastavenim prislusnych classov
 				cell.className = "cell cellEmpty";
+				cell.innerHTML = "";
 				gridArray[cellRow][cellCol] = 0;
 			}
 		}
@@ -1000,6 +1104,7 @@
 			if (cell.classList.contains("cellObstacle")) {
 				//vyprazdnenie nastavenim prislusnych classov
 				cell.className = "cell cellEmpty";
+				cell.innerHTML = "";
 				gridArray[cellRow][cellCol] = 0;
 			}
 		}
@@ -1013,18 +1118,26 @@
 		//pri prepnuti na volny rezim sa vymazu zadania
 		assignments = [];
 		assignmentIndex = 0;
+		assignmentsLocal = [];
+		currentAssignment = null;
+		initialGridSnapshot = [];
 		//vycisti grid
 		cleanGrid();
 		//prenastav divs v task-div
 		document.getElementById("levelCounter").innerHTML = "<p> Voľný režim </p>";
 		document.getElementById("zadanieHeader").innerText = "";
 		document.getElementById("task").innerHTML = "<p> Aktuálne sa nachádzate vo voľnom režime, v ktorom môžete do mriežky pridávať <u>prekážky</u> a <u>zdroje vody</u>. Pre načítanie zadaní úloh kliknite na tlačítko <b>Načítaj úlohy</b>.</p>";
-
+		document.getElementById("solutionDiv").innerHTML = "";
 		document.getElementById("progressTable").hidden = true;
 		// schovaj buttony, ktore su v tomto rezime nepotrebne
 		hideNonFreeButtons();
 		syncStatesWithGrid();
 		deleteAllDivs();
+		waterSource = [];
+		fillSteps = [];
+		fixedObstacles = [];
+		simulationFinished = [];
+		generateGrid(8, 8);
 	}
 
 	function hideNonFreeButtons() {
@@ -1044,6 +1157,8 @@
 		cleanObstaclesButtonDiv.style.display = '';
 		addWaterIconDiv.style.display = '';
 		addObstacleIconDiv.style.display = '';
+		adjustRowsButtonsDiv.style.display = '';
+		adjustColumnsButtonsDiv.style.display = '';
 
 	}
 
@@ -1061,6 +1176,8 @@
 	//pridanie vody do bunky [cellRow, cellCol], respektive jej odstranenie, ak v nej voda uz je
 	function handleLeftClick(cell, cellRow, cellCol) {
 
+		if (simulationFinished[assignmentIndex]) return;
+
 		//pri zadani typu "avoid_cells" sa nemoze pridavat voda
 		if (assignmentType === "avoid_cells") return;
 
@@ -1069,22 +1186,29 @@
 			waterCount = waterCount - 1;
 			gridArray[cellRow][cellCol] = 0;
 			cell.className = "cell cellEmpty";
+			cell.innerHTML = "";
 			// remove from waterCells
 			let index = waterCells.indexOf(cell);
 			if (index != -1) waterCells.splice(index, 1);
 			// add to empty trackers
 			emptyCount = emptyCount + 1;
 			emptyCells.push(cell);
+			//if (assignmentType !== "free") 
+			waterSource[assignmentIndex] = waterSource[assignmentIndex].filter(([r, c]) => r !== cellRow || c !== cellCol);
 		}
 		//inak tam pridaj vodu
 		else {
 			//pri zadani typu "fastest_fill" je pocet policok vody obmedzeny na jedno
-			if (assignmentType === "fastest_fill" && (waterCount >= currentAssignment.goal.allowedSources || cell.classList.contains("cellObstacle"))) return;
+			if (assignmentType === "fastest_fill" && (waterSource[assignmentIndex].length >= currentAssignment.goal.allowedSources || cell.classList.contains("cellObstacle"))) return;
 			waterCount = waterCount + 1;
 			gridArray[cellRow][cellCol] = 1;
 			cell.className = "cell cellWater";
+			const iconSize = cellSize * 0.7;
+			cell.innerHTML = `<img src="icons/waterCell.png" class="icon" width="${iconSize}" height="${iconSize}">`;
 			waterCells.push(cell);
-			waterSource = [[cellRow, cellCol]];
+			//if (assignmentType !== "free") 
+			if (!Array.isArray(waterSource[assignmentIndex])) waterSource[assignmentIndex] = [];
+			waterSource[assignmentIndex].push([cellRow, cellCol]);
 			// remove from empty trackers if present
 			//emptyCount = emptyCount - 1;
 			//let index = emptyCells.indexOf(cell);
@@ -1092,6 +1216,7 @@
 
 		}
 		syncStatesWithGrid();
+		updateSolutionDiv();
 	}
 
 	let obstacleCount = 0;
@@ -1099,14 +1224,22 @@
 	//pridanie prekazky do bunky [cellRow, cellCol], respektive jej odstranenie, ak v nej prekazka uz je
 	function handleRightClick(cell, cellRow, cellCol) {
 
+		if (simulationFinished[assignmentIndex]) return;
+
 		//pri zadani typu "fastest_fill" sa do mriezky nepridavaju prekazky
 		if (assignmentType === "fastest_fill") return;
+
+		const obstaclesFixedForThisAssignment = fixedObstacles[assignmentIndex] || [];
+		const isFixed = obstaclesFixedForThisAssignment.some(([r, c]) => r === cellRow && c === cellCol);
+
+		if (isFixed) return;
 
 		//ak uz je v bunke prekazka, tak vyprazdni bunku
 		if (gridArray[cellRow][cellCol] === 2) {
 			obstacleCount = obstacleCount - 1;
 			gridArray[cellRow][cellCol] = 0;
 			cell.className = "cell cellEmpty";
+			cell.innerHTML = "";
 			// remove from obstacleCells
 			let index = obstacleCells.indexOf(cell);
 			if (index != -1) obstacleCells.splice(index, 1);
@@ -1114,13 +1247,20 @@
 			emptyCount = emptyCount + 1;
 			emptyCells.push(cell);
 		}
+
+
 		//inak tam pridaj prekazku
 		else {
 			//pri zadani typu "avoid_cells" je obmedzeny pocet prekazok v mriezke na .goal.maxNumOfObstacles
-			if (assignmentType === "avoid_cells" && obstacleCount > currentAssignment.goal.maxNumOfObstacles - 1) return;
+			if (currentAssignment && obstacleCount >= currentAssignment.goal.maxNumOfObstacles) return;
+			if (waterSource[assignmentIndex] && waterSource[assignmentIndex].some(([r, c]) => r === cellRow && c === cellCol)) {
+				waterSource[assignmentIndex] = waterSource[assignmentIndex].filter(([r, c]) => r !== cellRow || c !== cellCol);
+			}
 			obstacleCount = obstacleCount + 1;
 			gridArray[cellRow][cellCol] = 2;
 			cell.className = "cell cellObstacle";
+			const iconSize = cellSize * 1;
+			cell.innerHTML = `<img src="icons/big.png" class="icon" width="${iconSize}" height="${iconSize}">`;
 			obstacleCells.push(cell);
 			// remove from empty trackers if present
 			//emptyCount = emptyCount - 1;
@@ -1128,9 +1268,12 @@
 			//if (index != -1) emptyCells.splice(index, 1);
 		}
 		syncStatesWithGrid();
+		updateSolutionDiv();
 	}
 	
 	const grid = document.getElementById("grid");
+
+	let preserveGrid = false;
 
 	//funkcia na vytvorenie mriezky rozmerov [riadky, stlpce], sizePolicka je velkost jednej bunky/stvorceka
 	//zaklad 8x8
@@ -1138,17 +1281,18 @@
 		
 		currentRows = rows;
 		currentCols = cols;
-	
-		initializeGridArray(currentRows, currentCols);
+		
+		if (!preserveGrid) initializeGridArray(currentRows, currentCols);
 
 		const grid = document.getElementById("grid");
+		
 		grid.innerHTML = "";
 		
 		//velkost mriezky - aby sa to zmestilo na obrazovku bez scrollovania
 		const maxGridSize = Math.min(window.innerWidth, window.innerHeight) * 0.5;
 		
 		//dynamicky zmenit velkost bunky v zavislosti od poctu riadkov/stlpcov
-		let cellSize = Math.floor(maxGridSize/currentRows);
+		cellSize = Math.floor(maxGridSize/currentRows);
 		//najvacsia velkost bunky
 		if (cellSize > 80) cellSize = 80;
 		
@@ -1186,17 +1330,100 @@
 		hideNonFreeButtons();
 
 		//synchronizacia pomocnych poli s aktualnym stavom mriezky
-		console.log("Generating grid and syncing states:");
-		syncStatesWithGrid();
-		
+		//console.log("Generating grid and syncing states:");
+		if (!preserveGrid) syncStatesWithGrid();
+
+		updateGridInfo();
 	}
 	
 	//ak nie je nacitane zadanie, vykresli defaultny grid 8x8
-	if (assignmentType === "free" || assignmentType === null) generateGrid(8,8);
+	if (assignmentType === "free" || assignmentType === null || currentAssignment === null) generateGrid(8,8);
 	else generateGrid(currentAssignment.grid.rows, currentAssignment.grid.cols);
 
+	//funkcia, ktora sa vyuziva pri pridavani riadkov/stlpcov na prekreslenie aktualneho obsahu mriezku na "novu" - vacsiu/mensiu podla akcii pouzivatela
+	function redrawGridPreservingContent() {
+		const snapshot = gridArray.map(row => [...row]);
+		const cellRows = snapshot.length;
+		const cellCols = snapshot[0].length;
+		generateGrid(cellRows, cellCols);
+		gridArray = snapshot;
 
-	//window.addEventListener("resize", () => generateGrid());
+		for (let row = 0; row < cellRows; row++) {
+			for (let col = 0; col < cellCols; col++) {
+				const val = gridArray[row][col];
+				const cell = document.getElementById(`cell-${row}-${col}`);
+				if (!cell) continue;
+
+				if (val === 1) {
+					cell.className = "cell cellWater";
+					if (waterSource[assignmentIndex] && waterSource[assignmentIndex].some(([r, c]) => r === row && c === col)) {
+						iconSize = cellSize * 0.7;
+						cell.innerHTML = `<img src="icons/waterCell.png" class="icon" width="${iconSize}" height="${iconSize}">`;
+					}
+				} else if (val === 2) {
+					cell.className = "cell cellObstacle";
+					iconSize = cellSize * 1;
+					cell.innerHTML = `<img src="icons/big.png" class="icon" width="${iconSize}" height="${iconSize}">`;
+				} else {
+					cell.className = "cell cellEmpty";
+					cell.innerHTML = "";
+				}
+			}
+		}
+		syncStatesWithGrid();
+	}
+
+	//funkcia, ktora zabezpecuje dynamicke zobrazovanie poctu riadkov a stlpcov pod gridom
+	function updateGridInfo() {
+		const rows = gridArray.length;
+		const cols = gridArray[0].length;
+		document.getElementById("rowCountLabel").textContent = `Riadky: ${rows}`;
+		document.getElementById("colCountLabel").textContent = `Stĺpce: ${cols}`;
+		
+	}
+
+	//funkcia na pridanie riadka
+	function addRow() {
+		preserveGrid = true;
+		gridArray.push(Array(currentCols).fill(0));
+		currentRows++;
+		redrawGridPreservingContent();
+		preserveGrid = false;
+		updateGridInfo();
+	}
+
+	//funkcia na odstranenie riadka
+	function removeRow() {
+		if (currentRows <= 1) return;
+		preserveGrid = true;
+		gridArray.pop();
+		currentRows--;
+		redrawGridPreservingContent();
+		preserveGrid = false;
+		updateGridInfo();
+	}
+
+	//funkcia na pridanie stlpca
+	function addColumn() {
+		preserveGrid = true;
+		gridArray.forEach(row => row.push(0));
+		currentCols++;
+		redrawGridPreservingContent();
+		preserveGrid = false;
+		updateGridInfo();
+	}
+
+	//funkcia na odstranenie stlpca
+	function removeColumn() {
+		if (currentCols <= 1) return;
+		preserveGrid = true;
+		gridArray.forEach(row => row.pop());
+		currentCols--;
+		redrawGridPreservingContent();
+		preserveGrid = false;
+		updateGridInfo();
+	}
+
 
 	function nextStep() {
 		//kopia mriezky, aby nova voda neovplyvnila fill
@@ -1204,7 +1431,7 @@
 
 		//boolean trackujuci zmenu v mriezke
 		let changed = false;
-		console.log("assignmentType:", assignmentType);
+		//console.log("assignmentType:", assignmentType);
 		// Prejdi všetkými krajnými políčkami, ktoré sú == 0
 		if (assignmentType == 'avoid_cells') {
 			for (let row = 0; row < gridArray.length; row++) {
@@ -1265,7 +1492,7 @@
 							if (assignmentType === "fastest_fill") {
 								if (!newWaterCell.textContent) {
 									newWaterCell.textContent = stepsCounter[assignmentIndex] + 1; // krok sa zobrazuje ako krok+1, lebo krok 0 je povodny stav
-									fillSteps[`${nRow},${nCol}`] = stepsCounter[assignmentIndex];
+									fillSteps[assignmentIndex][`${nRow},${nCol}`] = stepsCounter[assignmentIndex];
 								}
 							}
 							// iba ak este nie je v zozname waterCells (ochrana proti duplikatom)
@@ -1285,13 +1512,20 @@
 		//prekopiruj novu mriezku do globalneho pola pre mriezku
 		gridArray = newGridArray;
 
+
 		//ak sa nic do mriezky nepridalo, tak ukonci simulaciu
 		if (!changed) {
 			stopSimulation();
 			// verifikuj vysledok 
 			verifyAfterSimulation();
+			if (assignmentType !== "free") {
+				simulationFinished[assignmentIndex] = true;
+			}
 		}
-		else stepsCounter[assignmentIndex]++;
+		else {
+			stepsCounter[assignmentIndex]++;
+			updateSolutionDiv();
+		}
 	}
 	
 	//window.addEventListener("resize", () => generateGrid());
@@ -1301,10 +1535,7 @@
 		if (!buttonId) return;
 		const button = document.getElementById(buttonId);
 		//buttony mozu byt v button-wrapper alebo v sidebar-button-wrapper (column vs row rozlozenie button-label)
-		let wrapper = button.closest(".button-wrapper");
-		if (wrapper == null) {
-			wrapper = button.closest(".sidebar-button-wrapper");
-		}
+		let wrapper = button.closest(".button-wrapper") || button.closest(".sidebar-button-wrapper") || button.closest(".sidebar-button-wrapper-double");
 
 		//ak je toggle = true, tak enable button-label
 		if (toggle) {
@@ -1326,8 +1557,12 @@
 
 		if (assignmentType === "fastest_fill") {
 			const allowedSources = currentAssignment.goal.allowedSources;
-			if (waterSource.length > allowedSources) {
-				alert(`Počet vodných zdrojov (${waterCount}) prekročil povolený limit (${allowedSources}).\nStlačte tlačidlo začni odznova.`);
+			if (!waterSource[assignmentIndex] || waterSource[assignmentIndex].length == 0) {
+				alert("Pridajte zdroj vody do mriežky na spustenie programu.");
+				return;
+			}
+			if (waterSource[assignmentIndex].length > allowedSources) {
+				alert(`Počet vodných zdrojov (${waterSource[assignmentIndex].length}) prekročil povolený limit (${allowedSources}).\nStlačte tlačidlo začni odznova.`);
 				return;
 			}
 		}
@@ -1340,8 +1575,17 @@
 		setButtonState("cleanButton", false);
 		setButtonState("cleanWaterButton", false);
 		setButtonState("cleanObstaclesButton", false);
+		setButtonState("addRowsButton", false);
+		setButtonState("addColumnsButton", false);
+		setButtonState("removeRowsButton", false);
+		setButtonState("removeColumnsButton", false);
 		setButtonState("saveButton", false);
 		setButtonState("nextButton", false);
+
+		if (assignmentType !== "free" && assignmentsLocal[assignmentIndex] && assignmentsLocal[assignmentIndex].vyriesene === 0) {
+			assignmentsLocal[assignmentIndex].pokusy = (assignmentsLocal[assignmentIndex].pokusy || 0) + 1;
+			updateProgressTable();
+		}
 
 		//zmen run button na stop button
 		document.getElementById("runButtonDiv").innerHTML = '<button type="button" class="button" id="stopButton" onclick="stopSimulation()"><img src="icons/stop.png" class="icon" width="50px" height="50px"></button><span class="label" id="stopLabel"> Stopni program </span>';
@@ -1364,6 +1608,10 @@
 		setButtonState("cleanButton", true);
 		setButtonState("cleanWaterButton", true);
 		setButtonState("cleanObstaclesButton", true);
+		setButtonState("addRowsButton", true);
+		setButtonState("removeRowsButton", true);
+		setButtonState("addColumnsButton", true);
+		setButtonState("removeColumnsButton", true);
 		setButtonState("saveButton", true);
 		setButtonState("nextButton", true);
 
@@ -1373,12 +1621,23 @@
 			clearInterval(simulationInterval);
 			simulationInterval = null;
 		}
-		/*
-		if (assignmentsLocal[assignmentIndex] && assignmentsLocal[assignmentIndex].vyriesene === 0) {
-			assignmentsLocal[assignmentIndex].pokusy = (assignmentsLocal[assignmentIndex].pokusy || 0) + 1;
+		
+		
+		//updateProgressTable();
+	}
+
+	//funkcia, ktora zabezpecuje zapamatanie obsahu solutionDiv pre prislusne zadanie s indexom index
+	function saveSolution(index) {
+		const div = document.getElementById("solutionDiv");
+		if (div) assignmentsLocal[index].solutionHTML = div.innerHTML;
+	}
+
+	//funkcia, ktora zabezpecuje spatne nacitanie obsahu solutionDiv pre prislusne zadanie s indexom index
+	function restoreSolutionFromDiv(index) {
+		const div = document.getElementById("solutionDiv");
+		if (div && assignmentsLocal[index].solutionHTML) {
+			div.innerHTML = assignmentsLocal[index].solutionHTML;
 		}
-		*/
-		updateProgressTable();
 	}
 
 	// kontrola riesenia po ukonceni simulacie
@@ -1387,7 +1646,7 @@
 		syncStatesWithGrid();
 
 		//ak je zadanie "avoid_cells" tak skontroluj, ci je pocet suchych policok numOfEmptyCells rovnaky ako v cieli a ci je pocet prekazok vacsi ako maxNumOfObstacles
-		if (currentAssignment.type === "avoid_cells") {
+		if (assignmentType === "avoid_cells") {
 			const numEmptyCells = currentAssignment.goal && currentAssignment.goal.numOfEmptyCells;
 			const maxObstacles = currentAssignment.goal && currentAssignment.goal.maxNumOfObstacles;
 			//ak pocet suchych buniek nie je dobre definovany, tak nic nerob
@@ -1400,29 +1659,35 @@
 			//ak sa rovna ciel s tym, co mame tak ok = true, inak false
 			let ok = (dry === numEmptyCells);
 
-			//ak je maxObstacles definovane, tak ok je true len ak je splnena aj tato podmienka (interne pocitane prekazky su vacsie ako minimum)
-			if (typeof maxObstacles === "number") ok = ok && (obstacleCount >= maxObstacles);
+			//ak je maxObstacles definovane, tak ok je true len ak je splnena aj tato podmienka (interne pocitane prekazky su mensie ako max)
+			if (typeof maxObstacles === "number") ok = ok && (obstacleCount <= maxObstacles);
 
-			document.getElementById("solutionDiv").innerHTML = ok ? "<span class='correct'>Riešenie je správne.</span>" : `<span class='incorrect'>Riešenie nie je správne.</span><br><span class='details'>Suchých políčok: <strong  style='font-size: 24px;'>${dry}</strong>/${numEmptyCells}.<br>Prekážok: <strong style='font-size: 24px;'>${obstacleCount}</strong>${typeof maxObstacles==="number" ? "/" + maxObstacles + "" : ""}.</span>`;
+			let html = ok ? "<span class='correct'>Riešenie je správne.</span>" : "<span class='incorrect'>Riešenie nie je správne.</span><br>";
+			html = html + `<br> <span class='details'>Suché políčka: <strong  style='font-size: 24px;'>${dry}</strong>/${numEmptyCells}.<br> Prekážky: <strong style='font-size: 24px;'>${obstacleCount}</strong>${typeof maxObstacles==="number" ? "/" + maxObstacles + "" : ""}.</span>`;
+			document.getElementById("solutionDiv").innerHTML = html;
+
 			if (ok) {
 				assignmentsLocal[assignmentIndex].vyriesene = 1;
 				updateProgressTable();
 			}
 		}
 
-		if (currentAssignment.type === "fastest_fill") {
+		if (assignmentType === "fastest_fill") {
 			//v fastest_fill je riesenie spravne, ak je vsetka voda rozlita (teda v mriezke nie je ziadna prazdna bunka)
+
 			let ok = (waterCount + obstacleCount === currentRows * currentCols);
 			//if (currentAssignment.goal && typeof currentAssignment.goal.maxSteps === "number") {
-				if (ok && stepsCounter[assignmentIndex] <= currentAssignment.goal.maxSteps) {
-					document.getElementById("solutionDiv").innerHTML = "<span class='correct'>Riešenie je správne.</span>";
-					assignmentsLocal[assignmentIndex].vyriesene = 1;
-					updateProgressTable();
-				} else if (ok && stepsCounter[assignmentIndex] > currentAssignment.goal.maxSteps) {
-					document.getElementById("solutionDiv").innerHTML = `<span class='incorrect'>Riešenie je správne, ale počet krokov bol prekročený.</span><br><span class='details'>Počet krokov: <strong style='font-size: 24px;'>${stepsCounter[assignmentIndex]}</strong>/${currentAssignment.goal.maxSteps}.</span>`;
-				} else {
-					document.getElementById("solutionDiv").innerHTML = "<span class='incorrect'>Riešenie nie je správne.</span>";
-				}
+			if (ok && waterSource[assignmentIndex].length === currentAssignment.goal.allowedSources && stepsCounter[assignmentIndex] <= currentAssignment.goal.maxSteps) {
+				document.getElementById("solutionDiv").innerHTML = `<span class='correct'>Riešenie je správne.</span><br><span class='details'>Počet zdrojov vody: <strong style='font-size: 24px;'>${waterSource[assignmentIndex].length}</strong>/${currentAssignment.goal.allowedSources}.</span><br><span class='details'>Počet krokov: <strong style='font-size: 24px;'>${stepsCounter[assignmentIndex]}</strong>/${currentAssignment.goal.maxSteps}.</span>`;
+				assignmentsLocal[assignmentIndex].vyriesene = 1;
+				updateProgressTable();
+			} 
+			else if (ok && stepsCounter[assignmentIndex] > currentAssignment.goal.maxSteps) {
+				document.getElementById("solutionDiv").innerHTML = `<span class='incorrect'>Riešenie nie je správne, pretože bol prekročený počet krokov.</span><br><span class='details'>Počet krokov: <strong style='font-size: 24px;'>${stepsCounter[assignmentIndex]}</strong>/${currentAssignment.goal.maxSteps}.</span>`;
+			} 
+			else {
+				document.getElementById("solutionDiv").innerHTML = `<span class='incorrect'>Riešenie nie je správne.</span><br><span class='details'>Počet krokov: <strong style='font-size: 24px;'>${stepsCounter[assignmentIndex]}</strong>/${currentAssignment.goal.maxSteps}.</span>`;
+			}
 		}
 	}
 
@@ -1444,7 +1709,6 @@
 	function generateTextFastestFill() {
 		if (!currentAssignment) return "";
 		let allowedSources = currentAssignment.goal.allowedSources; 
-		// ZDROJE VODY ZATIAL LEN 1, TREBA VYSPEKULOVAT AKO ZMENIT NEJAKE INTERNE ZNACKY A PODMIENKY V INYCH FUNKCIACH
 		let sourceText = allowedSources === 1 ? 'zdroj vody' : (allowedSources >= 2 && allowedSources <= 4 ? 'zdroje vody' : 'zdrojov vody');
 		let text = `Vašim cieľom je pridať <span class="details" style="font-size: 24px;">${allowedSources}</span> ${sourceText} do mriežky tak, aby sa voda rozliala do všetkých políčok čo najrýchlejšie.</span><br>`;
 		text += `Povolený počet krokov: <span class="details" style="font-size: 24px;">${currentAssignment.goal.maxSteps}</span>.\n`;
@@ -1455,6 +1719,69 @@
 		text += "- Môžete spustiť simuláciu, ktorá ukáže, ako sa voda rozleje.\n";
 		text += "- Po skončení simulácie sa zobrazí, či je riešenie správne.\n";*/
 		return text;
+	}
+
+	//funkcia, ktora sa pouziva na dynamicke menenie obsahu solutionDiv
+	function updateSolutionDiv() {
+		if (assignmentType === "avoid_cells") {
+			const numEmptyCells = currentAssignment.goal?.numOfEmptyCells ?? 0;
+        	const maxObstacles = currentAssignment.goal?.maxNumOfObstacles ?? 0;
+			
+			//celkovy pocet buniek v mriezke
+        	const totalCells = currentRows * currentCols;
+			//pocet suchych buniek zalozeny na internom counteri
+        	const dry = totalCells - waterCount - obstacleCount;
+			document.getElementById("solutionDiv").innerHTML = `<br><span class='details'>Suché políčka: <strong  style='font-size: 24px;'>${dry}</strong>/${numEmptyCells}.<br>Prekážky: <strong style='font-size: 24px;'>${obstacleCount}</strong>${typeof maxObstacles==="number" ? "/" + maxObstacles + "" : ""}.</span>`;
+		}
+		else if (assignmentType === "fastest_fill") {
+			const allowedSources = currentAssignment.goal?.allowedSources ?? 0;
+        	const waterSources = Array.isArray(waterSource?.[assignmentIndex]) ? waterSource[assignmentIndex].length : 0;
+        	const steps = typeof stepsCounter?.[assignmentIndex] === "number" ? stepsCounter[assignmentIndex] : 0;
+        	const maxSteps = currentAssignment.goal?.maxSteps ?? 0;
+			document.getElementById("solutionDiv").innerHTML = `<br><span class='details'>Počet zdrojov vody: <strong  style='font-size: 24px;'>${waterSources}</strong>/${allowedSources}.<br>Počet krokov: <strong style='font-size: 24px;'>${steps}</strong>/${maxSteps}.</span>`;
+		}
+	}
+
+	updateSolutionDiv();
+
+	//funkcia na debug
+	function debug() {
+		console.log("assignments");
+		console.log(assignments);
+		console.log("assignmentsLocal");
+		console.log(assignmentsLocal);
+		console.log("assignmentIndex");
+		console.log(assignmentIndex);
+		console.log("assignmentType");
+		console.log(assignmentType);
+		console.log("currentAssignment");
+		console.log(currentAssignment);
+		console.log("initialGridSnapshot");
+		console.log(initialGridSnapshot);
+		console.log("gridArray");
+		console.log(gridArray);
+		console.log("waterCells");
+		console.log(waterCells);
+		console.log("waterCount");
+		console.log(waterCount);
+		console.log("obstacleCells");
+		console.log(obstacleCells);
+		console.log("obstacleCount");
+		console.log(obstacleCount);
+		console.log("emptyCells");
+		console.log(emptyCells);
+		console.log("emptyCount");
+		console.log(emptyCount);
+		console.log("waterSource");
+		console.log(waterSource);
+		//console.log("waterSource.length");
+		//console.log(waterSource.length);
+		console.log("fillSteps");
+		console.log(fillSteps);
+		console.log("fixedObstacles");
+		console.log(fixedObstacles);
+		console.log("simulationFinished");
+		console.log(simulationFinished);
 	}
 </script>
 </body>
