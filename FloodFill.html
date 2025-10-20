@@ -148,7 +148,7 @@
 			</div>
 			<div id="sidebar">
 				<div id="sidebar-top">
-					<span class="label" id="helperLabel"> Nástroje </span>
+					<span class="label" id="helperLabelButtons"> Nástroje </span>
 					<div class="sidebar-button-wrapper" id="cleanButtonDiv">
 						<button type="button" class="button" id="cleanButton"> 
 							<img src="icons/clean.png" class="icon" width="30px" height="30px">
@@ -198,7 +198,7 @@
 				</div>
 				<!-- v spodnom sidebare nebudu buttony, ale iba ikony -->
 				<div id="sidebar-bottom">
-					<span class="label" id="helperLabel"> Pomôcka </span>
+					<span class="label" id="helperLabelIcons"> Pomôcka </span>
 					<div class="sidebar-icon-wrapper" id="addWaterIconDiv">
 						<img src="icons/left-click.png" class="icon" width="30px" height="30px">
 						<span class="label" id="leftClickLabel"> Pridaj vodu </span>
@@ -216,8 +216,132 @@
 	</div>
 </div>
 
-<!-- CAST 2 - MOD TVORBA, !!! TODO -->
-<div id="tvorba-section"> </div>
+
+<div id="tvorba-section">
+	<div id="tvorba-center-section">
+    	<div id="tvorba-task-wrapper">
+			<div id="tvorba-levelCounter">
+				<p>
+					Editor
+				</p>
+			</div>
+			<div id="tvorba-assignmentTypeToggle">
+				<label>
+				<input type="radio" name="assignmentType" value="avoid_cells" checked>
+				<span>Avoid Cells</span>
+				</label>
+				<label>
+				<input type="radio" name="assignmentType" value="fastest_fill">
+				<span>Fastest Fill</span>
+				</label>
+			</div>
+
+			<h3 id="tvorba-zadanieHeader">Zadanie</h3>
+			<div id="tvorba-task-text">
+				<!-- defaultne zadanie je avoid Cells -->
+				<p>
+				Vaším cieľom je pridať prekážky do mriežky tak, aby voda nezaplavila presne
+				<span class="details">
+					<input type="number" id="tvorba-numDryCells" max="99" placeholder="1" required>
+				</span>
+				políčok. Môžete pridať najviac
+				<span class="details">
+					<input type="number" id="tvorba-maxObstacles" max="99" placeholder="1" required>
+				</span>
+				prekážok.
+				</p>
+				<div id="tvorba-saveButtonsDiv">
+					<div class="button-wrapper" id="tvorba-saveAssignmentButtonDiv">
+						<button class="button" id="tvorba-saveAssignment">
+							<img src="icons/save-data.png" class="icon" width="50px" height="50px">
+						</button>
+						<span class="label" id="tvorba-saveAssignmentButtonLabel"> Ulož zadanie </span>
+					</div>
+					</p>
+					<div class="button-wrapper" id="tvorba-saveAssignmentToDriveButtonDiv">
+						<button class="button" id="tvorba-saveAssignmentToDrive">
+							<img src="icons/harddisk.png" class="icon" width="50px" height="50px">
+						</button>
+						<span class="label" id="tvorba-saveAssignmentToDriveButtonLabel"> Ulož zadanie na disk </span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="tvorba-sidebar-grid">
+			<div id="tvorba-grid-wrapper">
+				<div id="tvorba-grid"> </div>
+				<div id="tvorba-gridInfo">
+					<span id="tvorba-rowCountLabel"> </span>
+					<span id="tvorba-colCountLabel"> </span>
+				</div>
+			</div>
+			<div id="tvorba-sidebar">
+				<div id="tvorba-sidebar-top">
+					<span class="label" id="tvorba-helperLabelButtons"> Nástroje </span>
+					<div class="sidebar-button-wrapper" id="tvorba-cleanButtonDiv">
+						<button type="button" class="button" id="tvorba-cleanButton"> 
+							<img src="icons/clean.png" class="icon" width="30px" height="30px">
+						</button>
+						<span class="label" id="tvorba-cleanLabel"> Vyčisti mriežku </span>
+					</div>
+					<div class="sidebar-button-wrapper" id="tvorba-cleanWaterButtonDiv">
+						<button type="button" class="button" id="tvorba-cleanWaterButton"> 
+							<img src="icons/delete-water.png" class="icon" width="30px" height="30px">
+						</button>
+						<span class="label" id="tvorba-cleanWaterLabel"> Odstráň vodu </span>
+					</div>
+					<div class="sidebar-button-wrapper" id="tvorba-cleanObstaclesButtonDiv">
+						<button type="button" class="button" id="tvorba-cleanObstaclesButton"> 
+							<img src="icons/delete-obstacles.png" class="icon" width="30px" height="30px">
+						</button>
+						<span class="label" id="tvorba-cleanObstaclesLabel"> Odstráň prekážky </span>
+					</div>
+					<div class="sidebar-button-wrapper-double" id="tvorba-adjustRowsButtonsDiv">
+						<button type="button" class="button" id="tvorba-addRowsButton"> 
+							<img src="icons/plus.png" class="icon" width="30px" height="30px">
+						</button>
+						<button type="button" class="button" id="tvorba-removeRowsButton"> 
+							<img src="icons/minus.png" class="icon" width="30px" height="30px">
+						</button>
+						<span class="label" id="tvorba-adjustRowsLabel">
+							<span class="label-add">&nbsp Pridaj riadok </span>&nbsp&nbsp | &nbsp&nbsp<span class="label-remove">Odstráň riadok</span>
+						</span>
+					</div>
+					<div class="sidebar-button-wrapper-double" id="tvorba-adjustColumnsButtonsDiv">
+						<button type="button" class="button" id="tvorba-addColumnsButton"> 
+							<img src="icons/plus.png" class="icon" width="30px" height="30px">
+						</button>
+						<button type="button" class="button" id="tvorba-removeColumnsButton"> 
+							<img src="icons/minus.png" class="icon" width="30px" height="30px">
+						</button>
+						<span class="label" id="tvorba-adjustColumnsLabel">
+							<span class="label-add">&nbsp Pridaj stĺpec </span>&nbsp&nbsp | &nbsp &nbsp<span class="label-remove">Odstráň stĺpec</span>
+						</span>
+					</div>
+					<div class="sidebar-button-wrapper" id="tvorba-resetButtonDiv">
+						<button type="button" class="button" id="tvorba-resetButton"> 
+							<img src="icons/undo.png" class="icon" width="30px" height="30px">
+						</button>
+						<span class="label" id="tvorba-resetLabel"> Začni odznovu </span>
+					</div>
+				</div>
+				<!-- v spodnom sidebare nebudu buttony, ale iba ikony -->
+				<div id="tvorba-sidebar-bottom">
+					<span class="label" id="tvorba-helperLabelIcons"> Pomôcka </span>
+					<div class="sidebar-icon-wrapper" id="tvorba-addWaterIconDiv">
+						<img src="icons/left-click.png" class="icon" width="30px" height="30px">
+						<span class="label" id="tvorba-leftClickLabel"> Pridaj vodu </span>
+					</div>
+					<div class="sidebar-icon-wrapper" id="tvorba-addObstacleIconDiv">
+						<img src="icons/right-click.png" class="icon" width="30px" height="30px">
+						<span class="label" id="tvorba-rightClickLabel"> Pridaj prekážku </span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <!-- Päta stranky -->
 <footer>
@@ -262,6 +386,24 @@
 	const openInfo = document.getElementById("openModal");
 	const closeInfo = document.getElementById("closeModal");
 	const modal = document.getElementById("modal");
+
+	const tvorbaCleanButton = document.getElementById("tvorba-cleanButton");
+	const tvorbaCleanWaterButton = document.getElementById("tvorba-cleanWaterButton");
+	const tvorbaCleanObstaclesButton = document.getElementById("tvorba-cleanObstaclesButton");
+	const tvorbaAddRowsButton = document.getElementById("tvorba-addRowsButton");
+	const tvorbaRemoveRowsButton = document.getElementById("tvorba-removeRowsButton");
+	const tvorbaAddColumnsButton = document.getElementById("tvorba-addColumnsButton");
+	const tvorbaRemoveColumnsButton = document.getElementById("tvorba-removeColumnsButton");
+	const tvorbaResetButton = document.getElementById("tvorba-resetButton");
+	const tvorbaResetButtonDiv = document.getElementById("tvorba-resetButtonDiv");
+	const tvorbaNumDryCellsInput = document.getElementById("tvorba-numDryCells");
+	const tvorbaMaxObstaclesInput = document.getElementById("tvorba-maxObstacles");
+
+	//defaultny mode co sa pusta na zaciatku
+	let currentMode = "hra";
+	hraSection.style.display = "";
+	tvorbaSection.style.display = "none";
+	let activeGridId = "grid";
 	
 	//pomocne pole kde si budeme ukladat zadania
 	let assignments = [];
@@ -292,6 +434,10 @@
 
 	//pole, v ktorom si na indexe i pamatame, ci zadanie s indexom i uz skoncilo simulaciu
 	let simulationFinished = [];
+
+	function getCell(row, col) {
+		return document.querySelector(`#${activeGridId} #cell-${row}-${col}`);
+	}
 	
 	// Inicializacia 2D pola na zaklade poctu riadkov a stlpcov
 	function initializeGridArray(rows, cols) {
@@ -315,7 +461,7 @@
 		for (let row = 0; row < currentRows; row++) {
 			for (let col = 0; col < currentCols; col++) {
 				const value = gridArray[row][col];
-				const cell = document.getElementById(`cell-${row}-${col}`);
+				const cell = getCell(row, col);
 				if (!cell) continue;
 				//ak je v bunke voda
 				if (value === 1) {
@@ -363,7 +509,7 @@
 			const isSelected = index === assignmentIndex ? " class='selectedLevel'" : "";
 			tableHTML += `
 				<tr>
-					<td${isSelected} onclick="switchToLevelById(${index})" onmouseover="this.style.backgroundColor='#f0f0f0';" onmouseout="this.style.backgroundColor='';" style="cursor: pointer;">Úloha ${index + 1}</td>
+					<td${isSelected} onclick="switchToLevelById(${index})">Úloha ${index + 1}</td>
 					<td${isSelected}>${assignment.pokusy || 0}</td>
 					<td${isSelected}>${assignment.vyriesene ? "✔️" : "❌"}</td>
 				</tr>
@@ -427,8 +573,7 @@
 		//nacitaj do mriezky na stranke stav mriezky z JSONu
 		for (let row = 0; row < gridArray.length; row++) {
 			for (let col = 0; col < gridArray[row].length; col++) {
-				let cellId = `cell-${row}-${col}`;
-				let cell = document.getElementById(cellId);
+				let cell = getCell(row, col);
 				let iconSize = 0;
 				//ak je bunka prazdna
 				if (gridArray[row][col] === 0) {
@@ -461,7 +606,7 @@
 		if (assignmentType === "fastest_fill" && fillSteps[assignmentIndex]) {
 			for (const key in fillSteps[assignmentIndex]) {
 				const [row, col] = key.split(",").map(Number);
-				const cell = document.getElementById(`cell-${row}-${col}`);
+				const cell = getCell(row, col);
     			if (cell && gridArray[row][col] === 1) {
       				cell.textContent = fillSteps[assignmentIndex][key] + 1;
     			}
@@ -575,26 +720,95 @@
 	function generateAssignmentId() {
 		return crypto.randomUUID();
 	}
+
+	function updateInputs(changed = null) {
+		let dryStr = tvorbaNumDryCellsInput.value.replace(/\D/g, "");
+		let obsStr = tvorbaMaxObstaclesInput.value.replace(/\D/g, "");
+		let numDry = parseInt(dryStr, 10);
+		let numObs = parseInt(obsStr, 10);
+
+		if (isNaN(numDry)) numDry = 0;
+		if (isNaN(numObs)) numObs = 0;
+
+		const dryMax = Math.max(1, emptyCount - Math.max(numObs, 1));
+		const obsMax = Math.max(1, emptyCount - Math.max(numDry, 1));
+
+		tvorbaNumDryCellsInput.max = dryMax;
+		tvorbaMaxObstaclesInput.max = obsMax;
+		tvorbaNumDryCellsInput.placeholder = "1";
+		tvorbaMaxObstaclesInput.placeholder = "1";
+
+		if (changed === "dry") {
+			if (numObs > obsMax) numObs = obsMax;
+			if (!isNaN(numObs) && tvorbaMaxObstaclesInput.value !== "")
+			tvorbaMaxObstaclesInput.value = numObs;
+		} else if (changed === "obs") {
+			if (numDry > dryMax) numDry = dryMax;
+			if (!isNaN(numDry) && tvorbaNumDryCellsInput.value !== "")
+			tvorbaNumDryCellsInput.value = numDry;
+		}
+
+		if (!isNaN(numDry) && tvorbaNumDryCellsInput.value !== "")
+			tvorbaNumDryCellsInput.value = Math.min(numDry, dryMax);
+		if (!isNaN(numObs) && tvorbaMaxObstaclesInput.value !== "")
+			tvorbaMaxObstaclesInput.value = Math.min(numObs, obsMax);
+	}
 	
 	// metody tykajucesa prepinania rezimov 
 	modeHra.onclick = () => {
+		currentMode = "hra";
 		modeHra.classList.add("active");
 		modeTvorba.classList.remove("active");
-		hraSection.classList.remove("hidden");
-		tvorbaSection.classList.add("hidden");
-		if (assignmentType && assignmentType !== 'free' && assignments && assignments.length > 0) {
-			showNonFreeButtons();
-		} else {
-			hideNonFreeButtons();
-		}
+		hraSection.style.display = "";
+		tvorbaSection.style.display = "none";
+		document.getElementById("tvorba-grid").innerHTML = "";
+		waterSource = [];
+		generateGrid(8, 8, "grid");
+		setFreeMode();
+		syncStatesWithGrid();
 	};	
 	
 	modeTvorba.onclick = () => {
+		currentMode = "tvorba";
 		modeHra.classList.remove("active");
 		modeTvorba.classList.add("active");
-		hraSection.classList.add("hidden");
-		tvorbaSection.classList.remove("hidden");
+		hraSection.style.display = "none";
+		tvorbaSection.style.display = "flex";
+		setFreeMode();
+		tvorbaResetButtonDiv.style.display = "none";
+		generateGrid(8, 8, "tvorba-grid");
+		updateInputs();
 	};
+
+	tvorbaNumDryCellsInput.addEventListener("input", () => {
+		const raw = tvorbaNumDryCellsInput.value.replace(/[^\d]/g, "");
+
+		if (raw === "") {
+			tvorbaNumDryCellsInput.value = "";
+			updateInputs("dry");
+			return;
+		}
+
+		const number = parseInt(raw, 10);
+		if (!isNaN(number)) {
+			updateInputs("dry");
+		}
+		});
+
+	tvorbaMaxObstaclesInput.addEventListener("input", () => {
+		const raw = tvorbaMaxObstaclesInput.value.replace(/[^\d]/g, "");
+
+		if (raw === "") {
+			tvorbaMaxObstaclesInput.value = "";
+			updateInputs("obs");
+			return;
+		}
+
+		const number = parseInt(raw, 10);
+		if (!isNaN(number)) {
+			updateInputs("obs");
+		}
+	});
 
 	//po kliknuti na "Volny rezim"
 	freeButton.addEventListener("click", () => setFreeMode());
@@ -602,23 +816,37 @@
 	//po kliknuti na "Vycisti mriezku" sa vycisti mriezka na obrazovke, aj interne
 	cleanButton.addEventListener("click", () => cleanGrid());
 
+	tvorbaCleanButton.addEventListener("click", () => cleanGrid());
+
 	//po kliknuti na "Odstran vodu" sa z mriezky odstrania vsetky bunky s vodou (nahradia s prazdnymi bunkami)
 	cleanWaterButton.addEventListener("click", () => cleanWaterGrid());
+
+	tvorbaCleanWaterButton.addEventListener("click", () => cleanWaterGrid());
 
 	//po kliknut na "Odstran prekazky" sa z mriezky odstrania vsetky bunky s prekazkami (nahradia sa prazdnymi bunkami)
 	cleanObstaclesButton.addEventListener("click", () => cleanObstaclesGrid());
 
+	tvorbaCleanObstaclesButton.addEventListener("click", () => cleanObstaclesGrid());
+
 	//po kliknuti na "Pridaj riadok" sa v mriezke prida riadok na koniec
 	addRowsButton.addEventListener("click", () => addRow());
+
+	tvorbaAddRowsButton.addEventListener("click", () => addRow());
 
 	//po kliknuti na "Pridaj stlpec" sa v mriezke prida stlpec na koniec 
 	addColumnsButton.addEventListener("click", () => addColumn());
 
+	tvorbaAddColumnsButton.addEventListener("click", () => addColumn());
+
 	//po kliknut na "Odstran riadok" sa v mriezke odstrani posledny riadok
 	removeRowsButton.addEventListener("click", () => removeRow());
 
+	tvorbaRemoveRowsButton.addEventListener("click", () => removeRow());
+
 	//po kliknut na "Odstran riadok" sa v mriezke odstrani pesledny stlpec
 	removeColumnsButton.addEventListener("click", () => removeColumn());
+
+	tvorbaRemoveColumnsButton.addEventListener("click", () => removeColumn());	
 
 	//po kliknuti na "Zacni odznovu" sa z mriezky odstrania vsetky bunky v zavislosti od zadania
 	resetButton.addEventListener('click', () => {
@@ -634,7 +862,7 @@
 			// Obnov mriezku do pociatocneho stavu zo zadania
 			for (let row = 0; row < currentRows; row++) {
 				for (let col = 0; col < currentCols; col++) {
-					const cell = document.getElementById(`cell-${row}-${col}`);
+					const cell = getCell(row, col);
 					cell.innerText = "";
 					const val = initialGridSnapshot[assignmentIndex][row][col];
 					if (val === 2) {
@@ -659,7 +887,7 @@
 			cleanGrid();
 			for (let row = 0; row < currentRows; row++) {
 				for (let col = 0; col < currentCols; col++) {
-					const cell = document.getElementById(`cell-${row}-${col}`);
+					const cell = getCell(row, col);
 					cell.innerText = "";
 					const val = initialGridSnapshot[assignmentIndex][row][col];
 					if (val === 2) {
@@ -782,7 +1010,7 @@
 		obstacles.forEach(([row, col]) => {
 			if (row < 0 || row >= currentRows || col < 0 || col >= currentCols) return;
 			gridArray[row][col] = 2;
-			const cell = document.getElementById(`cell-${row}-${col}`);
+			const cell = getCell(row, col);
 			if (cell) {
 				cell.className = "cell cellObstacle";
 				cell.innerHTML = `<img src="icons/big.png" width="${cellSize}" height="${cellSize}">`;
@@ -801,7 +1029,7 @@
 		
 		if (cellRow >= 0 && cellRow < currentRows && cellCol >= 0 && cellCol < currentCols) {
 			gridArray[cellRow][cellCol] = 1;
-			const cell = document.getElementById(`cell-${cellRow}-${cellCol}`);
+			const cell = getCell(cellRow, cellCol);
 			if (cell) {
 				cell.className = "cell cellWater";
 				cell.innerHTML = `<img src="icons/waterCell.png" width="${cellSize*0.7}" height="${cellSize*0.7}">`;
@@ -910,7 +1138,7 @@
 
 	//funkcia, ktora vyprazdni obsah vsetkych buniek v mriezke
 	function deleteAllDivs() {
-		const cells = document.querySelectorAll("#grid .cell");
+		const cells = document.querySelectorAll(`#${activeGridId} .cell`);
 		cells.forEach(cell => {
 			cell.textContent = "";
 		});
@@ -1005,7 +1233,7 @@
 	
 	// dizajn - oble okraje gridu
 	function setRoundCorners(rows, cols) {
-		const cells = document.querySelectorAll("#grid .cell");
+		const cells = document.querySelectorAll(`#${activeGridId} .cell`);
 		//ak nie su ziadne bunky, tak nic nerob
 		if (!cells.length) return;
 		
@@ -1021,7 +1249,7 @@
 	
 	//dizajn - hrubsi okraj gridu
 	function setOuterBorders(rows, cols) {
-		const cells = document.querySelectorAll("#grid .cell");
+		const cells = document.querySelectorAll(`#${activeGridId} .cell`);
 		//ak nie su ziadne bunky, tak nic nerob
 		if (!cells.length) return;
 		
@@ -1053,8 +1281,7 @@
 			//najdenie prislusnej bunky
 			let cellRow = Math.floor(i/currentCols);
 			let cellCol = i % currentCols;
-			let cellId = `cell-${cellRow}-${cellCol}`;
-			let cell = document.getElementById(cellId);
+			let cell = getCell(cellRow, cellCol)
 			//vyprazdnenie nastavenim prislusnych classov
 			cell.className = "cell cellEmpty";
 			cell.innerHTML = "";
@@ -1066,6 +1293,7 @@
 		initializeGridArray(currentRows, currentCols);
 		//synchronizacia pomocnych poli s aktualnym stavom mriezky
 		syncStatesWithGrid();
+		if (currentMode === "tvorba") updateInputs();
 	}
 
 	function cleanWaterGrid() {
@@ -1078,8 +1306,7 @@
 		for (let i = 0; i < currentRows * currentCols; i++) {
 			let cellRow = Math.floor(i/currentCols);
 			let cellCol = i % currentCols;
-			let cellId = `cell-${cellRow}-${cellCol}`;
-			let cell = document.getElementById(cellId);
+			let cell = getCell(cellRow, cellCol);
 			if (cell.classList.contains("cellWater")) {
 				//vyprazdnenie nastavenim prislusnych classov
 				cell.className = "cell cellEmpty";
@@ -1089,6 +1316,7 @@
 		}
 		// rebuild canonical auxiliary trackers
 		syncStatesWithGrid();
+		if (currentMode === "tvorba") updateInputs();
 	}
 
 	function cleanObstaclesGrid() {
@@ -1099,8 +1327,7 @@
 		for (let i = 0; i < currentRows * currentCols; i++) {
 			let cellRow = Math.floor(i/currentCols);
 			let cellCol = i % currentCols;
-			let cellId = `cell-${cellRow}-${cellCol}`;
-			let cell = document.getElementById(cellId);
+			let cell = getCell(cellRow, cellCol);
 			if (cell.classList.contains("cellObstacle")) {
 				//vyprazdnenie nastavenim prislusnych classov
 				cell.className = "cell cellEmpty";
@@ -1110,6 +1337,7 @@
 		}
 		//synchronizacia pomocnych poli s aktualnym stavom mriezky
 		syncStatesWithGrid();
+		if (currentMode === "tvorba") updateInputs();
 	}
 
 	function setFreeMode() {
@@ -1217,6 +1445,7 @@
 		}
 		syncStatesWithGrid();
 		updateSolutionDiv();
+		if (currentMode === "tvorba") updateInputs();
 	}
 
 	let obstacleCount = 0;
@@ -1269,22 +1498,23 @@
 		}
 		syncStatesWithGrid();
 		updateSolutionDiv();
+		if (currentMode === "tvorba") updateInputs();
 	}
-	
-	const grid = document.getElementById("grid");
 
+	let grid;
 	let preserveGrid = false;
 
 	//funkcia na vytvorenie mriezky rozmerov [riadky, stlpce], sizePolicka je velkost jednej bunky/stvorceka
 	//zaklad 8x8
-	function generateGrid(rows, cols) {
+	function generateGrid(rows, cols, targetId = "grid") {
+
+		activeGridId = targetId;
+		grid = document.getElementById(targetId);
 		
 		currentRows = rows;
 		currentCols = cols;
 		
 		if (!preserveGrid) initializeGridArray(currentRows, currentCols);
-
-		const grid = document.getElementById("grid");
 		
 		grid.innerHTML = "";
 		
@@ -1294,7 +1524,7 @@
 		//dynamicky zmenit velkost bunky v zavislosti od poctu riadkov/stlpcov
 		cellSize = Math.floor(maxGridSize/currentRows);
 		//najvacsia velkost bunky
-		if (cellSize > 80) cellSize = 80;
+		if (cellSize > 60) cellSize = 60;
 		
 		// nastavenie poctu stlpcov a velkost bunky
 		grid.style.gridTemplateColumns = "repeat(" + currentCols + ", " + cellSize + "px)";
@@ -1345,13 +1575,13 @@
 		const snapshot = gridArray.map(row => [...row]);
 		const cellRows = snapshot.length;
 		const cellCols = snapshot[0].length;
-		generateGrid(cellRows, cellCols);
+		generateGrid(cellRows, cellCols, activeGridId);
 		gridArray = snapshot;
 
 		for (let row = 0; row < cellRows; row++) {
 			for (let col = 0; col < cellCols; col++) {
 				const val = gridArray[row][col];
-				const cell = document.getElementById(`cell-${row}-${col}`);
+				const cell = getCell(row, col);
 				if (!cell) continue;
 
 				if (val === 1) {
@@ -1377,8 +1607,16 @@
 	function updateGridInfo() {
 		const rows = gridArray.length;
 		const cols = gridArray[0].length;
-		document.getElementById("rowCountLabel").textContent = `Riadky: ${rows}`;
-		document.getElementById("colCountLabel").textContent = `Stĺpce: ${cols}`;
+		// hra labels
+		const hraRow = document.getElementById("rowCountLabel");
+		const hraCol = document.getElementById("colCountLabel");
+		if (hraRow) hraRow.textContent = `Riadky: ${rows}`;
+		if (hraCol) hraCol.textContent = `Stĺpce: ${cols}`;
+		// tvorba labels
+		const tvRow = document.getElementById("tvorba-rowCountLabel");
+		const tvCol = document.getElementById("tvorba-colCountLabel");
+		if (tvRow) tvRow.textContent = `Riadky: ${rows}`;
+		if (tvCol) tvCol.textContent = `Stĺpce: ${cols}`;
 		
 	}
 
@@ -1390,6 +1628,7 @@
 		redrawGridPreservingContent();
 		preserveGrid = false;
 		updateGridInfo();
+		if (currentMode === "tvorba") updateInputs();
 	}
 
 	//funkcia na odstranenie riadka
@@ -1401,6 +1640,7 @@
 		redrawGridPreservingContent();
 		preserveGrid = false;
 		updateGridInfo();
+		if (currentMode === "tvorba") updateInputs();
 	}
 
 	//funkcia na pridanie stlpca
@@ -1411,6 +1651,7 @@
 		redrawGridPreservingContent();
 		preserveGrid = false;
 		updateGridInfo();
+		if (currentMode === "tvorba") updateInputs();
 	}
 
 	//funkcia na odstranenie stlpca
@@ -1422,6 +1663,7 @@
 		redrawGridPreservingContent();
 		preserveGrid = false;
 		updateGridInfo();
+		if (currentMode === "tvorba") updateInputs();
 	}
 
 
@@ -1443,7 +1685,7 @@
 						// Nastala zmena v mriezke
 						changed = true;
 						// Prenastav div bunky aj na stránke
-						const newWaterCell = document.getElementById(`cell-${row}-${col}`);
+						const newWaterCell = getCell(row, col);
 						newWaterCell.classList.remove("cellEmpty");
 						newWaterCell.classList.add("cellWater");
 						// Iba ak ešte nie je v zozname waterCells (ochrana proti duplikátom)
@@ -1485,7 +1727,7 @@
 							//nastala zmena v mriezke
 							changed = true;
 							//prenastav div bunky aj na stranke
-							const newWaterCell = document.getElementById(`cell-${nRow}-${nCol}`);
+							const newWaterCell = getCell(nRow, nCol);
 							newWaterCell.classList.remove("cellEmpty");
 							newWaterCell.classList.add("cellWater");
 
@@ -1721,6 +1963,39 @@
 		return text;
 	}
 
+	function generateAvoidCellsTaskHTML() {
+		let html = `
+		<p>
+			Vaším cieľom je pridať prekážky do mriežky tak, aby voda nezaplavila presne
+			<span class="details">
+			<input type="number" id="tvorba-numDryCells" min="1" max="99" placeholder="1">
+			</span>
+			políčok. Môžete pridať najviac
+			<span class="details">
+			<input type="number" id="tvorba-maxObstacles" min="1" max="99" placeholder="1">
+			</span>
+			prekážok.
+		</p>`;
+		return html;
+	}
+
+	function generateFastestFillTask() {
+		let html = `
+		<p>
+			Vašim cieľom je pridať
+			<span class="details">
+			<input type="number" id="tvorba-numWaterSources" min="1" max="10" placeholder="2">
+			</span>
+			zdroje vody do mriežky tak, aby sa voda rozliala do všetkých políčok čo najrýchlejšie.
+			<br>
+			Povolený počet krokov:
+			<span class="details">
+			<input type="number" id="tvorba-maxSteps" min="1" max="99" placeholder="10">
+			</span>.
+		</p>`;
+		return html;
+	}
+
 	//funkcia, ktora sa pouziva na dynamicke menenie obsahu solutionDiv
 	function updateSolutionDiv() {
 		if (assignmentType === "avoid_cells") {
@@ -1782,6 +2057,8 @@
 		console.log(fixedObstacles);
 		console.log("simulationFinished");
 		console.log(simulationFinished);
+		console.log("currentMode");
+		console.log(currentMode);
 	}
 </script>
 </body>
