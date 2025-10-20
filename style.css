@@ -288,7 +288,7 @@ h2 {
 	color: #ffc900;
 }
 
-#cleanLabel {
+#cleanLabel, #tvorba-cleanLabel {
 	color: #8b432d;
 }
 
@@ -316,37 +316,45 @@ h2 {
 	color: #ffc107;
 }
 
-#resetLabel {
+#resetLabel, #tvorba-resetLabel {
 	color: #24b9cc;
 }
 
-#cleanWaterLabel {
+#cleanWaterLabel, #tvorba-cleanWaterLabel {
 	color: #84dbff;
 }
 
-#cleanObstaclesLabel {
+#cleanObstaclesLabel, #tvorba-cleanObstaclesLabel {
 	color: #7f7f7f;
 }
 
-#adjustRowsLabel {
+#adjustRowsLabel, #tvorba-adjustRowsLabel {
 	color: #2196f3;
 }
 
-#adjustColumnsLabel {
+#adjustColumnsLabel, #tvorba-adjustColumnsLabel {
 	color: #2196f3;
 }
 
-#leftClickLabel {
+#leftClickLabel, #tvorba-leftClickLabel {
 	color: #2e30cc;
 }
 
-#rightClickLabel {
+#rightClickLabel, #tvorba-rightClickLabel {
 	color: #2e30cc;
+}
+
+#tvorba-saveAssignmentButtonLabel {
+	color: #35718a;
+}
+
+#tvorba-saveAssignmentToDriveButtonLabel {
+	color: #596c76;
 }
 
 
 /* sidebar grid - (grid + sidebar) div formatovanie */
-#sidebar-grid {
+#sidebar-grid, #tvorba-sidebar-grid {
 	display: flex;
 	align-items: center;      
 	justify-content: center;  
@@ -356,7 +364,7 @@ h2 {
 }
 
 /* css pre sidebar - div, ktory drzi sidebar button wrappery vedla gridu */
-#sidebar {
+#sidebar, #tvorba-sidebar {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -366,7 +374,7 @@ h2 {
 }
 
 /* horna cast sidebaru, nastroje pre pracu s mriezkou */
-#sidebar-top  {
+#sidebar-top, #tvorba-sidebar-top  {
 	display: flex;
 	flex-direction: column;
 	align-items: left;
@@ -375,12 +383,12 @@ h2 {
 }
 
 /* extra margin medzi nadpisom v sidebare top a prvou "funkcionalitou */
-#sidebar-top > :nth-child(2) {
+#sidebar-top > :nth-child(2),  #tvorba-sidebar-top > :nth-child(2){
 	margin-top: 3px; 
 }
 
 /* horna cast sidebaru, ikony sluziace ako "manual" na pracu s mriezkou pri danom zadani */
-#sidebar-bottom {
+#sidebar-bottom, #tvorba-sidebar-bottom {
 	display: flex;
 	flex-direction: column;
 	align-items: left;
@@ -389,12 +397,22 @@ h2 {
 }
 
 /* extra margin medzi nadpisom v sidebare bottom a prvou "funkcionalitou */
-#sidebar-bottom > :nth-child(2) {
+#sidebar-bottom > :nth-child(2), #tvorba-sidebar-bottom > :nth-child(2) {
 	margin-top: 3px; 
 }
 
+.sidebar-button-wrapper-double #tvorba-addRowsButton:hover ~ .label .label-add,
+.sidebar-button-wrapper-double #tvorba-addColumnsButton:hover ~ .label .label-add {
+  	transform: scale(1.1);
+}
+
+.sidebar-button-wrapper-double #tvorba-removeRowsButton:hover ~ .label .label-remove,
+.sidebar-button-wrapper-double #tvorba-removeColumnsButton:hover ~ .label .label-remove {
+  	transform: scale(1.1);
+}
+
 /* css pre id label "Nastroje" a "Pomocky" v sidebare - rovnake formatovanie */
-#helperLabel {
+#helperLabelButtons, #helperLabelIcons, #tvorba-helperLabelButtons, #tvorba-helperLabelIcons {
 	/* color */
 	color: #232e7a;
 	font-weight: bold;
@@ -403,7 +421,7 @@ h2 {
 }
 
 /* bunka v mriezke */
-#grid .cell {
+#grid .cell, #tvorba-grid .cell {
 	display: flex;
 	border: 0.5px solid black;
 	cursor: pointer;
@@ -449,14 +467,14 @@ h2 {
 }
 
 /* grid wrapper - grid a gridInfo s informaciou o pocte riadkov a stlpcov */
-#grid-wrapper {
+#grid-wrapper, #tvorba-grid-wrapper {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
 
-#gridInfo {
+#gridInfo, #tvorba-gridInfo {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
@@ -465,8 +483,54 @@ h2 {
 }
 
 /* mriezka */
-#grid {
+#grid, #tvorba-grid {
 	display: grid;
+}
+
+#tvorba-assignmentTypeToggle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 4px;
+	margin-bottom: 10px;
+}
+
+#tvorba-assignmentTypeToggle label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: bold;
+	color: black;
+	background-color: rgba(0, 123, 255, 0.18);
+	padding: 6px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.25s ease;
+}
+
+#tvorba-task-text input[type="number"] {
+	max-width: 25px;
+	margin: 1px;
+	font-weight: bold;
+	color: black;
+	background-color: rgba(0, 123, 255, 0.18);
+	padding: 6px 6px;
+	border-radius: 4px;
+	border: none;
+	cursor: pointer;
+	transition: all 0.25s ease;
+	text-align: center;
+}
+
+#tvorba-task-text input[type="number"]::-webkit-inner-spin-button,
+#tvorba-task-text input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+#tvorba-task-text input[type="number"] {
+	-moz-appearance: textfield;
+	appearance: textfield;
 }
 
 /* wrapper pre zadanie */
@@ -476,16 +540,32 @@ h2 {
 	/* margin-left: 50px; */
 }
 
-#zadanieHeader {
+#tvorba-task-wrapper {
+	max-width: 300px;
+}
+
+#zadanieHeader, #tvorba-zadanieHeader {
 	text-align: center;
 }
 
+#tvorba-saveButtonsDiv {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 30px;
+}
+
 /* counter pre ulohy */
-#levelCounter {
+#levelCounter, #tvorba-levelCounter {
 	text-align: center;
 	font-weight: bold;
 	font-size: 45px;
-	
+}
+
+#levelCounter p, #tvorba-levelCounter p {
+	margin-block-start: 0.5em;
+	margin-block-end: 0.5em;
 }
 
 /* css pre riesenie */
@@ -529,8 +609,17 @@ footer {
 	margin-bottom: 100px;
 }
 
+#tvorba-section {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative; /* makes the section a positioning context */
+	margin-top: 50px;
+	margin-bottom: 100px;
+}
+
 /* task a grid + sidebar */
-#center-section {
+#center-section, #tvorba-center-section {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -571,9 +660,15 @@ footer {
 	border-right: none;
 }
 
+#progressTable td:first-child:hover {
+	background-color: rgba(0, 123, 255, 0.18);
+	cursor: pointer;
+}
+
 /* selected row */
 .selectedLevel {
 	background-color: rgba(0, 123, 255, 0.18);
 	font-weight: 600;
 	border-radius: 4px;
+	
 }
